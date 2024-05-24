@@ -7,14 +7,12 @@ class Casa(ABC):
         pass
 
     @abstractmethod
-    
     def SetNome(self,nome:str)->None:
         pass
    
     @abstractmethod
     def AdicionarComodo(self,comodo:str)->None:
         pass
-
 
     @abstractmethod
     def RemoverComodo(self,comodo:str)->None:

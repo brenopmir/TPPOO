@@ -11,7 +11,6 @@ class Lampadas(ABC):
     def SetCor(self,cor:str)->None:
         pass
     
-   
     @abstractmethod
     def ListarCores(self)->None:
         pass

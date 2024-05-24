@@ -7,9 +7,9 @@ class Comodo(ABC):
         pass
 
     @abstractmethod
-    
     def SetNome(self,nome:str)->None:
         pass
+    
     # Cria um  dispositivo de um tipo, sendo Lampada,Cortina,Arcondicionado,Camera de segurança e Janela, 1,2,3,4 e 5 respectivamente e com o nome que o usuario escolher
     @abstractmethod
     def AdicionarDispositivo(self,tipo:int,nome:str)->None:

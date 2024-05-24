@@ -7,11 +7,9 @@ class Ar_Condicionado(ABC):
         pass
 
     @abstractmethod
-    
     def SetLigado(self,Ligar:bool)->None:
         pass
     
-   
     @abstractmethod
     def Modo(self)->str:
         pass
@@ -20,7 +18,6 @@ class Ar_Condicionado(ABC):
     def SetModo(self,modo:str)->None:
         pass
     
-   
     @abstractmethod
     def Temperatura(self)->int:
         pass 

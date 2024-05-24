@@ -7,7 +7,6 @@ class Janela(ABC):
         pass
 
     @abstractmethod
-    
     def SetAbertura(self,abertura:int)->None:
         pass
     
