@@ -9,3 +9,7 @@ class Dispositivo(ABC):
     @abstractmethod
     def SetNome(self, nome: str) -> None:
         pass
+
+    @abstractmethod
+    def SalvarDispositivo(self,nomearquivo:str)->None:
+        pass
