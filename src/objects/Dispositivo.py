@@ -18,7 +18,8 @@ class Dispositivo(InterfaceDispositivo,ABC):
     
     def SetNome(self, nomenovo: str) -> None:
         self.__nome=nomenovo
-        
-    @abstractmethod
+
+    #Precisamos Implementar Ainda
+    #@abstractmethod     
     def SalvarDispositivo(self, nomearquivo: str) -> None:
-        pass
+        print("Precisamos implementar ainda ")

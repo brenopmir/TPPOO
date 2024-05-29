@@ -1,3 +1,11 @@
+import sys
+import os
+
+# Pega o diretorio pai do arquivo
+diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#fornece o caminho
+sys.path.append(diretorioPai)
+
 from Interfaces.Interfaces_janelas import InterfaceJanela
 from Dispositivo import Dispositivo
 
