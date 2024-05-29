@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 
-class Dispositivo(ABC):
+class InterfaceDispositivo(ABC):
    
     @abstractmethod
     def Nome(self) -> str:
         pass
 
     @abstractmethod
-    def SetNome(self, nome: str) -> None:
+    def SetNome(self, nomenovo: str) -> None:
         pass
 
     @abstractmethod

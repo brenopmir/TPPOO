@@ -1,0 +1,13 @@
+from Interfaces.Interfaces_cortinas import InterfaceCortinas
+from Dispositivo import Dispositivo
+
+class Cortina(InterfaceCortinas,Dispositivo):
+    def __init__(self, nome: str,intensidade:int) -> None:
+        super().__init__(nome)
+        self.__intensidade=intensidade
+
+    def Intensidade(self) -> int:
+        return self.__intensidade
+    
+    def SetIntensidade(self, intensidadenova: int) -> None:
+        self.__intensidade=intensidadenova

@@ -1,11 +1,11 @@
 from abc import ABC,abstractmethod
 
-class Cortinas(ABC):
+class InterfaceCortinas(ABC):
    
     @abstractmethod
     def Intensidade(self)->int:
         pass 
 
     @abstractmethod
-    def SetIntensidade(self,intensidade:int)->None:
+    def SetIntensidade(self,intensidadenova:int)->None:
         pass  
