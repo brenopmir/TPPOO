@@ -8,6 +8,11 @@ sys.path.append(diretorioPai)
 
 from Interfaces.Interfaces_arcondicionado import InterfaceAr_Condicionado
 from Dispositivo import Dispositivo
+from openpyxl import Workbook,load_workbook
+from typing import Type
+
+wb=load_workbook("Casa.xlsx")
+ws=wb.active
 
 class Ar_Condicionado(Dispositivo,InterfaceAr_Condicionado):
     def __init__(self, nome: str,ligado:bool,temperatura:int,intensidade:int) -> None:
@@ -33,3 +38,15 @@ class Ar_Condicionado(Dispositivo,InterfaceAr_Condicionado):
     
     def SetIntensidade(self, intensidadenova: int) -> None:
         self.__intensidade=intensidadenova
+    
+    def SalvarDispositivo(self) -> None:
+        #O True não aparece |True bonitinho então eu fiz esse if para ficar legivel 
+        if(self.__ligado==True):
+            ws.append([f"{self.Nome()}",'Ar Condicionado','True',self.__temperatura,self.__intensidade,None,None,None])
+        else:
+            ws.append([f"{self.Nome()}",'Ar Condicionado','False',self.__temperatura,self.__intensidade,None,None,None])
+        wb.save("Casa.xlsx")
+
+def criar_instancia_ar_condicionado(classe:Type[Ar_Condicionado],nome:str,ligado:bool,temperatura:int,intensidade:int)->Ar_Condicionado:
+    instancia=classe(nome,ligado,temperatura,intensidade)
+    return instancia
