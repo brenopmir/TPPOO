@@ -8,8 +8,8 @@ diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #fornece o caminho
 sys.path.append(diretorioPai)
 
-class BotaoComodo(customtkinter.CTkButton):
-    def __init__(self, master,nomeComodo, numeroDispositivos):
+class BotaoDispositivo(customtkinter.CTkButton):
+    def __init__(self, master,nomeComodo, numeroDispositivos, caminho):
         super().__init__(master)
         self.configure(fg_color = "#E4E4E4",
                        hover_color="#CCCCCC",
@@ -20,12 +20,12 @@ class BotaoComodo(customtkinter.CTkButton):
                        text_color="#000000",
                        font=("Inika",20),
                        compound = "left",
-                       anchor ="top"
+                       anchor ="top",
                        )
         self.container = customtkinter.CTkFrame(self, fg_color="#E4E4E4")
         self.container.grid(row=1, column=0, padx=(10, 5), pady=10)
         
-        imagem = Image.open("src/icons/sofa.png")
+        imagem = Image.open(caminho)
         imagem = imagem.resize((25,25))
         icone = ImageTk.PhotoImage(imagem)
         
