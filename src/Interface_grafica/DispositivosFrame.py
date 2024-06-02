@@ -26,21 +26,21 @@ class DispositivosFrame(customtkinter.CTkScrollableFrame):
         
         self.botaoLampada = BotaoDispositivo(self, nomeComodo="Lâmpadas",
                                   numeroDispositivos= len(nomeLampadas),
-                                  caminho="src/icons/sofa.png")
+                                  caminho="src/icons/lampada.png")
         self.botaoLampada.pack(side="top", pady= (10,10))
             
         self.botaoAr = BotaoDispositivo(self, nomeComodo="Ar Condicionado",
                                   numeroDispositivos= 2,
-                                  caminho="src/icons/sofa.png")
+                                  caminho="src/icons/arCondicionado.png")
         self.botaoAr.pack(side="top", pady= (10,10))
         
         self.botaoJanela = BotaoDispositivo(self, nomeComodo="Janela",
                                   numeroDispositivos= len(nomeLampadas),
-                                  caminho="src/icons/sofa.png")
+                                  caminho="src/icons/Janela.png")
         self.botaoJanela.pack(side="top", pady= (10,10))
         
         self.botaoCortina = BotaoDispositivo(self, nomeComodo="Cortina",
                                   numeroDispositivos= len(nomeLampadas),
-                                  caminho="src/icons/sofa.png")
+                                  caminho="src/icons/cortina.png")
         
         self.botaoCortina.pack(side="top", pady= (10,10))

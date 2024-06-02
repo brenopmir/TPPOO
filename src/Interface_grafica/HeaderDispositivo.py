@@ -16,14 +16,19 @@ class Header(customtkinter.CTkFrame):
                        width = 390,
                        corner_radius = 0,
                        height = 60)
-        imagem = Image.open("src/icons/casa_icone.png")
+        imagem = Image.open("src/icons/dispositivos.png")
+        imagem = imagem.resize((50,50))
         icone = ImageTk.PhotoImage(imagem)
         
-        self.iconeLabel = customtkinter.CTkLabel(self,text='', image=icone,height= 60)
-        self.iconeLabel.image = icone
-        self.iconeLabel.pack(side="left",ipadx = 30)
+        self.iconeBotao = customtkinter.CTkButton(self,fg_color = "#DDDDDD",
+                                                  hover_color="#DDDDDD",
+                                                  text='', 
+                                                  image=icone,
+                                                  height= 60)
+        self.iconeBotao.image = icone
+        self.iconeBotao.pack(side="left")
         
         self.tituloLabel = customtkinter.CTkLabel(self, text=texto,
                                                    font=("Inika", 25),
                                                    text_color= "#000000")
-        self.tituloLabel.pack(side="left", padx = 30)
+        self.tituloLabel.pack(side="left", padx = 10)

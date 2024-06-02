@@ -28,21 +28,8 @@ class ComodoFrame(customtkinter.CTkScrollableFrame):
         self.header.pack(side="top", pady = (0,10),fill = "x",)
         self.dispositivosFrame = {}
         self.botoes = []
-        for nomes,numero in nomeComodos:
-            variavel = nomes
-            dispositivoFrame = DispositivosFrame(master = self, nome = nomes)
-            self.dispositivosFrame[variavel] = dispositivoFrame
-            
-            botoes = BotaoComodo(self, nomeComodo=nomes, numeroDispositivos=numero)
-            botoes.configure(command = lambda:self.ClickBotao(nomes))
-            self.botoes.append(botoes)
-            botoes.pack(side="top", pady= (10,10))
+
     
-    def ClickBotao(self,nome):
-        self.header.destroy()
-        for i in self.botoes:
-            i.destroy()
-        self.dispositivosFrame[nome].pack(side="top", fill = "both")
         
         
             

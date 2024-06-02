@@ -12,7 +12,7 @@ class BotaoDispositivo(customtkinter.CTkButton):
     def __init__(self, master,nomeComodo, numeroDispositivos, caminho):
         super().__init__(master)
         self.configure(fg_color = "#E4E4E4",
-                       hover_color="#CCCCCC",
+                       hover_color="#E4E4E4",
                        height=60, 
                        width=280, 
                        corner_radius=15,
