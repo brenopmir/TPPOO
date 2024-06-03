@@ -8,15 +8,15 @@ diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #fornece o caminho
 sys.path.append(diretorioPai)
 
-class HeaderDispositivo(customtkinter.CTkFrame):
-    def __init__(self, master, texto,caminho,**kwargs):
+class Header(customtkinter.CTkFrame):
+    def __init__(self, master, texto,**kwargs):
         super().__init__(master, **kwargs)
 
         self.configure(fg_color = "#DDDDDD",
                        width = 390,
                        corner_radius = 0,
                        height = 60)
-        imagem = Image.open(caminho)
+        imagem = Image.open("src/icons/dispositivos.png")
         imagem = imagem.resize((50,50))
         icone = ImageTk.PhotoImage(imagem)
         
