@@ -1,13 +1,13 @@
 from abc import ABC,abstractmethod
 
-class Janela(ABC):
+class InterfaceJanela(ABC):
    
     @abstractmethod
     def Abertura(self)->int:
         pass
 
     @abstractmethod
-    def SetAbertura(self,abertura:int)->None:
+    def SetAbertura(self,aberturanova:int)->None:
         pass
     
    
@@ -16,5 +16,5 @@ class Janela(ABC):
         pass
 
     @abstractmethod
-    def SetTranca(self,tranca:bool)->None:
+    def SetTranca(self,trancanova:bool)->None:
         pass  

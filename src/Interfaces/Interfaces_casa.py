@@ -1,17 +1,17 @@
 from abc import ABC,abstractmethod
 
-class Casa(ABC):
+class InterfaceCasa(ABC):
    
     @abstractmethod
     def Nome(self)->str:
         pass
 
     @abstractmethod
-    def SetNome(self,nome:str)->None:
+    def SetNome(self,nomenovo:str)->None:
         pass
    
     @abstractmethod
-    def AdicionarComodo(self,comodo:str)->None:
+    def AdicionarComodo(self,comodonovo:str)->None:
         pass
 
     @abstractmethod

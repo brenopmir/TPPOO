@@ -1,29 +1,21 @@
 from abc import ABC,abstractmethod
 
-class Ar_Condicionado(ABC):
+class InterfaceAr_Condicionado(ABC):
    
     @abstractmethod
     def Ligado(self)->bool:
         pass
 
     @abstractmethod
-    def SetLigado(self,Ligar:bool)->None:
-        pass
-    
-    @abstractmethod
-    def Modo(self)->str:
+    def SetLigado(self,ligarnovo:bool)->None:
         pass
 
-    @abstractmethod
-    def SetModo(self,modo:str)->None:
-        pass
-    
     @abstractmethod
     def Temperatura(self)->int:
         pass 
     
     @abstractmethod
-    def SetTemperatura(self,temperatura:int)->None:
+    def SetTemperatura(self,temperaturanova:int)->None:
         pass
 
     @abstractmethod
@@ -31,5 +23,5 @@ class Ar_Condicionado(ABC):
         pass 
 
     @abstractmethod
-    def SetIntensidade(self,intensidade:int)->None:
+    def SetIntensidade(self,intensidadenova:int)->None:
         pass  
