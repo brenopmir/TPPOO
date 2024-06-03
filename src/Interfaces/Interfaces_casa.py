@@ -11,17 +11,21 @@ class InterfaceCasa(ABC):
         pass
    
     @abstractmethod
-    def AdicionarComodo(self,comodonovo:str)->None:
+    def AdicionarComodo(self,nomedocomodo:str)->None:
         pass
 
     @abstractmethod
-    def RemoverComodo(self,comodo:str)->None:
+    def RemoverComodo(self,nomedocomodo:str)->None:
         pass
 
     @abstractmethod
     def ListarComodo(self)->None:
-        pass 
-    
-    @abstractmethod
-    def AtivarModos(self,modo:str)->None:
         pass
+
+    @abstractmethod
+    def VerificarDuplicado(self, nomedocomodo: str) -> bool:
+        pass
+
+    @abstractmethod
+    def SalvarComodo(self)->None:
+        pass 

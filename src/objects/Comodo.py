@@ -22,4 +22,37 @@ from typing import Type
 from openpyxl import Workbook,load_workbook
 
 class Comodo(InterfaceComodo):
-    pass
+    def __init__(self,nome:str) -> None:
+        self.__nome=nome
+        self.__quantidade_dispositivo=0
+        self.__lampadas={}
+        self.__arescondicionados={}
+        self.__cortinas={}
+        self.__janelas={}
+        self.__numerodispositivos=0
+    
+    def Nome(self) -> str:
+        return self.__nome
+    
+    def SetNome(self, nomenovo: str) -> None:
+        self.__nome=nomenovo
+    
+    def Quantidade_dispositivo(self)->int:
+         return self.__quantidade_dispositivo
+    
+    def AdicionarDispositivo(self, tipo: int, nome: str) -> None:
+         print("algo")
+    
+    def ConfigurarTodos(self, tipo: int, nome: str) -> None:
+         print("algo")
+    
+    def ListarDispositivos(self) -> None:
+         print("algo")
+    
+    def RemoverDispositivo(self, tipo: int, nome: str) -> None:
+         print("algo")
+    
+def criar_comodo(classe:Type[Comodo],nome:str)->Comodo:
+     instancia=classe(nome)
+     return instancia
+     
