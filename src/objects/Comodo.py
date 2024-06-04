@@ -21,6 +21,12 @@ from Dispositivo import Dispositivo
 from typing import Type
 from openpyxl import Workbook,load_workbook
 
+wb=load_workbook("Casa.xlsx")
+ws=wb.active
+ws_lampadas=wb["Lampadas"]
+ws_cortinas=wb["Cortinas"]
+ws_janelas=wb["Janelas"]
+ws_ares=wb["Ares Condicionados"]
 class Comodo(InterfaceComodo):
     def __init__(self,nome:str) -> None:
         self.__nome=nome
@@ -29,7 +35,6 @@ class Comodo(InterfaceComodo):
         self.__arescondicionados={}
         self.__cortinas={}
         self.__janelas={}
-        self.__numerodispositivos=0
     
     def Nome(self) -> str:
         return self.__nome
@@ -40,19 +45,54 @@ class Comodo(InterfaceComodo):
     def Quantidade_dispositivo(self)->int:
          return self.__quantidade_dispositivo
     
+    # Cria um  dispositivo de um tipo, sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente e com o nome que o usuario escolher
     def AdicionarDispositivo(self, tipo: int, nome: str) -> None:
-         print("algo")
+          if(tipo==1):
+               self.__lampadas[nome]=criar_instancia_lampada(Lampadas,nome,None,0)
+               self.__quantidade_dispositivo+=1
+               ws_lampadas.append([self.__nome,f"{self.__lampadas[nome].Nome()}", None,None,self.__lampadas[nome].Intensidade(),None,None,self.__lampadas[nome].Cor()])
+          elif(tipo==2):
+               self.__cortinas[nome]=criar_instancia_cortina(Cortina,nome,0)
+               self.__quantidade_dispositivo+=1
+               ws_cortinas.append([self.__nome,f"{self.__cortinas[nome].Nome()}", None,None,self.__cortinas[nome].Intensidade(),None,None,None])
+          elif(tipo==3):
+               self.__arescondicionados[nome]=criar_instancia_ar_condicionado(Ar_Condicionado,nome,False,0,0)
+               self.__quantidade_dispositivo+=1
+               if(self.__arescondicionados[nome].Ligado()==True):
+                    ws_ares.append([self.__nome,f"{self.__arescondicionados[nome].Nome()}","True",self.__arescondicionados[nome].Temperatura(),self.__arescondicionados[nome].Intensidade(),None,None,None])
+               else:
+                    ws_ares.append([self.__nome,f"{self.__arescondicionados[nome].Nome()}","False",self.__arescondicionados[nome].Temperatura(),self.__arescondicionados[nome].Intensidade(),None,None,None])
+          elif(tipo==4):
+               self.__janelas[nome]=criar_instancia_janela(Janela,nome,0,False)
+               self.__quantidade_dispositivo+=1
+               if(self.__janelas[nome].Tranca()==True):
+                    ws_janelas.append([self.__nome,f"{self.__janelas[nome].Nome()}",None,None,None,self.__janelas[nome].Abertura(),"True",None])
+               else:
+                    ws_janelas.append([self.__nome,f"{self.__janelas[nome].Nome()}",None,None,None,self.__janelas[nome].Abertura(),"False",None])
+          wb.save("Casa.xlsx")
     
-    def ConfigurarTodos(self, tipo: int, nome: str) -> None:
+     # remove o dispositivo de um tipo,sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente, que possui determinado nome      
+    def RemoverDispositivo(self, tipo:str, nome: str) -> None:
          print("algo")
     
     def ListarDispositivos(self) -> None:
          print("algo")
+     
+   # def VerificarDuplicado(self,tipodispositivo:int,nomedodispositivo: str) -> bool:
+          #pass
     
-    def RemoverDispositivo(self, tipo: int, nome: str) -> None:
+    def ConfigurarTodos(self, tipo: int, nome: str) -> None:
          print("algo")
+     
     
 def criar_comodo(classe:Type[Comodo],nome:str)->Comodo:
      instancia=classe(nome)
      return instancia
-     
+"""
+testeComodo=Comodo("Quarto")
+testeComodo.AdicionarDispositivo(1,"lampada")  
+testeComodo.AdicionarDispositivo(2,"cortina")  
+testeComodo.AdicionarDispositivo(3,"ar")  
+testeComodo.AdicionarDispositivo(4,"janela")
+"""
+

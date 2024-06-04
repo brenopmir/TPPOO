@@ -31,15 +31,6 @@ class Janela(Dispositivo,InterfaceJanela):
     def SetTranca(self, trancanova: bool) -> None:
         self.__tranca=trancanova
     
-    def SalvarDispositivo(self) -> None:
-        #O True não aparece no arquivo excel|True bonitinho então eu fiz esse if para ficar legivel 
-        if(self.__tranca==True):
-            ws.append([f"{self.Nome()}",'Janela',None,None,None,self.__abertura,'True',None])
-        else:
-             ws.append([f"{self.Nome()}",'Janela',None,None,None,self.__abertura,'False',None])
-        wb.save("Casa.xlsx")
-
-
 def criar_instancia_janela(classe:Type[Janela],nome:str,abertura:int,tranca:bool,)->Janela:
     instancia=classe(nome,abertura,tranca)
     return instancia

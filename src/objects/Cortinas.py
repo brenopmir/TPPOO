@@ -23,10 +23,6 @@ class Cortina(InterfaceCortinas,Dispositivo):
     
     def SetIntensidade(self, intensidadenova: int) -> None:
         self.__intensidade=intensidadenova
-    
-    def SalvarDispositivo(self) -> None:
-        ws.append([f"{self.Nome()}",'Cortina',None,None,self.__intensidade,None,None,None])
-        wb.save("Casa.xlsx")
 
 def criar_instancia_cortina(classe:Type[Cortina],nome:str,intensidade:int)->Cortina:
     instancia=classe(nome,intensidade)

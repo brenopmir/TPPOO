@@ -18,8 +18,3 @@ class Dispositivo(InterfaceDispositivo,ABC):
     
     def SetNome(self, nomenovo: str) -> None:
         self.__nome=nomenovo
-
-    
-    @abstractmethod     
-    def SalvarDispositivo(self) -> None:
-        pass

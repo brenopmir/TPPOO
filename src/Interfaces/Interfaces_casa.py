@@ -19,7 +19,7 @@ class InterfaceCasa(ABC):
         pass
 
     @abstractmethod
-    def ListarComodo(self)->None:
+    def ListarComodos(self)->None:
         pass
 
     @abstractmethod
