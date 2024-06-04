@@ -30,7 +30,7 @@ class Casa(InterfaceCasa):
     def AdicionarComodo(self, nomedocomodo: str) -> None:
         if not self.VerificarDuplicado(nomedocomodo):
             self.comodos[nomedocomodo] = criar_comodo(Comodo, nomedocomodo)
-            ws.append([nomedocomodo, 0])
+            ws.append([nomedocomodo,0])
             wb.save("Teste.xlsx")  # Salva o workbook após adicionar o cômodo
         else:
             return
@@ -57,14 +57,8 @@ class Casa(InterfaceCasa):
         return False
 
     def SalvarComodo(self) -> None:
-        for row in range(2,(ws.max_row+1)):
-            ws['B'+ str(row)]=self.comodos[ws['A' + str(row)].value].Quantidade_dispositivo()
+      for row in range(2,(ws.max_row+1)):
+        ws['B'+str(row)]=self.comodos[ws['A' + str(row)].value].Quantidade_dispositivo()
         wb.save("Teste.xlsx")
             
-
-#A concertar : por enquanto Basicamente no arquivo excel teremos os objetos, e no arquivo teste teremos os comodos com os nome e os (numeros de dispositivos) a trabalhar 
-teste_casa = Casa("Breno")
-teste_casa.AdicionarComodo("Quarto")
-teste_casa.SalvarComodo()
-teste_casa.comodos["Quarto"].AdicionarDispositivo(1,"lampada") 
 
