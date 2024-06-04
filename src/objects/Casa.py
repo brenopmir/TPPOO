@@ -13,7 +13,7 @@ from Comodo import Comodo, criar_comodo
 wb=Workbook()
 ws=wb.active
 
-ws.title="Teste"
+ws.title="Comodos"
 ws.append(["Comodo","Numero Dispositivos"])
 
 class Casa(InterfaceCasa):
@@ -31,7 +31,7 @@ class Casa(InterfaceCasa):
         if not self.VerificarDuplicado(nomedocomodo):
             self.comodos[nomedocomodo] = criar_comodo(Comodo, nomedocomodo)
             ws.append([nomedocomodo,0])
-            wb.save("Teste.xlsx")  # Salva o workbook após adicionar o cômodo
+            wb.save("Casa_comodos.xlsx")  # Salva o workbook após adicionar o cômodo
         else:
             return
     
@@ -41,7 +41,7 @@ class Casa(InterfaceCasa):
             for i, row in enumerate(ws.iter_rows(), start=1):
                 if row[0].value == nomecomodo:
                     ws.delete_rows(i, 1)
-                    wb.save("Teste.xlsx")  # Salva o workbook após remover o cômodo
+                    wb.save("Casa_comodos.xlsx")  # Salva o workbook após remover o cômodo
                     break
     
     def ListarComodos(self) -> list[str]:
@@ -56,9 +56,7 @@ class Casa(InterfaceCasa):
                 return True
         return False
 
-    def SalvarComodo(self) -> None:
+    def Salvar_Quantidadede_dispositivos_Comodo(self) -> None:
       for row in range(2,(ws.max_row+1)):
         ws['B'+str(row)]=self.comodos[ws['A' + str(row)].value].Quantidade_dispositivo()
-        wb.save("Teste.xlsx")
-            
-
+        wb.save("Casa_comodos.xlsx")

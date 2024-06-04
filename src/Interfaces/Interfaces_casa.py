@@ -26,6 +26,7 @@ class InterfaceCasa(ABC):
     def VerificarDuplicado(self, nomedocomodo: str) -> bool:
         pass
 
+#basicamente essa função deve ser chamada apos adicionar todos ou algum dispositivo pois ela que contabiliza a quantidade de dispositivos
     @abstractmethod
-    def SalvarComodo(self)->None:
-        pass 
+    def Salvar_Quantidadede_dispositivos_Comodo(self) -> None:
+      pass
