@@ -8,11 +8,7 @@ sys.path.append(diretorioPai)
 
 from Interfaces.Interfaces_lampadas import InterfaceLampadas
 from Dispositivo import Dispositivo
-from openpyxl import Workbook,load_workbook
 from typing import Type
-
-wb=load_workbook("Casa.xlsx")
-ws=wb.active
 class Lampadas(Dispositivo,InterfaceLampadas):
     def __init__(self, nome: str,cor:str,intensidade:int) -> None:
         super().__init__(nome)

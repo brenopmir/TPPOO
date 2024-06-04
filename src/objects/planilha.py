@@ -4,8 +4,7 @@ from openpyxl import Workbook
 wb=Workbook()
 ws=wb.active
 
-ws.title="Casa"
-ws.append(["Comodo","Numero Dispositivos"])
+ws.title="Comodo"
 
 wb.create_sheet("Lampadas")
 wb.create_sheet("Ares Condicionados")

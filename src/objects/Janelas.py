@@ -8,11 +8,8 @@ sys.path.append(diretorioPai)
 
 from Interfaces.Interfaces_janelas import InterfaceJanela
 from Dispositivo import Dispositivo
-from openpyxl import Workbook,load_workbook
 from typing import Type
 
-wb=load_workbook("Casa.xlsx")
-ws=wb.active
 class Janela(Dispositivo,InterfaceJanela):
     def __init__(self, nome: str,abertura:int,tranca:bool) -> None:
         super().__init__(nome)

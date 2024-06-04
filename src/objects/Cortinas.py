@@ -8,11 +8,8 @@ sys.path.append(diretorioPai)
 
 from Interfaces.Interfaces_cortinas import InterfaceCortinas
 from Dispositivo import Dispositivo
-from openpyxl import Workbook,load_workbook
 from typing import Type
 
-wb=load_workbook("Casa.xlsx")
-ws=wb.active
 class Cortina(InterfaceCortinas,Dispositivo):
     def __init__(self, nome: str,intensidade:int) -> None:
         super().__init__(nome)

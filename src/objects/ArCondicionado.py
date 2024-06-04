@@ -8,11 +8,7 @@ sys.path.append(diretorioPai)
 
 from Interfaces.Interfaces_arcondicionado import InterfaceAr_Condicionado
 from Dispositivo import Dispositivo
-from openpyxl import Workbook,load_workbook
 from typing import Type
-
-wb=load_workbook("Casa.xlsx")
-ws=wb.active
 
 class Ar_Condicionado(Dispositivo,InterfaceAr_Condicionado):
     def __init__(self, nome: str,ligado:bool,temperatura:int,intensidade:int) -> None:
