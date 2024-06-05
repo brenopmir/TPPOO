@@ -23,11 +23,6 @@ class InterfaceComodo(ABC):
     @abstractmethod
     def RemoverDispositivo(self,tipo:int,nome:str)->None:
         pass
-
-    # Lista todos os dispositivos de um tipo, sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente
-    @abstractmethod
-    def ListarDispositivos(self)->None:
-        pass 
     
     @abstractmethod
     def ConfigurarTodos(self,tipo:int,nome:str)->None:

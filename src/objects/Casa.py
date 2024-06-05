@@ -44,12 +44,6 @@ class Casa(InterfaceCasa):
                     wb_Casa_comodo.save("Casa_comodos.xlsx")  # Salva o workbook após remover o cômodo
                     break
     
-    def ListarComodos(self) -> list[str]:
-        listacomodos = []
-        for row in range(2, ws.max_row + 1):
-            listacomodos.append(ws['A' + str(row)].value)
-        return listacomodos
-        
     def VerificarDuplicado(self, nomedocomodo: str) -> bool:
         for row in ws.iter_rows(values_only=True):
             if nomedocomodo in row:

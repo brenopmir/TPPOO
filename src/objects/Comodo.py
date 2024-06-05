@@ -104,12 +104,7 @@ class Comodo(InterfaceComodo):
                               ws_janelas.delete_rows(i, 1)
                                
           wb.save("Casa.xlsx")
-         
-          
-    
-    def ListarDispositivos(self) -> None:
-         print("algo")
-     
+
    # def VerificarDuplicado(self,tipodispositivo:int,nomedodispositivo: str) -> bool:
           #pass
     

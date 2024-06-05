@@ -19,10 +19,6 @@ class InterfaceCasa(ABC):
         pass
 
     @abstractmethod
-    def ListarComodos(self)->None:
-        pass
-
-    @abstractmethod
     def VerificarDuplicado(self, nomedocomodo: str) -> bool:
         pass
 
