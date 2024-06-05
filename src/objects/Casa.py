@@ -10,11 +10,8 @@ from openpyxl import Workbook,load_workbook
 from Interfaces.Interfaces_casa import InterfaceCasa
 from Comodo import Comodo, criar_comodo
 
-wb_Casa_comodo=Workbook()
-ws=wb_Casa_comodo.active
-
-ws.title="Comodos"
-ws.append(["Comodo","Numero Dispositivos"])
+wb_Casa_comodo=load_workbook("Casa_comodos.xlsx")
+ws=wb_Casa_comodo["Comodos"]
 
 class Casa(InterfaceCasa):
     def __init__(self, nome: str) -> None:
@@ -67,19 +64,19 @@ testeCasa.AdicionarComodo("Quarto")
 testeCasa.comodos["Quarto"].AdicionarDispositivo(1,"lampada") 
 testeCasa.comodos["Quarto"].AdicionarDispositivo(2,"cortina") 
 testeCasa.comodos["Quarto"].AdicionarDispositivo(3,"arcondicionado")
-#testeCasa.AdicionarComodo("Cozinha")
-#testeCasa.comodos["Cozinha"].AdicionarDispositivo(1,"lampada1") 
-#testeCasa.comodos["Cozinha"].AdicionarDispositivo(2,"cortina1") 
-#testeCasa.comodos["Cozinha"].AdicionarDispositivo(3,"arcondicionado1")
+
+testeCasa.AdicionarComodo("Cozinha")
+testeCasa.comodos["Cozinha"].AdicionarDispositivo(1,"lampada1") 
+testeCasa.comodos["Cozinha"].AdicionarDispositivo(2,"cortina1") 
+testeCasa.comodos["Cozinha"].AdicionarDispositivo(3,"arcondicionado1")
 #testeCasa.comodos["Quarto"].ConfigurarLampada("lampada","vermelho",100,"testetrocar")
 #testeCasa.comodos["Quarto"].ConfigurarLampada("testetrocar","roxo",70,"Breno")
-testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
-testeCasa.RemoverComodo("Quarto")
+#testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
+#testeCasa.RemoverComodo("Quarto")
 #testeCasa.comodos["Quarto"].RemoverDispositivo(1,"lampada")
 #testeCasa.comodos["Quarto"].RemoverDispositivo(2,"cortina") 
 #testeCasa.comodos["Quarto"].RemoverDispositivo(3,"arcondicionado")
 #testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
-testeCasa=Casa("Teste")
-testeCasa.RemoverComodo("Quarto")
+testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
 """
 

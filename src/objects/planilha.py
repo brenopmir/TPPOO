@@ -24,3 +24,11 @@ ws=wb["Cortinas"]
 ws.append(["Comodo","Nome","Ligado","Temperatura","Intensidade","Abertura","Tranca","Cor"])
 
 wb.save("Casa.xlsx")
+
+
+wb_Casa_comodo=Workbook()
+ws=wb_Casa_comodo.active
+
+ws.title="Comodos"
+ws.append(["Comodo","Numero Dispositivos"])
+wb_Casa_comodo.save("Casa_comodos.xlsx")
