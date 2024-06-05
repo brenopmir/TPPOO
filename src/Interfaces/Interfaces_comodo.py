@@ -23,9 +23,21 @@ class InterfaceComodo(ABC):
     @abstractmethod
     def RemoverDispositivo(self,tipo:int,nome:str)->None:
         pass
+
+    @abstractmethod
+    def ConfigurarLampada(self,nome:str,cor:str,intensidade:int,novonome:str) -> None:
+         pass
     
     @abstractmethod
-    def ConfigurarTodos(self,tipo:int,nome:str)->None:
-        pass
-
+    def ConfiguraCortina(self,nome:str,intensidade:int,novonome:str)->None:
+          pass
+    
+    @abstractmethod
+    def ConfigurarArCondicionado(self,nome:str,ligado:bool,temperatura:int,intensidade:int,novonome:str)->None:
+          pass
+    
+    @abstractmethod
+    def ConfigurarJanela(self,nome:str,abertura:int,tranca:bool,novonome:str)->None:
+          pass
+     
    

@@ -79,46 +79,125 @@ class Comodo(InterfaceComodo):
           if(tipo==1):
                     if nome in self.__lampadas:
                          self.__lampadas.pop(nome)
-                    for i, row in enumerate(ws_lampadas.iter_rows(), start=1):
+                    for i, row in enumerate(ws_lampadas.iter_rows(), start=2):
                          if row[0].value == self.Nome() and row[1].value == nome :
                               ws_lampadas.delete_rows(i, 1)
+                              self.__quantidade_dispositivo-=1
                                                 
           elif(tipo==2):
                     if nome in self.__cortinas:
                          self.__cortinas.pop(nome)
-                    for i, row in enumerate(ws_cortinas.iter_rows(), start=1):
+                    for i, row in enumerate(ws_cortinas.iter_rows(), start=2):
                          if row[0].value == self.Nome() and row[1].value == nome :
-                              ws_cortinas.delete_rows(i, 1)                              
+                              ws_cortinas.delete_rows(i, 1)  
+                              self.__quantidade_dispositivo-=1
+
           elif(tipo==3):
                     if nome in self.__arescondicionados:
                          self.__arescondicionados.pop(nome)
-                    for i, row in enumerate(ws_ares.iter_rows(), start=1):
+                    for i, row in enumerate(ws_ares.iter_rows(), start=2):
                          if row[0].value == self.Nome() and row[1].value == nome :
                               ws_ares.delete_rows(i, 1)
+                              self.__quantidade_dispositivo-=1
                                                             
           elif(tipo==4):
                     if nome in self.__janelas:
                          self.__janelas.pop(nome)
-                    for i, row in enumerate(ws_janelas.iter_rows(), start=1):
+                    for i, row in enumerate(ws_janelas.iter_rows(), start=2):
                          if row[0].value == self.Nome() and row[1].value == nome :
                               ws_janelas.delete_rows(i, 1)
-                               
+                              self.__quantidade_dispositivo-=1              
           wb.save("Casa.xlsx")
 
-   # def VerificarDuplicado(self,tipodispositivo:int,nomedodispositivo: str) -> bool:
-          #pass
+    def ConfigurarLampada(self,nome:str,cor:str,intensidade:int,novonome:str) -> None:
+         if nome in self.__lampadas:
+               self.__lampadas[nome].SetCor(cor)
+               self.__lampadas[nome].SetIntensidade(intensidade)
+               self.__lampadas[nome].SetNome(novonome)
+         for i,row in enumerate(ws_lampadas.iter_rows(), start=2):
+               if row[0].value == self.Nome() and row[1].value == nome:
+                    row[1].value = novonome
+                    row[4].value = intensidade
+                    row[7].value = cor
+         wb.save("Casa.xlsx")
+                     
+    def ConfiguraCortina(self,nome:str,intensidade:int,novonome:str)->None:
+         if nome in self.__cortinas:
+               self.__cortinas[nome].SetIntensidade(intensidade)
+               self.__cortinas[nome].SetNome(novonome)
+         for i,row in enumerate(ws_cortinas.iter_rows(), start=2):
+               if row[0].value == self.Nome() and row[1].value == nome:
+                     row[1].value=novonome
+                     row[4].value=intensidade
+         wb.save("Casa.xlsx")
     
-    def ConfigurarTodos(self, tipo: int, nome: str) -> None:
-         print("algo")
-     
+    def ConfigurarArCondicionado(self,nome:str,ligado:bool,temperatura:int,intensidade:int,novonome=0)->None:
+          if nome in self.__arescondicionados:
+                self.__arescondicionados[nome].SetLigado(ligado)
+                self.__arescondicionados[nome].SetTemperatura(temperatura)
+                self.__arescondicionados[nome].SetIntensidade(intensidade)
+                self.__arescondicionados[nome].SetNome(novonome)
+          for i,row in enumerate (ws_ares.iter_rows(),start=2):
+               if row[0].value == self.Nome() and row[1].value == nome:
+                     row[1].value=novonome
+                     if ligado==False: # Se o ar esta desligado não é possível a temperatura e a intensidade é 0 
+                           row[2].value="False"
+                           row[3].value=0
+                           row[4].value=0
+                     else:
+                           row[2].value="True"
+                           row[3].value=temperatura
+                           row[4].value=intensidade                          
+          wb.save("Casa.xlsx")
     
+    def ConfigurarJanela(self,nome:str,abertura:int,tranca:bool,novonome:str)->None:
+          if nome in self.__janelas:
+                self.__janelas[nome].SetTranca(tranca)
+                self.__janelas[nome].SetAbertura(abertura)
+                self.__janelas[nome].SetNome(novonome)
+          for i,row in enumerate (ws_janelas.iter_rows(),start=2):
+               if row[0].value == self.Nome() and row[1].value == nome:
+                     row[1].value=novonome
+                     if tranca==False:# Se a janela está trancada não é possivel abrir a janela 
+                           row[6].value="False"
+                           row[5].value=0
+                     else:
+                           row[6].value="True"
+                           row[5].value=abertura              
+          wb.save("Casa.xlsx")
+          
 def criar_comodo(classe:Type[Comodo],nome:str)->Comodo:
      instancia=classe(nome)
      return instancia
 
+
+
+
+
+
+
+
+
 """
 testeComodo=Comodo("Quarto")
-testeComodo.AdicionarDispositivo(1,"lampada")  
+testeComodo.AdicionarDispositivo(1,"lampada")
+testeComodo.AdicionarDispositivo(2,"cortina")  
+testeComodo.AdicionarDispositivo(3,"ar")
+testeComodo.AdicionarDispositivo(4,"janela")  
+testeComodo.AdicionarDispositivo(1,"lampada2")
+testeComodo.AdicionarDispositivo(2,"cortina2")  
+testeComodo.AdicionarDispositivo(3,"ar2")  
+testeComodo.AdicionarDispositivo(4,"janela2")
+
+
+testeComodo.ConfigurarLampada("lampada","vermelho",100,"testetrocar")
+testeComodo.ConfigurarLampada("lampada2","azul",0,"testetrocar2")
+testeComodo.ConfiguraCortina("cortina",0,"testecortina1")
+testeComodo.ConfiguraCortina("cortina2",100,"testecortina2")
+testeComodo.ConfigurarArCondicionado("ar",False,78,95,"testear")
+testeComodo.ConfigurarArCondicionado("ar2",True,10,80,"testear2")
+testeComodo.ConfigurarJanela("janela",10,False,"testejanela")
+testeComodo.ConfigurarJanela("janela2",100,True,"testejanela2")
 testeComodo.AdicionarDispositivo(2,"cortina")  
 testeComodo.AdicionarDispositivo(3,"ar")  
 testeComodo.AdicionarDispositivo(4,"janela")
@@ -126,4 +205,5 @@ testeComodo.RemoverDispositivo(1,"lampada")
 testeComodo.RemoverDispositivo(2,"cortina")
 testeComodo.RemoverDispositivo(3,"ar")  
 testeComodo.RemoverDispositivo(4,"janela")
+testeComodo.ConfigurarLampada("testetrocar","roxo",19,"Breno")
 """

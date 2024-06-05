@@ -36,14 +36,14 @@ class Casa(InterfaceCasa):
             return
     
     def RemoverComodo(self, nomecomodo: str) -> None:
-            if nomecomodo in self.comodos:
+        if nomecomodo in self.comodos:
                 self.comodos.pop(nomecomodo)
-            for i, row in enumerate(ws.iter_rows(), start=1):
+        for i, row in enumerate(ws.iter_rows(), start=1):
                 if row[0].value == nomecomodo:
                     ws.delete_rows(i, 1)
-                    wb_Casa_comodo.save("Casa_comodos.xlsx")  # Salva o workbook após remover o cômodo
-                    break
-    
+                     
+        wb_Casa_comodo.save("Casa_comodos.xlsx") # Salva o workbook após remover o cômodo
+
     def VerificarDuplicado(self, nomedocomodo: str) -> bool:
         for row in ws.iter_rows(values_only=True):
             if nomedocomodo in row:
@@ -55,19 +55,31 @@ class Casa(InterfaceCasa):
         ws['B'+str(row)]=self.comodos[ws['A' + str(row)].value].Quantidade_dispositivo()
         wb_Casa_comodo.save("Casa_comodos.xlsx")
 
+
+
+
+
+
+
 """
 testeCasa=Casa("Breno")
 testeCasa.AdicionarComodo("Quarto")
 testeCasa.comodos["Quarto"].AdicionarDispositivo(1,"lampada") 
 testeCasa.comodos["Quarto"].AdicionarDispositivo(2,"cortina") 
 testeCasa.comodos["Quarto"].AdicionarDispositivo(3,"arcondicionado")
-testeCasa.AdicionarComodo("Cozinha")
-testeCasa.comodos["Cozinha"].AdicionarDispositivo(1,"lampada1") 
-testeCasa.comodos["Cozinha"].AdicionarDispositivo(2,"cortina1") 
-testeCasa.comodos["Cozinha"].AdicionarDispositivo(3,"arcondicionado1")
-
+#testeCasa.AdicionarComodo("Cozinha")
+#testeCasa.comodos["Cozinha"].AdicionarDispositivo(1,"lampada1") 
+#testeCasa.comodos["Cozinha"].AdicionarDispositivo(2,"cortina1") 
+#testeCasa.comodos["Cozinha"].AdicionarDispositivo(3,"arcondicionado1")
+#testeCasa.comodos["Quarto"].ConfigurarLampada("lampada","vermelho",100,"testetrocar")
+#testeCasa.comodos["Quarto"].ConfigurarLampada("testetrocar","roxo",70,"Breno")
 testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
-
+testeCasa.RemoverComodo("Quarto")
+#testeCasa.comodos["Quarto"].RemoverDispositivo(1,"lampada")
+#testeCasa.comodos["Quarto"].RemoverDispositivo(2,"cortina") 
+#testeCasa.comodos["Quarto"].RemoverDispositivo(3,"arcondicionado")
+#testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
+testeCasa=Casa("Teste")
+testeCasa.RemoverComodo("Quarto")
 """
-
 
