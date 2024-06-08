@@ -1,5 +1,14 @@
+import sys
+import os
+
+# Pega o diretorio pai do arquivo
+diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#fornece o caminho
+sys.path.append(diretorioPai)
+
 from Interfaces.Interfaces_arcondicionado import InterfaceAr_Condicionado
 from Dispositivo import Dispositivo
+from typing import Type
 
 class Ar_Condicionado(Dispositivo,InterfaceAr_Condicionado):
     def __init__(self, nome: str,ligado:bool,temperatura:int,intensidade:int) -> None:
@@ -25,3 +34,7 @@ class Ar_Condicionado(Dispositivo,InterfaceAr_Condicionado):
     
     def SetIntensidade(self, intensidadenova: int) -> None:
         self.__intensidade=intensidadenova
+
+def criar_instancia_ar_condicionado(classe:Type[Ar_Condicionado],nome:str,ligado:bool,temperatura:int,intensidade:int)->Ar_Condicionado:
+    instancia=classe(nome,ligado,temperatura,intensidade)
+    return instancia

@@ -9,6 +9,10 @@ class InterfaceComodo(ABC):
     @abstractmethod
     def SetNome(self,nomenovo:str)->None:
         pass
+
+    @abstractmethod
+    def Quantidade_dispositivo(self)->int:
+         pass
     
     # Cria um  dispositivo de um tipo, sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente e com o nome que o usuario escolher
     @abstractmethod
@@ -20,13 +24,24 @@ class InterfaceComodo(ABC):
     def RemoverDispositivo(self,tipo:int,nome:str)->None:
         pass
 
-    # Lista todos os dispositivos de um tipo, ssendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente
     @abstractmethod
-    def ListarDispositivos(self)->None:
-        pass 
+    def ConfigurarLampada(self,nome:str,cor:str,intensidade:int,novonome:str) -> None:
+         pass
     
     @abstractmethod
-    def ConfigurarTodos(self,tipo:int,nome:str)->None:
-        pass
-
+    def ConfiguraCortina(self,nome:str,intensidade:int,novonome:str)->None:
+          pass
+    
+    @abstractmethod
+    def ConfigurarArCondicionado(self,nome:str,ligado:bool,temperatura:int,intensidade:int,novonome:str)->None:
+          pass
+    
+    @abstractmethod
+    def ConfigurarJanela(self,nome:str,abertura:int,tranca:bool,novonome:str)->None:
+          pass
+    
+    @abstractmethod
+    def ApagarTodosdispositivoscomodo(self)->None:
+          pass
+     
    

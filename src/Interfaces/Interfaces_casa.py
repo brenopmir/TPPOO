@@ -11,17 +11,18 @@ class InterfaceCasa(ABC):
         pass
    
     @abstractmethod
-    def AdicionarComodo(self,comodonovo:str)->None:
+    def AdicionarComodo(self,nomedocomodo:str)->None:
         pass
 
     @abstractmethod
-    def RemoverComodo(self,comodo:str)->None:
+    def RemoverComodo(self,nomedocomodo:str)->None:
         pass
 
     @abstractmethod
-    def ListarComodo(self)->None:
-        pass 
-    
-    @abstractmethod
-    def AtivarModos(self,modo:str)->None:
+    def VerificarDuplicado(self, nomedocomodo: str) -> bool:
         pass
+
+#basicamente essa função deve ser chamada apos adicionar todos ou algum dispositivo pois ela que contabiliza a quantidade de dispositivos
+    @abstractmethod
+    def Salvar_Quantidadede_dispositivos_Comodo(self) -> None:
+      pass

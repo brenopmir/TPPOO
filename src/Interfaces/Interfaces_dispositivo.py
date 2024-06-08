@@ -10,6 +10,4 @@ class InterfaceDispositivo(ABC):
     def SetNome(self, nomenovo: str) -> None:
         pass
 
-    @abstractmethod
-    def SalvarDispositivo(self,nomearquivo:str)->None:
-        pass
+   

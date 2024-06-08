@@ -1,5 +1,14 @@
+import sys
+import os
+
+# Pega o diretorio pai do arquivo
+diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#fornece o caminho
+sys.path.append(diretorioPai)
+
 from Interfaces.Interfaces_janelas import InterfaceJanela
 from Dispositivo import Dispositivo
+from typing import Type
 
 class Janela(Dispositivo,InterfaceJanela):
     def __init__(self, nome: str,abertura:int,tranca:bool) -> None:
@@ -18,3 +27,7 @@ class Janela(Dispositivo,InterfaceJanela):
     
     def SetTranca(self, trancanova: bool) -> None:
         self.__tranca=trancanova
+    
+def criar_instancia_janela(classe:Type[Janela],nome:str,abertura:int,tranca:bool,)->Janela:
+    instancia=classe(nome,abertura,tranca)
+    return instancia
