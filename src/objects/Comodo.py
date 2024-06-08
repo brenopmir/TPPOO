@@ -27,6 +27,7 @@ ws_lampadas=wb["Lampadas"]
 ws_cortinas=wb["Cortinas"]
 ws_janelas=wb["Janelas"]
 ws_ares=wb["Ares Condicionados"]
+
 class Comodo(InterfaceComodo):
     def __init__(self,nome:str) -> None:
         self.__nome=nome
@@ -42,8 +43,23 @@ class Comodo(InterfaceComodo):
     def SetNome(self, nomenovo: str) -> None:
         self.__nome=nomenovo
     
+    #Checa a quantidade de dispositivos presente no quarto por meio da analise do arquivo excel chamado Casa
     def Quantidade_dispositivo(self)->int:
-         return self.__quantidade_dispositivo
+         valor=0
+         for i, row in enumerate(ws_lampadas.iter_rows(), start=2):
+               if row[0].value == self.Nome()  :
+                    valor+=1
+         for i, row in enumerate(ws_cortinas.iter_rows(), start=2):
+               if row[0].value == self.Nome()  :
+                    valor+=1
+         for i, row in enumerate(ws_ares.iter_rows(), start=2):
+               if row[0].value == self.Nome()  :
+                    valor+=1
+         for i, row in enumerate(ws_janelas.iter_rows(), start=2):
+               if row[0].value == self.Nome()  :
+                    valor+=1
+         return valor
+    
     
     # Cria um  dispositivo de um tipo, sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente e com o nome que o usuario escolher
     def AdicionarDispositivo(self, tipo: int, nome: str) -> None:
@@ -165,45 +181,27 @@ class Comodo(InterfaceComodo):
                            row[6].value="True"
                            row[5].value=abertura              
           wb.save("Casa.xlsx")
+     
+     #Apaga Todos os dispositivos referente ao comodo na planilha excel chamado Casa
+    def ApagarTodosdispositivoscomodo(self)->None: 
+          for i in range (ws_lampadas.max_row,1,-1):
+               if ws_lampadas.cell(row=i,column=1).value==self.Nome():
+                    ws_lampadas.delete_rows(i, 1)
+                    
+          for i in range (ws_cortinas.max_row,1,-1):
+               if ws_cortinas.cell(row=i,column=1).value==self.Nome():
+                    ws_cortinas.delete_rows(i, 1)
+                   
+          for i in range (ws_ares.max_row,1,-1):
+               if ws_ares.cell(row=i,column=1).value==self.Nome():
+                    ws_ares.delete_rows(i, 1)
+                     
+          for i in range (ws_janelas.max_row,1,-1):
+               if ws_janelas.cell(row=i,column=1).value==self.Nome():
+                    ws_janelas.delete_rows(i, 1)
+                    
+          wb.save("Casa.xlsx")                   
           
 def criar_comodo(classe:Type[Comodo],nome:str)->Comodo:
      instancia=classe(nome)
      return instancia
-
-
-
-
-
-
-
-
-
-"""
-testeComodo=Comodo("Quarto")
-testeComodo.AdicionarDispositivo(1,"lampada")
-testeComodo.AdicionarDispositivo(2,"cortina")  
-testeComodo.AdicionarDispositivo(3,"ar")
-testeComodo.AdicionarDispositivo(4,"janela")  
-testeComodo.AdicionarDispositivo(1,"lampada2")
-testeComodo.AdicionarDispositivo(2,"cortina2")  
-testeComodo.AdicionarDispositivo(3,"ar2")  
-testeComodo.AdicionarDispositivo(4,"janela2")
-
-
-testeComodo.ConfigurarLampada("lampada","vermelho",100,"testetrocar")
-testeComodo.ConfigurarLampada("lampada2","azul",0,"testetrocar2")
-testeComodo.ConfiguraCortina("cortina",0,"testecortina1")
-testeComodo.ConfiguraCortina("cortina2",100,"testecortina2")
-testeComodo.ConfigurarArCondicionado("ar",False,78,95,"testear")
-testeComodo.ConfigurarArCondicionado("ar2",True,10,80,"testear2")
-testeComodo.ConfigurarJanela("janela",10,False,"testejanela")
-testeComodo.ConfigurarJanela("janela2",100,True,"testejanela2")
-testeComodo.AdicionarDispositivo(2,"cortina")  
-testeComodo.AdicionarDispositivo(3,"ar")  
-testeComodo.AdicionarDispositivo(4,"janela")
-testeComodo.RemoverDispositivo(1,"lampada")
-testeComodo.RemoverDispositivo(2,"cortina")
-testeComodo.RemoverDispositivo(3,"ar")  
-testeComodo.RemoverDispositivo(4,"janela")
-testeComodo.ConfigurarLampada("testetrocar","roxo",19,"Breno")
-"""

@@ -39,5 +39,9 @@ class InterfaceComodo(ABC):
     @abstractmethod
     def ConfigurarJanela(self,nome:str,abertura:int,tranca:bool,novonome:str)->None:
           pass
+    
+    @abstractmethod
+    def ApagarTodosdispositivoscomodo(self)->None:
+          pass
      
    
