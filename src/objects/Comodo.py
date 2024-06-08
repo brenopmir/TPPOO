@@ -44,7 +44,7 @@ class Comodo(InterfaceComodo):
         self.__nome=nomenovo
     
     #Checa a quantidade de dispositivos presente no quarto por meio da analise do arquivo excel chamado Casa
-    def Quantidade_dispositivo(self)->int:
+    def QuantidadeDispositivo(self)->int:
          valor=0
          for i, row in enumerate(ws_lampadas.iter_rows(), start=2):
                if row[0].value == self.Nome()  :
@@ -147,7 +147,7 @@ class Comodo(InterfaceComodo):
                      row[4].value=intensidade
          wb.save("Casa.xlsx")
     
-    def ConfigurarArCondicionado(self,nome:str,ligado:bool,temperatura:int,intensidade:int,novonome=0)->None:
+    def ConfigurarArCondicionado(self,nome:str,ligado:bool,temperatura:int,intensidade:int,novonome:str)->None:
           if nome in self.__arescondicionados:
                 self.__arescondicionados[nome].SetLigado(ligado)
                 self.__arescondicionados[nome].SetTemperatura(temperatura)

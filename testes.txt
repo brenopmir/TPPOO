@@ -48,12 +48,11 @@ testeCasa.comodos["Cozinha"].AdicionarDispositivo(2,"cortina1")
 testeCasa.comodos["Cozinha"].AdicionarDispositivo(3,"arcondicionado1")
 #testeCasa.comodos["Quarto"].ConfigurarLampada("lampada","vermelho",100,"testetrocar")
 #testeCasa.comodos["Quarto"].ConfigurarLampada("testetrocar","roxo",70,"Breno")
-#testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
+#testeCasa.SalvarQuantidadeDeDispositivosComodo()
 
 #testeCasa.comodos["Quarto"].RemoverDispositivo(1,"lampada")
 #testeCasa.comodos["Quarto"].RemoverDispositivo(2,"cortina") 
 #testeCasa.comodos["Quarto"].RemoverDispositivo(3,"arcondicionado")
-#testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
-testeCasa.Salvar_Quantidadede_dispositivos_Comodo()
+#testeCasa.SalvarQuantidadeDeDispositivosComodo()
+testeCasa.SalvarQuantidadeDeDispositivosComodo()
 """
-

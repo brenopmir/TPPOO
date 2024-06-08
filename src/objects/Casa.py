@@ -48,7 +48,7 @@ class Casa(InterfaceCasa):
                 return True
         return False
 
-    def Salvar_Quantidadede_dispositivos_Comodo(self) -> None:
+    def SalvarQuantidadeDeDispositivosComodo(self) -> None:
       for row in range(2,(ws.max_row+1)):
-        ws['B'+str(row)]=self.comodos[ws['A' + str(row)].value].Quantidade_dispositivo()
+        ws['B'+str(row)]=self.comodos[ws['A' + str(row)].value].QuantidadeDispositivo()
         wb_Casa_comodo.save("Casa_comodos.xlsx")

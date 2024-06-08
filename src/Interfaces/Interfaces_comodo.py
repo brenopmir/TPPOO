@@ -11,7 +11,7 @@ class InterfaceComodo(ABC):
         pass
 
     @abstractmethod
-    def Quantidade_dispositivo(self)->int:
+    def QuantidadeDispositivo(self)->int:
          pass
     
     # Cria um  dispositivo de um tipo, sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente e com o nome que o usuario escolher

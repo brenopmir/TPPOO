@@ -24,5 +24,5 @@ class InterfaceCasa(ABC):
 
 #basicamente essa função deve ser chamada apos adicionar todos ou algum dispositivo pois ela que contabiliza a quantidade de dispositivos
     @abstractmethod
-    def Salvar_Quantidadede_dispositivos_Comodo(self) -> None:
+    def SalvarQuantidadeDeDispositivosComodo(self)-> None:
       pass
