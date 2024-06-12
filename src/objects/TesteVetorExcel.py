@@ -28,22 +28,26 @@ nomeJanelas=[]
 nomeCortina=[]
 
 for i,row in enumerate(ws.iter_rows(min_row=2), start=2):
-    nomeComodos.append([f"{str(row[0].value)}",f"{str(row[1].value)}"])
+    nomeComodos.append((f"{str(row[0].value)}",f"{str(row[1].value)}"))
 
 for i,row in enumerate(ws_lampadas.iter_rows(min_row=2), start=2):
-    nomeLampadas.append([f"{str(row[0].value)}",f"{str(row[1].value)}","","",f"{str(row[4].value)}","","",f"{str(row[7].value)}"])
+    nomeLampadas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","",f"{str(row[4].value)}","","",f"{str(row[7].value)}"))
 
 
 for i,row in enumerate(ws_cortinas.iter_rows(min_row=2), start=2):
-    nomeCortina.append([f"{str(row[0].value)}",f"{str(row[1].value)}","","",f"{str(row[4].value)}","","",""])
+    nomeCortina.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","",f"{str(row[4].value)}","","",""))
 
 
 for i,row in enumerate(ws_ares.iter_rows(min_row=2), start=2):
-    nomeArCondicionado.append([f"{str(row[0].value)}",f"{str(row[1].value)}",f"{str(row[2].value)}",f"{str(row[3].value)}",f"{str(row[4].value)}","","",""])
+    nomeArCondicionado.append((f"{str(row[0].value)}",f"{str(row[1].value)}",f"{str(row[2].value)}",f"{str(row[3].value)}",f"{str(row[4].value)}","","",""))
 
 
 for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=2):
-    nomeJanelas.append([f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}",f"{str(row[6].value)}",""])
+    nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}",f"{str(row[6].value)}",""))
 
 
-print(f"{nomeComodos}")
+print(f"{nomeComodos}\n")
+print(f"{nomeLampadas}\n")
+print(f"{nomeArCondicionado}\n")
+print(f"{nomeJanelas}\n")
+print(f"{nomeCortina}\n")
