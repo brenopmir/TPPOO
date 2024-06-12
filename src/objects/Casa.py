@@ -34,7 +34,7 @@ class Casa(InterfaceCasa):
     def RemoverComodo(self, nomecomodo: str) -> None:
         self.comodos[nomecomodo]=criar_comodo(Comodo,nomecomodo)       
         self.comodos[nomecomodo].ApagarTodosdispositivoscomodo()      
-        for i, row in enumerate(ws.iter_rows(), start=1):
+        for i, row in enumerate(ws.iter_rows(), start=2):
                 if row[0].value == nomecomodo:
                     ws.delete_rows(i, 1)
         if nomecomodo in self.comodos:
