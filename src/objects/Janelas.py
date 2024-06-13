@@ -16,18 +16,23 @@ class Janela(Dispositivo,InterfaceJanela):
         self.__abertura=abertura
         self.__tranca=tranca
     
+     #Retorna a abertura da Janela
     def Abertura(self) -> int:
         return self.__abertura
     
+    #Seta a abertura da Janela 
     def SetAbertura(self, aberturanova: int) -> None:
         self.__abertura=aberturanova
     
+    #Retorna se a Janela está Trancada ou não
     def Tranca(self) -> bool:
         return self.__tranca
     
+    #Seta a propriedade Trancar da Janela 
     def SetTranca(self, trancanova: bool) -> None:
         self.__tranca=trancanova
-    
+
+#Cria uma instancia da Janela com todas as suas propriedades    
 def criar_instancia_janela(classe:Type[Janela],nome:str,abertura:int,tranca:bool,)->Janela:
     instancia=classe(nome,abertura,tranca)
     return instancia

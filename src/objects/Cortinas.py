@@ -15,12 +15,15 @@ class Cortina(InterfaceCortinas,Dispositivo):
         super().__init__(nome)
         self.__intensidade=intensidade
 
+    #Retorna a propriedade Intensidade da Cortina
     def Intensidade(self) -> int:
         return self.__intensidade
     
+    #Seta a propriedade Intensidade da Cortina
     def SetIntensidade(self, intensidadenova: int) -> None:
         self.__intensidade=intensidadenova
 
+#Cria uma instancia da Cortina com todas as suas propriedades 
 def criar_instancia_cortina(classe:Type[Cortina],nome:str,intensidade:int)->Cortina:
     instancia=classe(nome,intensidade)
     return instancia

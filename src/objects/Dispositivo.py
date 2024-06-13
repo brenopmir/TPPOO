@@ -13,8 +13,10 @@ class Dispositivo(InterfaceDispositivo,ABC):
     def __init__(self,nome:str)->None:
         self.__nome=nome
 
+    #Retorna o Nome do dispositivo
     def Nome(self) -> str:
         return self.__nome
     
+    #Seta o nome do dispositivo
     def SetNome(self, nomenovo: str) -> None:
         self.__nome=nomenovo

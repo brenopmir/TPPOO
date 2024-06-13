@@ -36,10 +36,11 @@ class Comodo(InterfaceComodo):
         self.__arescondicionados={}
         self.__cortinas={}
         self.__janelas={}
-    
+     
+    #Retorna o Nome do Comodo
     def Nome(self) -> str:
         return self.__nome
-    
+    # Seta o Nome do Comodo
     def SetNome(self, nomenovo: str) -> None:
         self.__nome=nomenovo
     
@@ -125,6 +126,7 @@ class Comodo(InterfaceComodo):
                               self.__quantidade_dispositivo-=1              
           wb.save("Casa.xlsx")
 
+    #Configura todas as Lampadas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar  
     def ConfigurarLampada(self,nome:str,cor:str,intensidade:int,novonome:str) -> None:
          if nome in self.__lampadas:
                self.__lampadas[nome].SetCor(cor)
@@ -136,7 +138,8 @@ class Comodo(InterfaceComodo):
                     row[4].value = intensidade
                     row[7].value = cor
          wb.save("Casa.xlsx")
-                     
+
+    #Configura todas as cortinas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar   
     def ConfiguraCortina(self,nome:str,intensidade:int,novonome:str)->None:
          if nome in self.__cortinas:
                self.__cortinas[nome].SetIntensidade(intensidade)
@@ -146,7 +149,8 @@ class Comodo(InterfaceComodo):
                      row[1].value=novonome
                      row[4].value=intensidade
          wb.save("Casa.xlsx")
-    
+
+    #Configura todos os ares condicionados que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar       
     def ConfigurarArCondicionado(self,nome:str,ligado:bool,temperatura:int,intensidade:int,novonome:str)->None:
           if nome in self.__arescondicionados:
                 self.__arescondicionados[nome].SetLigado(ligado)
@@ -165,7 +169,8 @@ class Comodo(InterfaceComodo):
                            row[3].value=temperatura
                            row[4].value=intensidade                          
           wb.save("Casa.xlsx")
-    
+
+    #Configura todas as janelas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar  
     def ConfigurarJanela(self,nome:str,abertura:int,tranca:bool,novonome:str)->None:
           if nome in self.__janelas:
                 self.__janelas[nome].SetTranca(tranca)
@@ -182,7 +187,7 @@ class Comodo(InterfaceComodo):
                            row[5].value=abertura              
           wb.save("Casa.xlsx")
      
-     #Apaga Todos os dispositivos referente ao comodo na planilha excel chamado Casa
+    #Apaga Todos os dispositivos referente ao comodo na planilha excel chamado Casa
     def ApagarTodosdispositivoscomodo(self)->None: 
           for i in range (ws_lampadas.max_row,1,-1):
                if ws_lampadas.cell(row=i,column=1).value==self.Nome():
@@ -200,8 +205,9 @@ class Comodo(InterfaceComodo):
                if ws_janelas.cell(row=i,column=1).value==self.Nome():
                     ws_janelas.delete_rows(i, 1)
                     
-          wb.save("Casa.xlsx")                   
-          
+          wb.save("Casa.xlsx")
+
+#Cria um Comodo ja com o atributo nome e com o map dos dispositivos vazios        
 def criar_comodo(classe:Type[Comodo],nome:str)->Comodo:
      instancia=classe(nome)
      return instancia
