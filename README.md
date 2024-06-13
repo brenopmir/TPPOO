@@ -25,8 +25,9 @@ Instruções de Instalação:
 O usuário precisará de: 
 • Ambiente de edição 
 • Instalação do python
-• Instalação da biblioteca openpyxl  
+• Instalação da biblioteca openpyxl   
 • Instalação da biblioteca tkinter
+• Instalação da biblioteca PIL(Pillow)
 
 Instruções de Uso:
 O usuário, através de um menu disponibilizado na interface, terá a oportunidade de interagir com o sistema,ou seja realizar diversas transações pelo botoes e outros objetos iterativos.
