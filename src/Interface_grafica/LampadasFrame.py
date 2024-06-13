@@ -2,9 +2,7 @@ from tkinter import *
 import customtkinter
 import os 
 import sys
-from Interface_grafica.BotaoComodo import BotaoComodo
 from Interface_grafica.HeaderDispositivo import HeaderDispositivo
-from Interface_grafica.BotaoDispositivos import BotaoDispositivo
 # Pega o diretorio pai do arquivo
 diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #fornece o caminho
