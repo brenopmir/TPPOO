@@ -211,3 +211,4 @@ class Comodo(InterfaceComodo):
 def criar_comodo(classe:Type[Comodo],nome:str)->Comodo:
      instancia=classe(nome)
      return instancia
+     
