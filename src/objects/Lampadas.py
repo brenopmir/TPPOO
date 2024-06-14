@@ -7,7 +7,7 @@ diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(diretorioPai)
 
 from Interfaces.Interfaces_lampadas import InterfaceLampadas
-from Dispositivo import Dispositivo
+from objects.Dispositivo import Dispositivo
 from typing import Type
 class Lampadas(Dispositivo,InterfaceLampadas):
     def __init__(self, nome: str,cor:str,intensidade:int) -> None:

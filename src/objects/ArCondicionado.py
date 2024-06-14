@@ -7,7 +7,7 @@ diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(diretorioPai)
 
 from Interfaces.Interfaces_arcondicionado import InterfaceAr_Condicionado
-from Dispositivo import Dispositivo
+from objects.Dispositivo import Dispositivo
 from typing import Type
 
 class Ar_Condicionado(Dispositivo,InterfaceAr_Condicionado):

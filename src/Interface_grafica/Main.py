@@ -26,8 +26,63 @@ from Interface_grafica.ConfigurarCortina import ConfigurarCortina
 from Interface_grafica.ConfigurarJanela import ConfigurarJanela
 from Interface_grafica.ConfigurarAr import ConfigurarAr
 from Interface_grafica.DispostivoAdd import DispositivoAddFrame
+from Interface_grafica.ComodoAddFrame import ComodoAddFrame
+from objects.planilha import iniciar_planilhas
+from openpyxl import Workbook,load_workbook
+from objects.Casa import Casa
+from objects.Comodo import Comodo
+from objects.ArCondicionado import Ar_Condicionado,criar_instancia_ar_condicionado
+from objects.Cortinas import Cortina,criar_instancia_cortina
+from objects.Janelas import Janela,criar_instancia_janela
+from objects.Lampadas import Lampadas,criar_instancia_lampada
+from objects.Dispositivo import Dispositivo
+from typing import Type
 
-nomeComodos = [("Quarto","9"), ("Cozinha","8"),("Sala","8"),("Quarto2","9")]
+
+wb=load_workbook("Casa.xlsx")
+
+ws_lampadas=wb["Lampadas"]
+ws_cortinas=wb["Cortinas"]
+ws_janelas=wb["Janelas"]
+ws_ares=wb["Ares Condicionados"]
+
+
+wb_Casa_comodo=load_workbook("Casa_comodos.xlsx")
+ws=wb_Casa_comodo["Comodos"]
+
+
+
+nomeComodos=[]
+nomeLampadas=[]
+nomeArCondicionado=[]
+nomeJanelas=[]
+nomeCortina=[]
+
+for i,row in enumerate(ws.iter_rows(min_row=2), start=1):
+            nomeComodos.append((f"{str(row[0].value)}",f"{str(row[1].value)}"))
+
+for i,row in enumerate(ws_lampadas.iter_rows(min_row=2), start=1):
+            nomeLampadas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","",f"{str(row[4].value)}","","",f"{str(row[7].value)}"))
+
+
+for i,row in enumerate(ws_cortinas.iter_rows(min_row=2), start=1):
+            nomeCortina.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","",f"{str(row[4].value)}","","",""))
+
+
+for i,row in enumerate(ws_ares.iter_rows(min_row=2), start=1):
+            if(row[2].value=="True"):
+                nomeArCondicionado.append((f"{str(row[0].value)}",f"{str(row[1].value)}","Ligado",f"{str(row[3].value)}",f"{str(row[4].value)}","","",""))
+            else:
+                nomeArCondicionado.append((f"{str(row[0].value)}",f"{str(row[1].value)}","Desligado",f"{str(row[3].value)}",f"{str(row[4].value)}","","",""))
+
+for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=1):
+            if(row[6].value=="True"):
+                nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","Trancado",""))
+            else:
+                nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","Aberto",""))
+
+
+'''nomeComodos = [("Quarto","9"), ("Cozinha","8"),("Sala","8"),("Quarto2","9")]
 #formato: (Comodo,Nome,Ligado,Temperatura,Intensidade,Abertura,Trancado,Cor)
 nomeLampadas = [("Quarto","Lampada","","","50","","","Azul"),
                 ("Quarto","Lampada2","","","60","","","Verde"),
@@ -47,13 +102,15 @@ nomeJanelas =       [("Quarto","Janela1","","","","50","Trancado",""),
 nomeCortina=        [("Quarto","Cortina1","","","","20","",""),
                      ("Quarto","Cortina2","","","","30","",""),
                      ("Cozinha","Cortina3","","","","50","",""),
-                     ("Sala","Cortina4","","","","100","","")]
+                     ("Sala","Cortina4","","","","100","","")]'''
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.title('Automação Residencial')
         self.geometry('390x644')
         self.configure(fg_color ="#616D7A")
+        self.casa = Casa("Casa")
+        self.casa.AdicionarComodo("Joao")
         self.dispositivosFrame = {}
         self.lampadasFrame ={}
         self.lampadasBotoes = {}
@@ -68,7 +125,7 @@ class App(customtkinter.CTk):
         self.arConfig = {}
         self.janelaConfig = {}
         self.cortinaConfig = {}
-        
+        self.frameAtual = ""
         self.comodoFrame = ComodoFrame(self)
         #self.dispostivoAdd = DispositivoAddFrame(self)
         #self.dispostivoAdd.pack(side = "top")
@@ -77,6 +134,7 @@ class App(customtkinter.CTk):
     def CriarJanelas(self):
         self.comodoFrame.pack(side= "top")
         BotaoAdicionarComodo = BotaoAdd(self.comodoFrame, label="Adicionar novo cômodo")
+        BotaoAdicionarComodo.configure(command= lambda:self.AdicionarComodoBotao())
         BotaoAdicionarComodo.pack(side = "bottom",pady= (10,10))
         
         #Criando a pagina de cada comodo
@@ -216,7 +274,7 @@ class App(customtkinter.CTk):
             self.botaoCortina.configure(command = lambda n=nomes:self.MudarFrameCortina(n))
             self.botaoCortina.pack(side="top", pady= (10,10))
             
-            #Colocando os botoões da pagina do cômodo
+            #Colocando os botões da pagina do cômodo
             self.botoesComodo[nomes] = BotaoComodo(self.comodoFrame, nomeComodo=nomes, numeroDispositivos=numero)
             self.botoesComodo[nomes].configure(command = lambda n=nomes:self.MudarFrameDispositivos(n))
             self.botoesComodo[nomes].pack(side="top", pady= (10,10))
@@ -363,6 +421,18 @@ class App(customtkinter.CTk):
         self.cortinasFrame[nome].update()
         self.update()
         self.frameAtual = nome      
-            
+
+        
+    def AdicionarComodoBotao(self):
+        self.inputComodo = ComodoAddFrame(self.comodoFrame)
+        self.inputComodo.submit.configure(command = lambda:self.Submeter())
+        self.inputComodo.pack(side="bottom")
+        
+    def Submeter(self):
+        NomeComodo = self.inputComodo.input.get()
+        print(NomeComodo)
+        self.casa.AdicionarComodo(NomeComodo)
+        self.inputComodo.pack_forget()
+ 
 app = App()
 app.mainloop()

@@ -7,6 +7,7 @@ diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(diretorioPai)
 
 from openpyxl import Workbook,load_workbook
+from objects.Casa import Casa
 
 wb=load_workbook("Casa.xlsx")
 
@@ -26,6 +27,9 @@ nomeLampadas=[]
 nomeArCondicionado=[]
 nomeJanelas=[]
 nomeCortina=[]
+
+Casa1 = Casa("Casa")
+Casa1.AdicionarComodo("Quarto")
 
 for i,row in enumerate(ws.iter_rows(min_row=2), start=2):
     nomeComodos.append((f"{str(row[0].value)}",f"{str(row[1].value)}"))
@@ -48,10 +52,10 @@ for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=2):
     if(row[6].value=="True"):
         nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","Trancado",""))
     else:
-        nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","Destrancado",""))
+        nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","Aberto",""))
 
 
-#print(f"{nomeComodos}\n")
+print(f"{nomeComodos}\n")
 #print(f"{nomeLampadas}\n")
 #print(f"{nomeArCondicionado}\n")
 #print(f"{nomeJanelas}\n")

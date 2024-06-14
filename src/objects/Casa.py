@@ -8,7 +8,7 @@ sys.path.append(diretorioPai)
 
 from openpyxl import Workbook,load_workbook
 from Interfaces.Interfaces_casa import InterfaceCasa
-from Comodo import Comodo, criar_comodo
+from objects.Comodo import Comodo, criar_comodo
 
 wb_Casa_comodo=load_workbook("Casa_comodos.xlsx")
 ws=wb_Casa_comodo["Comodos"]
