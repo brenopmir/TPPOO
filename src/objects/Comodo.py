@@ -36,7 +36,27 @@ class Comodo(InterfaceComodo):
         self.__arescondicionados={}
         self.__cortinas={}
         self.__janelas={}
+        self.CarregarLampadasSalvas()
+        self.CarregarCortinaSalvas()
+        self.CarregarAresSalvos()
+        self.CarregarJanelasSalvas()
      
+    def CarregarLampadasSalvas(self)->None:
+          for i,row in enumerate(ws_lampadas.iter_rows(min_row=2), start=1):
+            self.__lampadas[f"{str(row[1].value)}"]=criar_instancia_lampada(Lampadas,f"{str(row[1].value)}")
+
+    def CarregarCortinaSalvas(self)->None:
+          for i,row in enumerate(ws_cortinas.iter_rows(min_row=2), start=1):
+            self.__cortinas[f"{str(row[1].value)}"]=criar_instancia_cortina(Cortina,f"{str(row[1].value)}")
+
+    def CarregarAresSalvos(self)->None:
+          for i,row in enumerate(ws_ares.iter_rows(min_row=2), start=1):
+            self.__arescondicionados[f"{str(row[1].value)}"]=criar_instancia_ar_condicionado(Ar_Condicionado,f"{str(row[1].value)}")
+
+    def CarregarJanelasSalvas(self)->None:
+          for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=1):
+            self.__janelas[f"{str(row[1].value)}"]=criar_instancia_janela(Janela,f"{str(row[1].value)}")
+
     #Retorna o Nome do Comodo
     def Nome(self) -> str:
         return self.__nome

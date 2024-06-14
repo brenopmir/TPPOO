@@ -16,9 +16,14 @@ ws=wb_Casa_comodo["Comodos"]
 class Casa(InterfaceCasa):
     def __init__(self, nome: str) -> None:
         self.__nome = nome
-        self.comodos = {}
+        self.comodos={}
+        self.CarregarComodosSalvos()
+        
 
-    #Retorna o Nome da Casa
+    def CarregarComodosSalvos(self)->None:
+        for i,row in enumerate(ws.iter_rows(min_row=2), start=1):
+            self.comodos[f"{str(row[0].value)}"]=criar_comodo(Comodo,f"{str(row[0].value)}")
+            
     def Nome(self) -> str:
         return self.__nome
     
@@ -30,7 +35,7 @@ class Casa(InterfaceCasa):
     def AdicionarComodo(self, nomedocomodo: str) -> None:
         if not self.VerificarDuplicado(nomedocomodo):
             ws.append([nomedocomodo,0])
-            wb_Casa_comodo.save("Casa_comodos.xlsx")# Salva o workbook após adicionar o cômodo  
+            wb_Casa_comodo.save("Casa_comodos.xlsx")
         self.comodos[nomedocomodo] = criar_comodo(Comodo, nomedocomodo)
             
     #Remove o Comodo e todos os dispositivos contidos nele 

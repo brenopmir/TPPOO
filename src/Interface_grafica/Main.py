@@ -7,6 +7,23 @@ import sys
 diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #fornece o caminho
 sys.path.append(diretorioPai)
+from objects.planilha import iniciar_planilhas
+from openpyxl import load_workbook
+
+casa_path = os.path.abspath("Casa.xlsx")
+casa_comodos_path = os.path.abspath("Casa_comodos.xlsx")
+
+if not (os.path.exists(casa_path)) and os.path.exists(os.path.dirname(casa_comodos_path)):
+    iniciar_planilhas()
+
+wb=load_workbook("Casa.xlsx")
+ws_lampadas=wb["Lampadas"]
+ws_cortinas=wb["Cortinas"]
+ws_janelas=wb["Janelas"]
+ws_ares=wb["Ares Condicionados"]
+wb_Casa_comodo=load_workbook("Casa_comodos.xlsx")
+ws=wb_Casa_comodo["Comodos"]
+
 from Interface_grafica.HeaderFrame import Header
 from Interface_grafica.ComodoFrame import ComodoFrame
 from Interface_grafica.DispositivosFrame import DispositivosFrame
@@ -27,8 +44,6 @@ from Interface_grafica.ConfigurarJanela import ConfigurarJanela
 from Interface_grafica.ConfigurarAr import ConfigurarAr
 from Interface_grafica.DispostivoAdd import DispositivoAddFrame
 from Interface_grafica.ComodoAddFrame import ComodoAddFrame
-from objects.planilha import iniciar_planilhas
-from openpyxl import Workbook,load_workbook
 from objects.Casa import Casa
 from objects.Comodo import Comodo
 from objects.ArCondicionado import Ar_Condicionado,criar_instancia_ar_condicionado
@@ -37,20 +52,6 @@ from objects.Janelas import Janela,criar_instancia_janela
 from objects.Lampadas import Lampadas,criar_instancia_lampada
 from objects.Dispositivo import Dispositivo
 from typing import Type
-
-
-wb=load_workbook("Casa.xlsx")
-
-ws_lampadas=wb["Lampadas"]
-ws_cortinas=wb["Cortinas"]
-ws_janelas=wb["Janelas"]
-ws_ares=wb["Ares Condicionados"]
-
-
-wb_Casa_comodo=load_workbook("Casa_comodos.xlsx")
-ws=wb_Casa_comodo["Comodos"]
-
-
 
 nomeComodos=[]
 nomeLampadas=[]
@@ -110,7 +111,7 @@ class App(customtkinter.CTk):
         self.geometry('390x644')
         self.configure(fg_color ="#616D7A")
         self.casa = Casa("Casa")
-        self.casa.AdicionarComodo("Joao")
+        self.casa.AdicionarComodo("Lucas")
         self.dispositivosFrame = {}
         self.lampadasFrame ={}
         self.lampadasBotoes = {}
