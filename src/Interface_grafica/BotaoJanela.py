@@ -9,7 +9,7 @@ diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(diretorioPai)
 
 class BotaoJanela(customtkinter.CTkButton):
-    def __init__(self, master,nomeJanela,trancado, intensidade):
+    def __init__(self, master,nomeJanela,trancado, abertura):
         super().__init__(master)
         self.configure(fg_color = "#E4E4E4",
                        hover_color="#E4E4E4",
@@ -47,7 +47,7 @@ class BotaoJanela(customtkinter.CTkButton):
         self.icone1Label.image = icone1 
         self.icone1Label.grid(row=1, column=0,ipady=5)
         
-        self.intensidadeLabel = customtkinter.CTkLabel(self.container, text=f"{intensidade}%",
+        self.intensidadeLabel = customtkinter.CTkLabel(self.container, text=f"{abertura}%",
                                                   font=("Inika", 12), text_color="#393939")
         self.intensidadeLabel.grid(row=1, column=1,padx= (10,0))
         
@@ -62,7 +62,7 @@ class BotaoJanela(customtkinter.CTkButton):
         
         self.trancadoLabel = customtkinter.CTkLabel(self.container, text="",
                                                   font=("Inika", 12), text_color="#393939")
-        if trancado:
+        if trancado == "True":
             self.trancadoLabel.configure(text = 'Trancado')
         else:
             self.trancadoLabel.configure(text = 'Aberto')

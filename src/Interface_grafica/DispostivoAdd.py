@@ -2,7 +2,6 @@ from tkinter import *
 import customtkinter
 import os 
 import sys
-from Interface_grafica.HeaderFrame import Header
 # Pega o diretorio pai do arquivo
 diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #fornece o caminho
@@ -12,7 +11,7 @@ nomeComodos = [("Quarto","9"), ("Cozinha","8"),("Quarto2","9"), ("Sala","8")]
 lampadasQuarto = [("Lampada","9"), ("Lampada2","9")]
 lampadasQuarto2 = [("Lampada","9"), ("Lampada2","9"), ("Lampada3","9")]
 
-class ComodoFrame(customtkinter.CTkScrollableFrame):
+class DispositivoAddFrame(customtkinter.CTkScrollableFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
@@ -21,10 +20,19 @@ class ComodoFrame(customtkinter.CTkScrollableFrame):
                        corner_radius = 0,
                        height = 604,
                        )
-        
-        self.header = Header(master = self)
-        self.header.pack(side="top", pady = (0,10),fill = "x",)
+        self.input = customtkinter.CTkEntry(self,placeholder_text="Digite o nome do dispositivo",
+                                            height= 40, 
+                                            width= 230,
+                                            text_color="#000000")
+        self.input.pack(side = "top", pady = 20)
+        self.submit = customtkinter.CTkButton(self, text="Adicionar",
+                                              text_color="#000000",
+                                              fg_color = "#E4E4E4",
+                                              hover_color="#E4E4E4")
+        self.submit.pack(side = "top", pady = 5)
 
+    #pegar dados do input input.get()
+        
     
         
         
