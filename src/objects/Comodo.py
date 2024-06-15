@@ -33,9 +33,9 @@ class Comodo(InterfaceComodo):
         self.__nome=nome
         self.__quantidade_dispositivo=0
         self.lampadas={}
-        self.__arescondicionados={}
-        self.__cortinas={}
-        self.__janelas={}
+        self.arescondicionados={}
+        self.cortinas={}
+        self.janelas={}
         self.CarregarLampadasSalvas()
         self.CarregarCortinaSalvas()
         self.CarregarAresSalvos()
@@ -55,7 +55,7 @@ class Comodo(InterfaceComodo):
 
     def CarregarJanelasSalvas(self)->None:
           for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=1):
-            self.__janelas[f"{str(row[1].value)}"]=criar_instancia_janela(Janela,f"{str(row[1].value)}",0,False)
+            self.janelas[f"{str(row[1].value)}"]=criar_instancia_janela(Janela,f"{str(row[1].value)}",0,False)
 
     #Retorna o Nome do Comodo
     def Nome(self) -> str:
@@ -89,25 +89,25 @@ class Comodo(InterfaceComodo):
                ws_lampadas.append([self.__nome,f"{self.lampadas[nome].Nome()}", None,None,self.lampadas[nome].Intensidade(),None,None,self.lampadas[nome].Cor()])
           
           elif(tipo==2):
-               self.__cortinas[nome]=criar_instancia_cortina(Cortina,nome,0)
+               self.cortinas[nome]=criar_instancia_cortina(Cortina,nome,0)
                self.__quantidade_dispositivo+=1
-               ws_cortinas.append([self.__nome,f"{self.__cortinas[nome].Nome()}", None,None,self.__cortinas[nome].Intensidade(),None,None,None])
+               ws_cortinas.append([self.__nome,f"{self.cortinas[nome].Nome()}", None,None,self.cortinas[nome].Intensidade(),None,None,None])
           
           elif(tipo==3):
-               self.__arescondicionados[nome]=criar_instancia_ar_condicionado(Ar_Condicionado,nome,False,0,0)
+               self[nome]=criar_instancia_ar_condicionado(Ar_Condicionado,nome,False,0,0)
                self.__quantidade_dispositivo+=1
-               if(self.__arescondicionados[nome].Ligado()==True):
-                    ws_ares.append([self.__nome,f"{self.__arescondicionados[nome].Nome()}","True",self.__arescondicionados[nome].Temperatura(),self.__arescondicionados[nome].Intensidade(),None,None,None])
+               if(self[nome].Ligado()==True):
+                    ws_ares.append([self.__nome,f"{self[nome].Nome()}","True",self[nome].Temperatura(),self[nome].Intensidade(),None,None,None])
                else:
-                    ws_ares.append([self.__nome,f"{self.__arescondicionados[nome].Nome()}","False",self.__arescondicionados[nome].Temperatura(),self.__arescondicionados[nome].Intensidade(),None,None,None])
+                    ws_ares.append([self.__nome,f"{self[nome].Nome()}","False",self[nome].Temperatura(),self[nome].Intensidade(),None,None,None])
           
           elif(tipo==4):
-               self.__janelas[nome]=criar_instancia_janela(Janela,nome,0,False)
+               self.janelas[nome]=criar_instancia_janela(Janela,nome,0,False)
                self.__quantidade_dispositivo+=1
-               if(self.__janelas[nome].Tranca()==True):
-                    ws_janelas.append([self.__nome,f"{self.__janelas[nome].Nome()}",None,None,None,self.__janelas[nome].Abertura(),"True",None])
+               if(self.janelas[nome].Tranca()==True):
+                    ws_janelas.append([self.__nome,f"{self.janelas[nome].Nome()}",None,None,None,self.janelas[nome].Abertura(),"True",None])
                else:
-                    ws_janelas.append([self.__nome,f"{self.__janelas[nome].Nome()}",None,None,None,self.__janelas[nome].Abertura(),"False",None])
+                    ws_janelas.append([self.__nome,f"{self.janelas[nome].Nome()}",None,None,None,self.janelas[nome].Abertura(),"False",None])
           wb.save("Casa.xlsx")
     
      # remove o dispositivo de um tipo,sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente, que possui determinado nome      
@@ -116,36 +116,35 @@ class Comodo(InterfaceComodo):
                for i in range(ws_lampadas.max_row,1,-1) :
                     if ws_lampadas.cell(row=i,column=2).value==nome:
                          ws_lampadas.delete_rows(i, 1)
+                         self.__quantidade_dispositivo-=1
                if nome in self.lampadas:
                     self.lampadas.pop(nome)
-                    self.__quantidade_dispositivo-=1
                                                 
           elif(tipo==2):
-                    if nome in self.__cortinas:
-                         self.__cortinas.pop(nome)
-                    for i, row in enumerate(ws_cortinas.iter_rows(), start=2):
-                         if row[0].value == self.Nome() and row[1].value == nome :
-                              ws_cortinas.delete_rows(i, 1)  
-                              self.__quantidade_dispositivo-=1
-
+               for i in range(ws_cortinas.max_row,1,-1) :
+                    if ws_cortinas.cell(row=i,column=2).value==nome:
+                         ws_cortinas.delete_rows(i, 1)
+               if nome in self.cortinas:
+                    self.cortinas.pop(nome)
+                    self.__quantidade_dispositivo-=1
           elif(tipo==3):
-                    if nome in self.__arescondicionados:
-                         self.__arescondicionados.pop(nome)
-                    for i, row in enumerate(ws_ares.iter_rows(), start=2):
-                         if row[0].value == self.Nome() and row[1].value == nome :
-                              ws_ares.delete_rows(i, 1)
-                              self.__quantidade_dispositivo-=1
+               for i in range(ws_ares.max_row,1,-1) :
+                    if ws_ares.cell(row=i,column=2).value==nome:
+                         ws_ares.delete_rows(i, 1)
+               if nome in self.arescondicionados:
+                    self.arescondicionados.pop(nome)
+                    self.__quantidade_dispositivo-=1
                                                             
           elif(tipo==4):
-                    if nome in self.__janelas:
-                         self.__janelas.pop(nome)
-                    for i, row in enumerate(ws_janelas.iter_rows(), start=2):
-                         if row[0].value == self.Nome() and row[1].value == nome :
-                              ws_janelas.delete_rows(i, 1)
-                              self.__quantidade_dispositivo-=1              
+               for i in range(ws_janelas.max_row,1,-1) :
+                    if ws_janelas.cell(row=i,column=2).value==nome:
+                         ws_janelas.delete_rows(i, 1)
+               if nome in self.janelas:
+                    self.janelas.pop(nome)
+                    self.__quantidade_dispositivo-=1            
           wb.save("Casa.xlsx")
 
-    #Configura todas as Lampadas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar
+    #Configura todas as Lampadas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar  
     def ConfigurarLampada(self,nome:str,cor:str,intensidade:int) -> None:
          if nome in self.lampadas:
                self.lampadas[nome].SetCor(cor)
@@ -156,20 +155,21 @@ class Comodo(InterfaceComodo):
                     row[7].value = cor
          wb.save("Casa.xlsx")
 
-    #Configura todas as cortinas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar
+    #Configura todas as cortinas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar   
     def ConfiguraCortina(self,nome:str,intensidade:int)->None:
          if nome in self.cortinas:
-               self.__cortinas[nome].SetIntensidade(intensidade)
+               self.cortinas[nome].SetIntensidade(intensidade)
          for i,row in enumerate(ws_cortinas.iter_rows(), start=2):
                if row[0].value == self.Nome() and row[1].value == nome:
                      row[4].value=intensidade
          wb.save("Casa.xlsx")
-#Configura todos os ares condicionados que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar
+
+    #Configura todos os ares condicionados que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar       
     def ConfigurarArCondicionado(self,nome:str,ligado:bool,temperatura:int,intensidade:int)->None:
-          if nome in self.arescondicionados:
-                self.arescondicionados[nome].SetLigado(ligado)
-                self.arescondicionados[nome].SetTemperatura(temperatura)
-                self.arescondicionados[nome].SetIntensidade(intensidade)
+          if nome in self:
+                self[nome].SetLigado(ligado)
+                self[nome].SetTemperatura(temperatura)
+                self[nome].SetIntensidade(intensidade)
           for i,row in enumerate (ws_ares.iter_rows(),start=2):
                if row[0].value == self.Nome() and row[1].value == nome:
                      if ligado==False: # Se o ar esta desligado não é possível a temperatura e a intensidade é 0 
@@ -179,14 +179,14 @@ class Comodo(InterfaceComodo):
                      else:
                            row[2].value="True"
                            row[3].value=temperatura
-                           row[4].value=intensidade
+                           row[4].value=intensidade                          
           wb.save("Casa.xlsx")
 
-    #Configura todas as janelas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar
+    #Configura todas as janelas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar  
     def ConfigurarJanela(self,nome:str,abertura:int,tranca:bool)->None:
           if nome in self.janelas:
                 self.janelas[nome].SetTranca(tranca)
-                self.__janelas[nome].SetAbertura(abertura)
+                self.janelas[nome].SetAbertura(abertura)
           for i,row in enumerate (ws_janelas.iter_rows(),start=2):
                if row[0].value == self.Nome() and row[1].value == nome:
                      if tranca==False:# Se a janela está trancada não é possivel abrir a janela 
@@ -194,7 +194,7 @@ class Comodo(InterfaceComodo):
                            row[5].value=0
                      else:
                            row[6].value="True"
-                           row[5].value=abertura
+                           row[5].value=abertura              
           wb.save("Casa.xlsx")
      
     #Apaga Todos os dispositivos referente ao comodo na planilha excel chamado Casa
@@ -221,4 +221,3 @@ class Comodo(InterfaceComodo):
 def criar_comodo(classe:Type[Comodo],nome:str)->Comodo:
      instancia=classe(nome)
      return instancia
-     
