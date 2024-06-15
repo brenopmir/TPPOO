@@ -43,19 +43,19 @@ class Comodo(InterfaceComodo):
      
     def CarregarLampadasSalvas(self)->None:
           for i,row in enumerate(ws_lampadas.iter_rows(min_row=2), start=1):
-            self.__lampadas[f"{str(row[1].value)}"]=criar_instancia_lampada(Lampadas,f"{str(row[1].value)}")
+            self.__lampadas[f"{str(row[1].value)}"]=criar_instancia_lampada(Lampadas,f"{str(row[1].value)}",None,0)
 
     def CarregarCortinaSalvas(self)->None:
           for i,row in enumerate(ws_cortinas.iter_rows(min_row=2), start=1):
-            self.__cortinas[f"{str(row[1].value)}"]=criar_instancia_cortina(Cortina,f"{str(row[1].value)}")
+            self.cortinas[f"{str(row[1].value)}"]=criar_instancia_cortina(Cortina,f"{str(row[1].value)}",0)
 
     def CarregarAresSalvos(self)->None:
           for i,row in enumerate(ws_ares.iter_rows(min_row=2), start=1):
-            self.__arescondicionados[f"{str(row[1].value)}"]=criar_instancia_ar_condicionado(Ar_Condicionado,f"{str(row[1].value)}")
+            self.arescondicionados[f"{str(row[1].value)}"]=criar_instancia_ar_condicionado(Ar_Condicionado,f"{str(row[1].value)}",False,0,0)
 
     def CarregarJanelasSalvas(self)->None:
           for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=1):
-            self.__janelas[f"{str(row[1].value)}"]=criar_instancia_janela(Janela,f"{str(row[1].value)}")
+            self.__janelas[f"{str(row[1].value)}"]=criar_instancia_janela(Janela,f"{str(row[1].value)}",0,False)
 
     #Retorna o Nome do Comodo
     def Nome(self) -> str:
@@ -80,12 +80,31 @@ class Comodo(InterfaceComodo):
                if row[0].value == self.Nome()  :
                     valor+=1
          return valor
-    
+     
+    '''def QuantidadeDispositivoTipo(self,tipo:int)->int:
+         valor=0
+         if tipo == 1:
+           for i, row in enumerate(ws_lampadas.iter_rows(), start=2):
+               if row[0].value == self.Nome()  :
+                    valor+=1
+         elif tipo == 2:
+           for i, row in enumerate(ws_cortinas.iter_rows(), start=2):
+               if row[0].value == self.Nome()  :
+                    valor+=1
+         elif tipo == 3:           
+          for i, row in enumerate(ws_ares.iter_rows(), start=2):
+               if row[0].value == self.Nome()  :
+                    valor+=1
+         elif tipo == 4: 
+          for i, row in enumerate(ws_janelas.iter_rows(), start=2):
+               if row[0].value == self.Nome()  :
+                    valor+=1
+         return valor'''
     
     # Cria um  dispositivo de um tipo, sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente e com o nome que o usuario escolher
     def AdicionarDispositivo(self, tipo: int, nome: str) -> None:
           if(tipo==1):
-               self.__lampadas[nome]=criar_instancia_lampada(Lampadas,nome,None,0)
+               self.__lampadas[nome]=criar_instancia_lampada(Lampadas,nome,cor="branca",intensidade=0)
                self.__quantidade_dispositivo+=1
                ws_lampadas.append([self.__nome,f"{self.__lampadas[nome].Nome()}", None,None,self.__lampadas[nome].Intensidade(),None,None,self.__lampadas[nome].Cor()])
           

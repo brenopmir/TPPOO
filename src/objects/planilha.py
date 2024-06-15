@@ -41,4 +41,3 @@ def iniciar_planilhas():
 
     #Salva esse novo arquivo como Casa_comodos.xlsx
     wb_Casa_comodo.save("Casa_comodos.xlsx")
-

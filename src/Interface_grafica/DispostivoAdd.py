@@ -14,7 +14,7 @@ class DispositivoAddFrame(customtkinter.CTkScrollableFrame):
         self.configure(fg_color = "#616D7A",
                        width = 390,
                        corner_radius = 0,
-                       height = 604,
+                       height = 100,
                        )
         self.input = customtkinter.CTkEntry(self,placeholder_text="Digite o nome do dispositivo",
                                             height= 40, 

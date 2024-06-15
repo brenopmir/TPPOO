@@ -93,6 +93,11 @@ class App(customtkinter.CTk):
         self.cortinaConfig = {}
         self.frameAtual = ""
         self.comodoFrame = False
+        self.contadorLampada= {}
+        self.contadorArCondicionado = {}
+        self.contadorJanela = {}
+        self.contadorCortina = {}
+        self.labelDuplicataDispositivos = customtkinter.CTkLabel(self)
         self.CarregarVetores()
         self.CriarJanelas()
         
@@ -156,10 +161,10 @@ class App(customtkinter.CTk):
         
         #Criando a pagina de cada comodo
         for nomes,numero in self.nomeComodos:
-            contadorLampada = 0
-            contadorArCondicionado = 0
-            contadorJanela = 0
-            contadorCortina = 0
+            self.contadorLampada[nomes] = 0
+            self.contadorArCondicionado[nomes]  = 0
+            self.contadorJanela[nomes]  = 0
+            self.contadorCortina[nomes]  = 0
             
             #Criando a pagina que exibe os tipos de dispositivos
             dispositivoFrame = DispositivosFrame(master = self, nome = nomes)
@@ -171,8 +176,9 @@ class App(customtkinter.CTk):
             lampadaFrame.header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameDispositivosLampadas(n))
             self.lampadasFrame[nomes] = lampadaFrame
             
-            BotaoAdicionarLâmpada = BotaoAdd(self.lampadasFrame[nomes], label="Adicionar nova lâmpada")
-            BotaoAdicionarLâmpada.pack(side = "bottom",pady= (10,10))
+            BotaoAdicionarLampada = BotaoAdd(self.lampadasFrame[nomes], label="Adicionar nova lâmpada")
+            BotaoAdicionarLampada.configure(command = lambda: self.AdicionarLampadaBotao(nomes))
+            BotaoAdicionarLampada.pack(side = "bottom",pady= (10,10))
             
             for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeLampadas:
                 if comodo == nomes:
@@ -181,7 +187,7 @@ class App(customtkinter.CTk):
                                                     intensidade=intensidade,
                                                     cor = cor
                                                     )
-                    contadorLampada += 1
+                    self.contadorLampada[nomes]  += 1
                     self.lampadasConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameLampadas(n))
                     
                     self.lampadasBotoes[nome] = BotaoLampada(self.lampadasFrame[nomes],
@@ -208,7 +214,7 @@ class App(customtkinter.CTk):
                                                     ligado = ligado
                                                     )
                     self.arConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameAr(n))
-                    contadorArCondicionado += 1
+                    self.contadorArCondicionado[nomes]  += 1
                     self.ArCondicionadoBotoes[nome] = BotaoArCondicionado(self.ArCondicionadoFrame[nomes],
                                                              nomeAr=nome,
                                                              ligado=ligado,
@@ -234,7 +240,7 @@ class App(customtkinter.CTk):
                                                     trancado = tranca
                                                     )
                     self.janelaConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameJanela(n))
-                    contadorJanela += 1
+                    self.contadorJanela[nomes]  += 1
                     self.janelaBotoes[nome] = BotaoJanela(self.janelaFrame[nomes],
                                                              nomeJanela=nome,
                                                              abertura=abertura,
@@ -258,7 +264,7 @@ class App(customtkinter.CTk):
                                                     abertura=abertura,
                                                     )
                     self.cortinaConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameCortina(n))
-                    contadorCortina += 1
+                    self.contadorCortina[nomes]  += 1
                     self.cortinasBotoes[nome] = BotaoCortina(self.cortinasFrame[nomes],
                                                              nomeCortina=nome,
                                                              abertura=abertura)
@@ -268,25 +274,25 @@ class App(customtkinter.CTk):
             
             #Criando os botões que irão na pagina dos dispositivos    
             self.botaoLampada = BotaoDispositivo(self.dispositivosFrame[nomes], nomeComodo="Lâmpadas",
-                                  numeroDispositivos= contadorLampada,
+                                  numeroDispositivos= self.contadorLampada[nomes] ,
                                   caminho="src/icons/lampada.png")
             self.botaoLampada.configure(command = lambda n=nomes:self.MudarFrameLampadas(n))
             self.botaoLampada.pack(side="top", pady= (10,10))
             
             self.botaoAr = BotaoDispositivo(self.dispositivosFrame[nomes], nomeComodo="Ar Condicionado",
-                                  numeroDispositivos= contadorArCondicionado,
+                                  numeroDispositivos= self.contadorArCondicionado[nomes] ,
                                   caminho="src/icons/arCondicionado.png")
             self.botaoAr.configure(command = lambda n=nomes:self.MudarFrameAr(n))
             self.botaoAr.pack(side="top", pady= (10,10))
         
             self.botaoJanela = BotaoDispositivo(self.dispositivosFrame[nomes], nomeComodo="Janela",
-                                  numeroDispositivos= contadorJanela,
+                                  numeroDispositivos= self.contadorJanela[nomes] ,
                                   caminho="src/icons/Janela.png")
             self.botaoJanela.configure(command = lambda n=nomes:self.MudarFrameJanela(n))
             self.botaoJanela.pack(side="top", pady= (10,10))
         
             self.botaoCortina = BotaoDispositivo(self.dispositivosFrame[nomes], nomeComodo="Cortina",
-                                  numeroDispositivos= contadorCortina,
+                                  numeroDispositivos= self.contadorCortina[nomes] ,
                                   caminho="src/icons/cortina.png")
             self.botaoCortina.configure(command = lambda n=nomes:self.MudarFrameCortina(n))
             self.botaoCortina.pack(side="top", pady= (10,10))
@@ -296,6 +302,155 @@ class App(customtkinter.CTk):
             self.botoesComodo[nomes].configure(command = lambda n=nomes:self.MudarFrameDispositivos(n))
             self.botoesComodo[nomes].pack(side="top", pady= (10,10))
 
+     
+    def AdicionarComodoBotao(self):
+        self.inputComodoAdd = ComodoAddFrame(self.comodoFrame)
+        self.inputComodoAdd.submit.configure(command = lambda:self.SubmeterAddComodo())
+        self.inputComodoAdd.pack(side="bottom")
+        
+    def AdicionarLampadaBotao(self,nomeComodo):
+        self.inputLampadaAdd = DispositivoAddFrame(self.lampadasFrame[nomeComodo])
+        self.inputLampadaAdd.submit.configure(command = lambda:self.SubmeterAddLampada(nomeComodo))
+        self.inputLampadaAdd.pack(side="bottom")
+        
+    def SubmeterAddLampada(self,nomeComodo):
+        NomeLampada = self.inputLampadaAdd.input.get()
+        self.labelDuplicataDispositivos.pack_forget()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeLampadas:
+            if nome == NomeLampada:
+                self.labelDuplicataDispositivos = customtkinter.CTkLabel(self.lampadasFrame[nomeComodo],
+                                               text= "Já existe um dispositivo com esse nome, insira outro",
+                                               text_color= "red")
+                self.labelDuplicataDispositivos.pack(side="top")
+                return
+        self.casa.comodos[nomeComodo].AdicionarDispositivo(tipo=1,nome=NomeLampada)
+        self.casa.SalvarQuantidadeDeDispositivosComodo()
+        self.contadorLampada[nomeComodo]  += 1
+        self.CarregarVetores()
+        #self.botoesComodo[nomeComodo].configure(numeroDispositivos =self.contadorLampada[nomeComodo])
+        
+        self.lampadasConfig[NomeLampada] = ConfigurarLampadas(master = self,
+                                                    nome =NomeLampada,
+                                                    intensidade=0,
+                                                    cor = "Branco"
+                                                    )
+        self.contadorLampada[nomeComodo]  += 1
+        self.lampadasConfig[NomeLampada].header.iconeBotao.configure(command = lambda n=nomeComodo: self.VoltarFrameLampadas(n))
+                    
+        self.lampadasBotoes[NomeLampada] = BotaoLampada(self.lampadasFrame[nomeComodo],
+                                                             nomeLampada=NomeLampada,
+                                                             cor="Branco",
+                                                             intensidade=0)
+        self.lampadasBotoes[NomeLampada].configure(command = lambda n=NomeLampada:self.MudarFrameConfigLampadas(n))
+        self.lampadasBotoes[NomeLampada].pack(side="top", pady= (10,10))
+        self.inputLampadaAdd.pack_forget()
+        
+        self.lampadasBotoes[NomeLampada].configure(command = lambda n=NomeLampada:self.MudarFrameConfigLampadas(n))
+    def SubmeterAddComodo(self):
+        NomeComodo = self.inputComodoAdd.input.get()
+        self.labelDuplicata.pack_forget()
+        for nomes,numero in self.nomeComodos:
+            if nomes == NomeComodo:
+                self.labelDuplicata.pack(side = "top")
+                return
+        
+        self.casa.AdicionarComodo(NomeComodo)
+        self.CarregarVetores()
+        
+        
+        #Criando o botao do novo comodo
+        self.botoesComodo[NomeComodo] = BotaoComodo(self.comodoFrame, nomeComodo=NomeComodo, numeroDispositivos=0)
+        self.botoesComodo[NomeComodo].configure(command = lambda n=NomeComodo:self.MudarFrameDispositivos(n))
+        self.botoesComodo[NomeComodo].pack(side="top", pady= (10,10))
+
+        #Criando o frame para os dispostivos do novo comodo        
+        dispositivoFrame = DispositivosFrame(master = self, nome = NomeComodo)
+        self.dispositivosFrame[NomeComodo] = dispositivoFrame
+        dispositivoFrame.header.iconeBotao.configure(command = lambda: self.VoltarFrameComodos())
+        
+        #Criando os botões que irão na pagina dos dispositivos
+        self.contadorLampada[NomeComodo] = 0
+        self.contadorArCondicionado[NomeComodo]  = 0
+        self.contadorJanela[NomeComodo]  = 0
+        self.contadorCortina[NomeComodo]  = 0    
+        self.botaoLampada = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Lâmpadas",
+                                  numeroDispositivos= 0,
+                                  caminho="src/icons/lampada.png")
+        self.botaoLampada.configure(command = lambda n=NomeComodo:self.MudarFrameLampadas(n))
+        self.botaoLampada.pack(side="top", pady= (10,10))
+        lampadaFrame = LampadasFrame(master=self)
+        lampadaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosLampadas(n))
+        self.lampadasFrame[NomeComodo] = lampadaFrame
+        
+        BotaoAdicionarLampada = BotaoAdd(self.lampadasFrame[NomeComodo], label="Adicionar nova lâmpada")
+        BotaoAdicionarLampada.configure(command = lambda: self.AdicionarLampadaBotao(NomeComodo))
+        BotaoAdicionarLampada.pack(side = "bottom",pady= (10,10))
+        
+            
+        self.botaoAr = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Ar Condicionado",
+                                  numeroDispositivos= 0,
+                                  caminho="src/icons/arCondicionado.png")
+        self.botaoAr.configure(command = lambda n=NomeComodo:self.MudarFrameAr(n))
+        self.botaoAr.pack(side="top", pady= (10,10))
+        arCondicionadoFrame = ArCondicionadoFrame(master=self)
+        arCondicionadoFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosAr(n))
+        self.ArCondicionadoFrame[NomeComodo] = arCondicionadoFrame
+        BotaoAdicionarAr = BotaoAdd(self.ArCondicionadoFrame[NomeComodo], label="Adicionar novo ar")
+        BotaoAdicionarAr.pack(side = "bottom",pady= (10,10))
+        
+        self.botaoJanela = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Janela",
+                                  numeroDispositivos= 0,
+                                  caminho="src/icons/Janela.png")
+        self.botaoJanela.configure(command = lambda n=NomeComodo:self.MudarFrameJanela(n))
+        self.botaoJanela.pack(side="top", pady= (10,10))
+        janelaFrame = JanelaFrame(master=self)
+        janelaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosJanela(n))
+        self.janelaFrame[NomeComodo] = janelaFrame
+        BotaoAdicionarJanela = BotaoAdd(self.janelaFrame[NomeComodo], label="Adicionar nova janela")
+        BotaoAdicionarJanela.pack(side = "bottom",pady= (10,10))
+        
+        
+        self.botaoCortina = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Cortina",
+                                  numeroDispositivos= 0,
+                                  caminho="src/icons/cortina.png")
+        self.botaoCortina.configure(command = lambda n=NomeComodo:self.MudarFrameCortina(n))
+        self.botaoCortina.pack(side="top", pady= (10,10))  
+        cortinaFrame = CortinaFrame(master=self)
+        cortinaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosCortina(n))
+        self.cortinasFrame[NomeComodo] = cortinaFrame 
+        BotaoAdicionarCortina = BotaoAdd(self.cortinasFrame[NomeComodo], label="Adicionar nova cortina")
+        BotaoAdicionarCortina.pack(side = "bottom",pady= (10,10))   
+        
+        self.inputComodoAdd.pack_forget()
+        
+    def RemoverComodoBotao(self):
+        self.inputComodoRemove = ComodoRemoveFrame(self.comodoFrame)
+        self.inputComodoRemove.submit.configure(command = lambda:self.SubmeterRemoverComodo())
+        self.inputComodoRemove.pack(side="top")
+        
+    def SubmeterRemoverComodo(self):
+        NomeComodo = self.inputComodoRemove.input.get()
+        self.CarregarVetores()
+        print(self.nomeComodos)
+        self.labelInexistente.pack_forget()
+        for nomes,numero in self.nomeComodos:
+            if nomes == NomeComodo:
+                self.casa.RemoverComodo(NomeComodo)
+                self.CarregarVetores()
+                self.inputComodoRemove.pack_forget()
+                self.botoesComodo[NomeComodo].pack_forget()
+                self.botoesComodo[NomeComodo].destroy()
+                
+                #Destruindo o frame para os dispostivos do novo comodo        
+                self.dispositivosFrame[NomeComodo].destroy()
+                self.lampadasFrame[NomeComodo].destroy()
+                self.ArCondicionadoFrame[NomeComodo].destroy()
+                self.janelaFrame[NomeComodo].destroy()
+                self.cortinasFrame[NomeComodo].destroy()
+                return
+        self.inputComodoRemove.pack_forget()
+        self.labelInexistente.pack(side="top")
+        self.inputComodoRemove.pack(side = "top")
         
     def MudarFrameDispositivos(self,nome):
         self.comodoFrame.pack_forget()
@@ -439,111 +594,5 @@ class App(customtkinter.CTk):
         self.frameAtual = nome      
 
         
-    def AdicionarComodoBotao(self):
-        self.inputComodoAdd = ComodoAddFrame(self.comodoFrame)
-        self.inputComodoAdd.submit.configure(command = lambda:self.SubmeterAddComodo())
-        self.inputComodoAdd.pack(side="bottom")
-        
-    def SubmeterAddComodo(self):
-        NomeComodo = self.inputComodoAdd.input.get()
-        self.labelDuplicata.pack_forget()
-        for nomes,numero in self.nomeComodos:
-            if nomes == NomeComodo:
-                self.labelDuplicata.pack(side = "top")
-                return
-        
-        self.casa.AdicionarComodo(NomeComodo)
-        self.CarregarVetores()
-        print(self.nomeComodos)
-        
-        
-        #Criando o botao do novo comodo
-        self.botoesComodo[NomeComodo] = BotaoComodo(self.comodoFrame, nomeComodo=NomeComodo, numeroDispositivos=0)
-        self.botoesComodo[NomeComodo].configure(command = lambda n=NomeComodo:self.MudarFrameDispositivos(n))
-        self.botoesComodo[NomeComodo].pack(side="top", pady= (10,10))
-
-        #Criando o frame para os dispostivos do novo comodo        
-        dispositivoFrame = DispositivosFrame(master = self, nome = NomeComodo)
-        self.dispositivosFrame[NomeComodo] = dispositivoFrame
-        dispositivoFrame.header.iconeBotao.configure(command = lambda: self.VoltarFrameComodos())
-        
-        #Criando os botões que irão na pagina dos dispositivos    
-        self.botaoLampada = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Lâmpadas",
-                                  numeroDispositivos= 0,
-                                  caminho="src/icons/lampada.png")
-        self.botaoLampada.configure(command = lambda n=NomeComodo:self.MudarFrameLampadas(n))
-        self.botaoLampada.pack(side="top", pady= (10,10))
-        lampadaFrame = LampadasFrame(master=self)
-        lampadaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosLampadas(n))
-        self.lampadasFrame[NomeComodo] = lampadaFrame
-        
-        BotaoAdicionarLâmpada = BotaoAdd(self.lampadasFrame[NomeComodo], label="Adicionar nova lâmpada")
-        BotaoAdicionarLâmpada.pack(side = "bottom",pady= (10,10))
-        
-            
-        self.botaoAr = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Ar Condicionado",
-                                  numeroDispositivos= 0,
-                                  caminho="src/icons/arCondicionado.png")
-        self.botaoAr.configure(command = lambda n=NomeComodo:self.MudarFrameAr(n))
-        self.botaoAr.pack(side="top", pady= (10,10))
-        arCondicionadoFrame = ArCondicionadoFrame(master=self)
-        arCondicionadoFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosAr(n))
-        self.ArCondicionadoFrame[NomeComodo] = arCondicionadoFrame
-        BotaoAdicionarAr = BotaoAdd(self.ArCondicionadoFrame[NomeComodo], label="Adicionar novo ar")
-        BotaoAdicionarAr.pack(side = "bottom",pady= (10,10))
-        
-        self.botaoJanela = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Janela",
-                                  numeroDispositivos= 0,
-                                  caminho="src/icons/Janela.png")
-        self.botaoJanela.configure(command = lambda n=NomeComodo:self.MudarFrameJanela(n))
-        self.botaoJanela.pack(side="top", pady= (10,10))
-        janelaFrame = JanelaFrame(master=self)
-        janelaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosJanela(n))
-        self.janelaFrame[NomeComodo] = janelaFrame
-        BotaoAdicionarJanela = BotaoAdd(self.janelaFrame[NomeComodo], label="Adicionar nova janela")
-        BotaoAdicionarJanela.pack(side = "bottom",pady= (10,10))
-        
-        
-        self.botaoCortina = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Cortina",
-                                  numeroDispositivos= 0,
-                                  caminho="src/icons/cortina.png")
-        self.botaoCortina.configure(command = lambda n=NomeComodo:self.MudarFrameCortina(n))
-        self.botaoCortina.pack(side="top", pady= (10,10))  
-        cortinaFrame = CortinaFrame(master=self)
-        cortinaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosCortina(n))
-        self.cortinasFrame[NomeComodo] = cortinaFrame 
-        BotaoAdicionarCortina = BotaoAdd(self.cortinasFrame[NomeComodo], label="Adicionar nova cortina")
-        BotaoAdicionarCortina.pack(side = "bottom",pady= (10,10))   
-        
-        self.inputComodoAdd.pack_forget()
-        
-    def RemoverComodoBotao(self):
-        self.inputComodoRemove = ComodoRemoveFrame(self.comodoFrame)
-        self.inputComodoRemove.submit.configure(command = lambda:self.SubmeterRemoverComodo())
-        self.inputComodoRemove.pack(side="top")
-        
-    def SubmeterRemoverComodo(self):
-        NomeComodo = self.inputComodoRemove.input.get()
-        self.CarregarVetores()
-        print(self.nomeComodos)
-        self.labelInexistente.pack_forget()
-        for nomes,numero in self.nomeComodos:
-            if nomes == NomeComodo:
-                self.casa.RemoverComodo(NomeComodo)
-                self.CarregarVetores()
-                self.inputComodoRemove.pack_forget()
-                self.botoesComodo[NomeComodo].pack_forget()
-                self.botoesComodo[NomeComodo].destroy()
-                
-                #Destruindo o frame para os dispostivos do novo comodo        
-                self.dispositivosFrame[NomeComodo].destroy()
-                self.lampadasFrame[NomeComodo].destroy()
-                self.ArCondicionadoFrame[NomeComodo].destroy()
-                self.janelaFrame[NomeComodo].destroy()
-                self.cortinasFrame[NomeComodo].destroy()
-                return
-        self.inputComodoRemove.pack_forget()
-        self.labelInexistente.pack(side="top")
-        self.inputComodoRemove.pack(side = "top")
 app = App()
 app.mainloop()
