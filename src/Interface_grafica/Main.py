@@ -78,6 +78,11 @@ class App(customtkinter.CTk):
         self.botaoAr = {}
         self.botaoCortina = {}
         self.botaoJanela = {}
+        self.nomeComodos=[]
+        self.nomeLampadas=[]
+        self.nomeArCondicionado=[]
+        self.nomeJanelas=[]
+        self.nomeCortina=[]
         self.labelDuplicataDispositivos = customtkinter.CTkLabel(self)
         self.CarregarVetores()
         self.CriarJanelas()
@@ -172,7 +177,7 @@ class App(customtkinter.CTk):
                                                     )
                     self.contadorLampada[nomes]  += 1
                     self.lampadasConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameLampadas(n))
-                    #self.lampadasConfig[nome].slider.configure(command = self.SetarIntensidadeLampada(nomes, nome))
+                    self.lampadasConfig[nome].excluir.configure(command = lambda:self.RemoverLampada(nome,nomes))
                     self.lampadasBotoes[nome] = BotaoLampada(self.lampadasFrame[nomes],
                                                              nomeLampada=nome,
                                                              cor=cor,
@@ -285,6 +290,13 @@ class App(customtkinter.CTk):
             self.botoesComodo[nomes].configure(command = lambda n=nomes:self.MudarFrameDispositivos(n))
             self.botoesComodo[nomes].pack(side="top", pady= (10,10))
 
+    def RecarregarBotoesComodos(self):
+        for nomes,numero in self.nomeComodo:
+            self.botoesComodo[nomes].destroy()
+        for nomes,numero in self.nomeComodo:
+            self.botoesComodo[nomes] = BotaoComodo(self.comodoFrame, nomeComodo=nomes, numeroDispositivos=numero)
+            self.botoesComodo[nomes].configure(command = lambda n=nomes:self.MudarFrameDispositivos(n))
+            self.botoesComodo[nomes].pack(side="top", pady= (10,10))
 
     def RecarregarBotoesDispositivos(self,nomeComodo):
         for nomes,numero in self.nomeComodos:
@@ -369,7 +381,7 @@ class App(customtkinter.CTk):
                                                     )
         self.contadorLampada[nomeComodo]  += 1
         self.lampadasConfig[NomeLampada].header.iconeBotao.configure(command = lambda n=nomeComodo: self.VoltarFrameLampadas(n))
-        #self.lampadasConfig[NomeLampada].slider.configure(command = lambda: self.SetarIntensidadeLampada(nomeComodo, NomeLampada))
+        self.lampadasConfig[NomeLampada].excluir.configure(command = lambda:self.RemoverLampada(NomeLampada,nomeComodo))
                     
         self.lampadasBotoes[NomeLampada] = BotaoLampada(self.lampadasFrame[nomeComodo],
                                                              nomeLampada=NomeLampada,
@@ -383,21 +395,21 @@ class App(customtkinter.CTk):
         
         self.RecarregarBotoesDispositivos(nomeComodo)
     
-    '''def SetarIntensidadeLampada(self,nomeComodo,nomeLampada):
-        intensidade = int(self.lampadasConfig[nomeLampada].slider.get())
-        print(intensidade)
-        cor = str(self.lampadasConfig[nomeLampada].select.get())
-        print(cor)
-
-        self.casa.comodos[nomeComodo].ConfigurarLampada(nomeLampada,cor,intensidade)
+    def RemoverLampada(self,nomeLampada,nomeComodo):
+        self.casa.comodos[nomeComodo].RemoverDispositivo(1,nomeLampada)
+        self.casa.SalvarQuantidadeDeDispositivosComodo()
+        self.contadorLampada[nomeComodo] -= 1
+        self.lampadasConfig[nomeLampada].pack_forget()
+        self.lampadasBotoes[nomeLampada].destroy()
         self.CarregarVetores()
-        self.lampadasConfig[nomeLampada].labelIntensidade.configure(text = f"Intensidade: {intensidade}") 
+        print(self.nomeComodos)
+        self.lampadasFrame[nomeComodo].pack(side="top")
+        self.frameAtual = nomeComodo
+        self.RecarregarBotoesLampada(nomeComodo)
+        self.RecarregarBotoesDispositivos(nomeComodo)
+        self.RecarregarBotoesComodos()
         
-    def SetarCorLampada(self,nomeComodo,nomeLampada):
-        cor = self.lampadasConfig[nomeLampada].select.get()'''
-    
-    def RemoverLampada(self):
-        pass
+        
         
     def AdicionarComodoBotao(self):
         self.inputComodoAdd = ComodoAddFrame(self.comodoFrame)
@@ -489,7 +501,6 @@ class App(customtkinter.CTk):
     def SubmeterRemoverComodo(self):
         NomeComodo = self.inputComodoRemove.input.get()
         self.CarregarVetores()
-        print(self.nomeComodos)
         self.labelInexistente.pack_forget()
         for nomes,numero in self.nomeComodos:
             if nomes == NomeComodo:
@@ -556,7 +567,7 @@ class App(customtkinter.CTk):
         self.frameAtual = nome
         self.RecarregarBotoesLampada(nome)
         self.CarregarVetores()
-        print(self.nomeLampadas)
+
         
     def MudarFrameAr(self,nome):
         self.dispositivosFrame[self.frameAtual].pack_forget()

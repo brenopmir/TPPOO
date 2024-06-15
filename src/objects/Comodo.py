@@ -111,14 +111,14 @@ class Comodo(InterfaceComodo):
           wb.save("Casa.xlsx")
     
      # remove o dispositivo de um tipo,sendo Lampada,Cortina,Arcondicionado e  Janela, 1,2,3 e 4  respectivamente, que possui determinado nome      
-    def RemoverDispositivo(self, tipo:str, nome: str) -> None:
+    def RemoverDispositivo(self, tipo:int, nome: str) -> None:
           if(tipo==1):
-                    if nome in self.lampadas:
-                         self.lampadas.pop(nome)
-                    for i, row in enumerate(ws_lampadas.iter_rows(), start=2):
-                         if row[0].value == self.Nome() and row[1].value == nome :
-                              ws_lampadas.delete_rows(i, 1)
-                              self.__quantidade_dispositivo-=1
+               for i in range(ws_lampadas.max_row,1,-1) :
+                    if ws_lampadas.cell(row=i,column=2).value==nome:
+                         ws_lampadas.delete_rows(i, 1)
+               if nome in self.lampadas:
+                    self.lampadas.pop(nome)
+                    self.__quantidade_dispositivo-=1
                                                 
           elif(tipo==2):
                     if nome in self.__cortinas:
