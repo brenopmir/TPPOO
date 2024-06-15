@@ -40,16 +40,15 @@ class Casa(InterfaceCasa):
             
     #Remove o Comodo e todos os dispositivos contidos nele 
     def RemoverComodo(self, nomecomodo: str) -> None:
-        self.comodos[nomecomodo]=criar_comodo(Comodo,nomecomodo)       
-        self.comodos[nomecomodo].ApagarTodosdispositivoscomodo()      
-        for i, row in enumerate(ws.iter_rows(), start=2):
-                if row[0].value == nomecomodo:
+        self.comodos[nomecomodo].ApagarTodosdispositivoscomodo()
+        for i in range(ws.max_row,1,-1) :
+                if ws.cell(row=i,column=1).value==nomecomodo:
                     ws.delete_rows(i, 1)
         if nomecomodo in self.comodos:
                 self.comodos.pop(nomecomodo)
-                     
         wb_Casa_comodo.save("Casa_comodos.xlsx") # Salva o workbook após remover o cômodo
-
+        
+        
     #Verifica se há comodos duplicados
     def VerificarDuplicado(self, nomedocomodo: str) -> bool:
         for row in ws.iter_rows(values_only=True):
