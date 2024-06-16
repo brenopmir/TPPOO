@@ -189,11 +189,11 @@ class Comodo(InterfaceComodo):
                 self.janelas[nome].SetAbertura(abertura)
           for i,row in enumerate (ws_janelas.iter_rows(),start=2):
                if row[0].value == self.Nome() and row[1].value == nome:
-                     if tranca=="False":# Se a janela está trancada não é possivel abrir a janela 
-                           row[6].value="False"
+                     if tranca=="True":# Se a janela está trancada não é possivel abrir a janela 
+                           row[6].value="True"
                            row[5].value=0
                      else:
-                           row[6].value="True"
+                           row[6].value="False"
                            row[5].value=abertura              
           wb.save("Casa.xlsx")
      
