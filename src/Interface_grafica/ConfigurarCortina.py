@@ -10,9 +10,12 @@ sys.path.append(diretorioPai)
 
 
 class ConfigurarCortina(customtkinter.CTkScrollableFrame):
-    def __init__(self, master,nome,abertura, **kwargs):
+    def __init__(self, master,casas, comodo,nome,abertura, **kwargs):
         super().__init__(master, **kwargs)
-
+        self.casa = casas
+        self.comodo = comodo
+        self.nome = nome
+        self.abertura = abertura
         self.configure(fg_color = "#616D7A",
                        width = 390,
                        corner_radius = 0,
@@ -44,6 +47,7 @@ class ConfigurarCortina(customtkinter.CTkScrollableFrame):
         self.excluir.pack(side = "top", pady = 80)
         
     def SetAbertura(self,valor):
-        #setar novo valor da abertura no back
-        self.labelAbertura.configure(text = f"Abertura: {valor}") 
+        self.abertura = int(valor)
+        self.labelAbertura.configure(text = f"Abertura: {self.abertura}") 
+        self.casa.comodos[self.comodo].ConfiguraCortina(self.nome,self.abertura)
         

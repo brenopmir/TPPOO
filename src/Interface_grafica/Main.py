@@ -114,7 +114,7 @@ class App(customtkinter.CTk):
 
 
         for i,row in enumerate(ws_cortinas.iter_rows(min_row=2), start=1):
-            self.nomeCortina.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","",f"{str(row[4].value)}","","",""))
+            self.nomeCortina.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","",""))
 
 
         for i,row in enumerate(ws_ares.iter_rows(min_row=2), start=1):
@@ -255,15 +255,19 @@ class App(customtkinter.CTk):
             cortinaFrame.header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameDispositivosCortina(n))
             self.cortinasFrame[nomes] = cortinaFrame
             
-            BotaoAdicionarCortina = BotaoAdd(self.cortinasFrame[nomes], label="Adicionar nova cortina")
-            BotaoAdicionarCortina.pack(side = "bottom",pady= (10,10))
+            self.botaoAddCortina[nomes] = BotaoAdd(self.cortinasFrame[nomes], label="Adicionar nova cortina")
+            self.botaoAddCortina[nomes].configure(command = lambda n=nomes: self.AdicionarCortinaBotao(n))
+            self.botaoAddCortina[nomes].pack(side = "bottom",pady= (10,10))
                     
             for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeCortina:
                 if comodo == nomes:
                     self.cortinaConfig[nome] = ConfigurarCortina(master = self,
+                                                    casas = self.casa,
+                                                    comodo = nomes,
                                                     nome =nome,
                                                     abertura=abertura,
                                                     )
+                    self.cortinaConfig[nome].excluir.configure(command = lambda n1=nome,n2=nomes:self.RemoverCortina(nomeCortina=n1,nomeComodo=n2))
                     self.cortinaConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameCortina(n))
                     self.contadorCortina[nomes]  += 1
                     self.cortinasBotoes[nome] = BotaoCortina(self.cortinasFrame[nomes],
@@ -394,6 +398,19 @@ class App(customtkinter.CTk):
                 self.janelaBotoes[nome].configure(command = lambda n=nome:self.MudarFrameConfigJanela(n))
                 self.janelaBotoes[nome].pack(side="top", pady= (10,10))  
                     
+    def RecarregarBotoesCortina(self,nomeComodo):
+        self.CarregarVetores()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeCortina:
+            if comodo == nomeComodo:
+                self.cortinasBotoes[nome].destroy()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeCortina:
+            if comodo == nomeComodo:
+                self.cortinasBotoes[nome] = BotaoCortina(self.cortinasFrame[nomeComodo],
+                                                             nomeCortina=nome,
+                                                             abertura= abertura)
+                self.cortinasBotoes[nome].configure(command = lambda n=nome:self.MudarFrameConfigCortina(n))
+                self.cortinasBotoes[nome].pack(side="top", pady= (10,10))  
+    
     def AdicionarLampadaBotao(self,nomeComodo):
         self.inputLampadaAdd = DispositivoAddFrame(self.lampadasFrame[nomeComodo])
         self.inputLampadaAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddLampada(n))
@@ -556,6 +573,57 @@ class App(customtkinter.CTk):
         self.RecarregarBotoesComodos() 
         self.VoltarFrameJanela(nomeComodo)  
         
+    def AdicionarCortinaBotao(self,nomeComodo):
+        self.inputCortinaAdd = DispositivoAddFrame(self.cortinasFrame[nomeComodo])
+        self.inputCortinaAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddCortina(n))
+        self.inputCortinaAdd.pack(side="bottom")
+
+        
+        
+    def SubmeterAddCortina(self,nomeComodo):
+        NomeCortina = self.inputCortinaAdd.input.get()
+        self.labelDuplicataDispositivos.pack_forget()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeCortina:
+            if nome == NomeCortina:
+                self.labelDuplicataDispositivos = customtkinter.CTkLabel(self.cortinasFrame[nomeComodo],
+                                               text= "Já existe um dispositivo com esse nome, insira outro",
+                                               text_color= "red")
+                self.labelDuplicataDispositivos.pack(side="top")
+                return
+        self.casa.comodos[nomeComodo].AdicionarDispositivo(tipo=2,nome=NomeCortina)
+        self.casa.SalvarQuantidadeDeDispositivosComodo()
+        self.CarregarVetores()
+        
+        self.cortinaConfig[NomeCortina] = ConfigurarCortina(master = self,
+                                                    casas = self.casa,
+                                                    comodo = nomeComodo,
+                                                    nome =NomeCortina,
+                                                    abertura= 0
+                                                    )
+        self.contadorCortina[nomeComodo]  += 1
+        self.cortinaConfig[NomeCortina].header.iconeBotao.configure(command = lambda n=nomeComodo: self.VoltarFrameCortina(n))
+        self.cortinaConfig[NomeCortina].excluir.configure(command = lambda n1=NomeCortina,n2=nomeComodo:self.RemoverCortina(nomeCortina=n1,nomeComodo=n2))
+                    
+        self.cortinasBotoes[NomeCortina] = BotaoCortina(self.cortinasFrame[nomeComodo],
+                                                             nomeCortina=NomeCortina,
+                                                             abertura = 0)
+        self.cortinasBotoes[NomeCortina].configure(command = lambda n=NomeCortina:self.MudarFrameConfigCortina(n))
+        self.cortinasBotoes[NomeCortina].pack(side="top", pady= (10,10))
+        self.inputCortinaAdd.pack_forget()
+        
+        self.RecarregarBotoesDispositivos(nomeComodo)
+        
+    def RemoverCortina(self,nomeCortina,nomeComodo):
+        self.casa.comodos[nomeComodo].RemoverDispositivo(2,nomeCortina)
+        self.casa.SalvarQuantidadeDeDispositivosComodo()
+        self.contadorCortina[nomeComodo] -= 1
+        self.cortinasBotoes[nomeCortina].destroy()
+        self.CarregarVetores()
+        self.RecarregarBotoesCortina(nomeComodo)
+        self.RecarregarBotoesDispositivos(nomeComodo)
+        self.RecarregarBotoesComodos() 
+        self.VoltarFrameCortina(nomeComodo)
+        
     def AdicionarComodoBotao(self):
         self.inputComodoAdd = ComodoAddFrame(self.comodoFrame)
         self.inputComodoAdd.submit.configure(command = lambda:self.SubmeterAddComodo())
@@ -639,8 +707,10 @@ class App(customtkinter.CTk):
         cortinaFrame = CortinaFrame(master=self)
         cortinaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosCortina(n))
         self.cortinasFrame[NomeComodo] = cortinaFrame 
-        BotaoAdicionarCortina = BotaoAdd(self.cortinasFrame[NomeComodo], label="Adicionar nova cortina")
-        BotaoAdicionarCortina.pack(side = "bottom",pady= (10,10))   
+        
+        self.botaoAddCortina[NomeComodo] = BotaoAdd(self.cortinasFrame[NomeComodo], label="Adicionar nova cortina")
+        self.botaoAddCortina[NomeComodo].configure(command = lambda n=NomeComodo: self.AdicionarCortinaBotao(n))
+        self.botaoAddCortina[NomeComodo].pack(side = "bottom",pady= (10,10))   
         
         self.inputComodoAdd.pack_forget()
         
@@ -819,7 +889,8 @@ class App(customtkinter.CTk):
         self.cortinasFrame[nome].update()
         self.update()
         self.frameAtual = nome      
-
+        self.RecarregarBotoesCortina(nome)
+        self.CarregarVetores()
         
 app = App()
 app.mainloop()

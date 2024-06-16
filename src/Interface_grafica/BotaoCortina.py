@@ -11,6 +11,7 @@ sys.path.append(diretorioPai)
 class BotaoCortina(customtkinter.CTkButton):
     def __init__(self, master,nomeCortina,abertura):
         super().__init__(master)
+        self.abertura = abertura
         self.configure(fg_color = "#E4E4E4",
                        hover_color="#E4E4E4",
                        height=60, 
@@ -43,7 +44,7 @@ class BotaoCortina(customtkinter.CTkButton):
         self.icone1Label.image = icone
         self.icone1Label.grid(row=1, column=0,ipady=5)
         
-        self.AberturaLabel = customtkinter.CTkLabel(self.container, text=f"Abertura - {abertura}%",
+        self.AberturaLabel = customtkinter.CTkLabel(self.container, text=f"Abertura - {self.abertura}%",
                                                   font=("Inika", 12), text_color="#393939")
         self.AberturaLabel.grid(row=1, column=1,padx= (10,0))
         

@@ -91,7 +91,7 @@ class Comodo(InterfaceComodo):
           elif(tipo==2):
                self.cortinas[nome]=criar_instancia_cortina(Cortina,nome,0)
                self.__quantidade_dispositivo+=1
-               ws_cortinas.append([self.__nome,f"{self.cortinas[nome].Nome()}", None,None,self.cortinas[nome].Intensidade(),None,None,None])
+               ws_cortinas.append([self.__nome,f"{self.cortinas[nome].Nome()}", None,None,None,self.cortinas[nome].Intensidade(),None,None])
           
           elif(tipo==3):
                self.arescondicionados[nome]=criar_instancia_ar_condicionado(Ar_Condicionado,nome,False,0,0)
@@ -161,7 +161,7 @@ class Comodo(InterfaceComodo):
                self.cortinas[nome].SetIntensidade(intensidade)
          for i,row in enumerate(ws_cortinas.iter_rows(), start=2):
                if row[0].value == self.Nome() and row[1].value == nome:
-                     row[4].value=intensidade
+                     row[5].value=intensidade
          wb.save("Casa.xlsx")
 
     #Configura todos os ares condicionados que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar       
