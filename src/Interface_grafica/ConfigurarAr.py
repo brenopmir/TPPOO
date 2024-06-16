@@ -10,8 +10,19 @@ sys.path.append(diretorioPai)
 
 
 class ConfigurarAr(customtkinter.CTkScrollableFrame):
-    def __init__(self, master,nome,ligado,temperatura,intensidade, **kwargs):
+    def __init__(self,casas,comodo, master,nome,ligado,temperatura,intensidade, **kwargs):
         super().__init__(master, **kwargs)
+        self.casa = casas
+        self.comodo = comodo
+        self.nome = nome
+        self.ligado = ligado
+        self.temperatura = temperatura
+        self.intensidade = intensidade
+        self.texto = "Ligado"
+        if ligado == "True":
+            self.texto = "Ligado"
+        elif ligado == "False":
+            self.texto = "Desligado"
 
         self.configure(fg_color = "#616D7A",
                        width = 390,
@@ -48,13 +59,13 @@ class ConfigurarAr(customtkinter.CTkScrollableFrame):
                                                number_of_steps=100)
         self.slider2.pack(side="top", pady=(10,10))
         self.slider2.set(int(intensidade))
-    
+
         self.check = customtkinter.StringVar(value= ligado)
         self.checkBox = customtkinter.CTkCheckBox(self,variable= self.check,
-                                                  onvalue="Ligado", 
-                                                  offvalue="Desligado",
-                                                  textvariable= self.check,
-                                                  command=self.SetLigado,
+                                                  onvalue="True", 
+                                                  offvalue="False",
+                                                  text= self.texto,
+                                                  command= lambda:self.SetLigado(),
                                                   height= 40,
                                                   font=("Inika",20)
                                                   )
@@ -69,13 +80,26 @@ class ConfigurarAr(customtkinter.CTkScrollableFrame):
         self.excluir.pack(side = "top", pady = 80)
         
     def SetTemperatura(self,valor):
-        #setar novo valor da abertura no back
+        self.temperatura = int(valor)
         self.labelTemperatura.configure(text = f"Temperatura: {valor}°C")
+        self.SetarAr()
         
     def SetIntensidade(self,valor):
-        #setar novo valor da intensidade no back
-        self.labelIntensidade.configure(text = f"Intensidade: {valor}") 
+        self.intensidade = int(valor)
+        self.labelIntensidade.configure(text = f"Intensidade: {valor}")  
+        self.SetarAr()
         
     def SetLigado(self):
-        #setar novo valor no back
-        pass    
+        self.ligado = self.check.get()
+        if self.ligado == "True":
+            self.texto = "Ligado"
+        elif self.ligado == "False":
+            self.texto = "Desligado"
+        self.checkBox.configure(text = self.texto)
+        self.SetarAr()
+    
+    def SetarAr(self):
+        if self.ligado == "True":
+            self.casa.comodos[self.comodo].ConfigurarArCondicionado(self.nome,"True",self.temperatura,self.intensidade)
+        elif self.ligado == "False":
+            self.casa.comodos[self.comodo].ConfigurarArCondicionado(self.nome,"False",self.temperatura,self.intensidade)

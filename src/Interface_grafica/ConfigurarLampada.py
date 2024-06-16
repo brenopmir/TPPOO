@@ -3,6 +3,9 @@ import customtkinter
 import os 
 import sys
 from Interface_grafica.HeaderDispositivo import HeaderDispositivo
+from objects.Casa import Casa
+from objects.Comodo import Comodo
+from objects.Lampadas import Lampadas,criar_instancia_lampada
 # Pega o diretorio pai do arquivo
 diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #fornece o caminho
@@ -11,9 +14,14 @@ sys.path.append(diretorioPai)
 cores = ["Branco", "Amarelo", "Vermelho", "Azul", "Verde", "Roxo"]
 
 class ConfigurarLampadas(customtkinter.CTkScrollableFrame):
-    def __init__(self, master,nome,cor,intensidade, **kwargs):
+    def __init__(self, master,casas,comodo,nome,cor,intensidade, **kwargs):
         super().__init__(master, **kwargs)
-
+        self.nome = nome
+        self.casa = casas
+        self.comodo = comodo
+        self.cor = cor
+        self.intensidade = intensidade
+        self.casa = Casa("Casa")
         self.configure(fg_color = "#616D7A",
                        width = 390,
                        corner_radius = 0,
@@ -57,9 +65,15 @@ class ConfigurarLampadas(customtkinter.CTkScrollableFrame):
         self.excluir.pack(side = "top", pady = 80)
         
     def SetIntensidade(self,valor):
-        #setar novo valor da intensidade no back
+        self.intensidade = int(valor)
         self.labelIntensidade.configure(text = f"Intensidade: {valor}") 
+        self.SetarLampada()
         
     def SetCor(self,valor):
-        #setar nova cor no back
+        self.cor = str(valor)
         self.labelCor.configure(text = f"Cor: {valor}")
+        self.SetarLampada()
+        
+    def SetarLampada(self):
+        self.casa.comodos[self.comodo].ConfigurarLampada(self.nome,self.cor,self.intensidade)
+    

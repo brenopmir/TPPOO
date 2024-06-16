@@ -7,7 +7,7 @@ diretorioPai = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(diretorioPai)
 
 from Interfaces.Interfaces_lampadas import InterfaceLampadas
-from Dispositivo import Dispositivo
+from objects.Dispositivo import Dispositivo
 from typing import Type
 class Lampadas(Dispositivo,InterfaceLampadas):
     def __init__(self, nome: str,cor:str,intensidade:int) -> None:
@@ -18,7 +18,7 @@ class Lampadas(Dispositivo,InterfaceLampadas):
     #Retorna a cor da Lampada 
     def Cor(self) -> str:
         return self.__cor
-    
+     
     #Seta a cor da Lampada
     def SetCor(self, cornova: str) -> None:
         self.__cor=cornova

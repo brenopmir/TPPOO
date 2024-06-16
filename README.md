@@ -26,10 +26,10 @@ O usuário precisará de:
 • Ambiente de edição 
 • Instalação do python
 • Instalação da biblioteca openpyxl   
-• Instalação da biblioteca tkinter
+• Instalação da biblioteca custom tkinter
 • Instalação da biblioteca PIL(Pillow)
 
 Instruções de Uso:
 O usuário, através de um menu disponibilizado na interface, terá a oportunidade de interagir com o sistema,ou seja realizar diversas transações pelo botoes e outros objetos iterativos.
 
-Além disso, o usuário terá a capacidade de personalizar cada dispositivo individualmente, alterando seu status e modificando o nome do aparelho, utilizando funcionalidades específicas disponibilizadas para cada dispositivo. Todas essas modificações serão salvas em arquivos Excel, que posteriormente serão transformados em um display interativo.
+Além disso, o usuário terá a capacidade de personalizar cada dispositivo individualmente, alterando seu status, utilizando funcionalidades específicas disponibilizadas para cada dispositivo. Todas essas modificações serão salvas em arquivos Excel, que posteriormente serão transformados em um display interativo.
