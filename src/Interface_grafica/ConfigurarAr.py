@@ -10,7 +10,7 @@ sys.path.append(diretorioPai)
 
 
 class ConfigurarAr(customtkinter.CTkScrollableFrame):
-    def __init__(self, master,nome,ligado,temperatura,intensidade, **kwargs):
+    def __init__(self,casas,comodo, master,nome,ligado,temperatura,intensidade, **kwargs):
         super().__init__(master, **kwargs)
 
         self.configure(fg_color = "#616D7A",

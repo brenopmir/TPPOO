@@ -191,6 +191,7 @@ class App(customtkinter.CTk):
             self.ArCondicionadoFrame[nomes] = arCondicionadoFrame
             
             BotaoAdicionarAr = BotaoAdd(self.ArCondicionadoFrame[nomes], label="Adicionar novo ar")
+            BotaoAdicionarAr.configure(command = lambda: self.AdicionarArBotao(nomes))
             BotaoAdicionarAr.pack(side = "bottom",pady= (10,10))
              
             for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeArCondicionado:
@@ -291,9 +292,9 @@ class App(customtkinter.CTk):
             self.botoesComodo[nomes].pack(side="top", pady= (10,10))
 
     def RecarregarBotoesComodos(self):
-        for nomes,numero in self.nomeComodo:
+        for nomes,numero in self.nomeComodos:
             self.botoesComodo[nomes].destroy()
-        for nomes,numero in self.nomeComodo:
+        for nomes,numero in self.nomeComodos:
             self.botoesComodo[nomes] = BotaoComodo(self.comodoFrame, nomeComodo=nomes, numeroDispositivos=numero)
             self.botoesComodo[nomes].configure(command = lambda n=nomes:self.MudarFrameDispositivos(n))
             self.botoesComodo[nomes].pack(side="top", pady= (10,10))
@@ -319,20 +320,20 @@ class App(customtkinter.CTk):
         self.botaoLampada[nomeComodo].pack(side="top", pady= (10,10))
         
      
-        self.botaoAr[nomeComodo] = self.botaoAr[nomeComodo] = BotaoDispositivo(self.dispositivosFrame[nomeComodo], nomeComodo="Lâmpadas",
+        self.botaoAr[nomeComodo] = self.botaoAr[nomeComodo] = BotaoDispositivo(self.dispositivosFrame[nomeComodo], nomeComodo="Ar Condicionado",
                                   numeroDispositivos= self.contadorArCondicionado[nomeComodo],
                                   caminho="src/icons/arCondicionado.png")
         self.botaoAr[nomeComodo].configure(command = lambda n=nomeComodo:self.MudarFrameAr(n))
         self.botaoAr[nomeComodo].pack(side="top", pady= (10,10))
         
         
-        self.botaoJanela[nomeComodo] = self.botaoJanela[nomeComodo] = BotaoDispositivo(self.dispositivosFrame[nomeComodo], nomeComodo="Lâmpadas",
+        self.botaoJanela[nomeComodo] = self.botaoJanela[nomeComodo] = BotaoDispositivo(self.dispositivosFrame[nomeComodo], nomeComodo="Janela",
                                   numeroDispositivos= self.contadorJanela[nomeComodo],
                                   caminho="src/icons/Janela.png")
         self.botaoJanela[nomeComodo].configure(command = lambda n=nomeComodo:self.MudarFrameJanela(n))
         self.botaoJanela[nomeComodo].pack(side="top", pady= (10,10))
         
-        self.botaoCortina[nomeComodo] = self.botaoCortina[nomeComodo] = BotaoDispositivo(self.dispositivosFrame[nomeComodo], nomeComodo="Lâmpadas",
+        self.botaoCortina[nomeComodo] = self.botaoCortina[nomeComodo] = BotaoDispositivo(self.dispositivosFrame[nomeComodo], nomeComodo="Cortina",
                                   numeroDispositivos= self.contadorCortina[nomeComodo],
                                   caminho="src/icons/cortina.png")
         self.botaoCortina[nomeComodo].configure(command = lambda n=nomeComodo:self.MudarFrameCortina(n))
@@ -351,6 +352,21 @@ class App(customtkinter.CTk):
                                                              intensidade=intensidade)
                 self.lampadasBotoes[nome].configure(command = lambda n=nome:self.MudarFrameConfigLampadas(n))
                 self.lampadasBotoes[nome].pack(side="top", pady= (10,10))  
+                
+    def RecarregarBotoesAr(self,nomeComodo):
+        self.CarregarVetores()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeArCondicionado:
+            if comodo == nomeComodo:
+                self.ArCondicionadoBotoes[nome].destroy()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeArCondicionado:
+            if comodo == nomeComodo:
+                self.ArCondicionadoBotoes[nome] = BotaoArCondicionado(self.ArCondicionadoFrame[nomeComodo],
+                                                             nomeAr=nome,
+                                                             ligado=ligado,
+                                                             temperatura=temperatura,
+                                                             intensidade=intensidade)
+                self.ArCondicionadoBotoes[nome].configure(command = lambda n=nome:self.MudarFrameConfigAr(n))
+                self.ArCondicionadoBotoes[nome].pack(side="top", pady= (10,10))  
                     
     def AdicionarLampadaBotao(self,nomeComodo):
         self.inputLampadaAdd = DispositivoAddFrame(self.lampadasFrame[nomeComodo])
@@ -391,8 +407,6 @@ class App(customtkinter.CTk):
         self.lampadasBotoes[NomeLampada].pack(side="top", pady= (10,10))
         self.inputLampadaAdd.pack_forget()
         
-        self.lampadasBotoes[NomeLampada].configure(command = lambda n=NomeLampada:self.MudarFrameConfigLampadas(n))
-        
         self.RecarregarBotoesDispositivos(nomeComodo)
     
     def RemoverLampada(self,nomeLampada,nomeComodo):
@@ -402,14 +416,66 @@ class App(customtkinter.CTk):
         self.lampadasConfig[nomeLampada].pack_forget()
         self.lampadasBotoes[nomeLampada].destroy()
         self.CarregarVetores()
-        print(self.nomeComodos)
         self.lampadasFrame[nomeComodo].pack(side="top")
         self.frameAtual = nomeComodo
         self.RecarregarBotoesLampada(nomeComodo)
         self.RecarregarBotoesDispositivos(nomeComodo)
         self.RecarregarBotoesComodos()
         
+    def RemoverAr(self,nomeAr,nomeComodo):
+        self.casa.comodos[nomeComodo].RemoverDispositivo(3,[nomeAr])
+        self.casa.SalvarQuantidadeDeDispositivosComodo()
+        self.contadorArCondicionado[nomeComodo] -= 1
+        self.arConfig[nomeAr].pack_forget()
+        self.ArCondicionadoBotoes[nomeAr].destroy()
+        self.CarregarVetores()
+        self.ArCondicionadoFrame[nomeComodo].pack(side="top")
+        self.frameAtual = nomeComodo
+        self.RecarregarBotoesAr(nomeComodo)
+        self.RecarregarBotoesDispositivos(nomeComodo)
+        self.RecarregarBotoesComodos()
         
+    def AdicionarArBotao(self,nomeComodo):
+        self.inputArAdd = DispositivoAddFrame(self.ArCondicionadoFrame[nomeComodo])
+        self.inputArAdd.submit.configure(command = lambda:self.SubmeterAddAr(nomeComodo))
+        self.inputArAdd.pack(side="bottom")    
+        
+    def SubmeterAddAr(self,nomeComodo):
+        NomeAr = self.inputArAdd.input.get()
+        self.labelDuplicataDispositivos.pack_forget()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeArCondicionado:
+            if nome == NomeAr:
+                self.labelDuplicataDispositivos = customtkinter.CTkLabel(self.ArCondicionadoFrame[nomeComodo],
+                                               text= "Já existe um dispositivo com esse nome, insira outro",
+                                               text_color= "red")
+                self.labelDuplicataDispositivos.pack(side="top")
+                return
+        self.casa.comodos[nomeComodo].AdicionarDispositivo(tipo=3,nome=NomeAr)
+        self.casa.SalvarQuantidadeDeDispositivosComodo()
+        self.CarregarVetores()
+        
+        self.arConfig[NomeAr] = ConfigurarAr(master = self,
+                                            casas = self.casa,
+                                            comodo = nomeComodo,
+                                            nome =NomeAr,
+                                            ligado = "Desligado",
+                                            temperatura= 20,
+                                            intensidade=0,
+                                                    )
+        self.contadorArCondicionado[nomeComodo]  += 1
+        self.arConfig[NomeAr].header.iconeBotao.configure(command = lambda n=nomeComodo: self.VoltarFrameAr(n))
+        self.arConfig[NomeAr].excluir.configure(command = lambda:self.RemoverAr(NomeAr,nomeComodo))
+                    
+        self.ArCondicionadoBotoes[NomeAr] = BotaoArCondicionado(self.ArCondicionadoFrame[nomeComodo],
+                                                             nomeLampada=NomeAr,
+                                                             ligado="Desligado",
+                                                             temperatura= 20,
+                                                             intensidade=0)
+        self.ArCondicionadoBotoes[NomeAr].configure(command = lambda n=NomeAr:self.MudarFrameConfigAr(n))
+        self.ArCondicionadoBotoes[NomeAr].pack(side="top", pady= (10,10))
+        self.inputArAdd.pack_forget()
+        
+        self.RecarregarBotoesDispositivos(nomeComodo)
         
     def AdicionarComodoBotao(self):
         self.inputComodoAdd = ComodoAddFrame(self.comodoFrame)
@@ -592,6 +658,8 @@ class App(customtkinter.CTk):
         self.arConfig[nome].update()
         self.frameAtual = nome
         self.update()
+        self.RecarregarBotoesAr(nome)
+        self.CarregarVetores()
         
     def VoltarFrameAr(self,nome):
         self.arConfig[self.frameAtual].pack_forget()
@@ -600,6 +668,8 @@ class App(customtkinter.CTk):
         self.ArCondicionadoFrame[nome].update()
         self.update()
         self.frameAtual = nome  
+        self.RecarregarBotoesLampada(nome)
+        self.CarregarVetores()
          
     def MudarFrameJanela(self,nome):
         self.dispositivosFrame[self.frameAtual].pack_forget()
