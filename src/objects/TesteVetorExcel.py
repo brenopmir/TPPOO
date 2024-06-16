@@ -55,7 +55,6 @@ for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=2):
         nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","Aberto",""))
 
 
-print(f"{nomeComodos}\n")
 #print(f"{nomeLampadas}\n")
 #print(f"{nomeArCondicionado}\n")
 #print(f"{nomeJanelas}\n")

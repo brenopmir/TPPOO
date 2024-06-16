@@ -17,6 +17,7 @@ class ConfigurarJanela(customtkinter.CTkScrollableFrame):
         self.trancado = trancado
         self.casa = casas
         self.comodo = comodo
+        self.texto = ""
 
         self.configure(fg_color = "#616D7A",
                        width = 390,
@@ -40,11 +41,15 @@ class ConfigurarJanela(customtkinter.CTkScrollableFrame):
         self.slider.pack(side="top", pady=(10,10))
         self.slider.set(int(abertura))
 
+        if trancado == "True":
+            self.texto = "Trancado"
+        elif trancado == "False":
+            self.texto = "Aberto"
         self.check = customtkinter.StringVar(value= trancado)
         self.checkBox = customtkinter.CTkCheckBox(self,variable= self.check,
                                                   onvalue="True", 
                                                   offvalue="False",
-                                                  textvariable= self.check,
+                                                  text= self.texto,
                                                   command=self.SetTrancado,
                                                   height= 40,
                                                   font=("Inika",20)
@@ -65,7 +70,11 @@ class ConfigurarJanela(customtkinter.CTkScrollableFrame):
         
     def SetTrancado(self):
         self.trancado = self.check.get()
-        print(self.trancado)
+        if self.trancado == "True":
+            self.texto = "Trancado"
+        elif self.trancado == "False":
+            self.texto = "Aberto"
+        self.checkBox.configure(text = self.texto)
         self.SetarJanela()
     
     def SetarJanela(self):

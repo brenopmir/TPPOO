@@ -18,6 +18,11 @@ class ConfigurarAr(customtkinter.CTkScrollableFrame):
         self.ligado = ligado
         self.temperatura = temperatura
         self.intensidade = intensidade
+        self.texto = "Ligado"
+        if ligado == "True":
+            self.texto = "Ligado"
+        elif ligado == "False":
+            self.texto = "Desligado"
 
         self.configure(fg_color = "#616D7A",
                        width = 390,
@@ -54,12 +59,12 @@ class ConfigurarAr(customtkinter.CTkScrollableFrame):
                                                number_of_steps=100)
         self.slider2.pack(side="top", pady=(10,10))
         self.slider2.set(int(intensidade))
-    
-        self.check = customtkinter.StringVar(value= self.ligado)
+
+        self.check = customtkinter.StringVar(value= ligado)
         self.checkBox = customtkinter.CTkCheckBox(self,variable= self.check,
                                                   onvalue="True", 
                                                   offvalue="False",
-                                                  textvariable= self.check,
+                                                  text= self.texto,
                                                   command= lambda:self.SetLigado(),
                                                   height= 40,
                                                   font=("Inika",20)
@@ -86,6 +91,11 @@ class ConfigurarAr(customtkinter.CTkScrollableFrame):
         
     def SetLigado(self):
         self.ligado = self.check.get()
+        if self.ligado == "True":
+            self.texto = "Ligado"
+        elif self.ligado == "False":
+            self.texto = "Desligado"
+        self.checkBox.configure(text = self.texto)
         self.SetarAr()
     
     def SetarAr(self):

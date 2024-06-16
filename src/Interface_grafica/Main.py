@@ -484,7 +484,7 @@ class App(customtkinter.CTk):
                                             casas = self.casa,
                                             comodo = nomeComodo,
                                             nome =NomeAr,
-                                            ligado = "Desligado",
+                                            ligado = "False",
                                             temperatura= 0,
                                             intensidade=0,
                                                     )
@@ -802,7 +802,7 @@ class App(customtkinter.CTk):
         self.dispositivosFrame[nome].pack(side='top')
         self.dispositivosFrame[nome].update()
         self.update()
-        self.frameAtual = nome     
+        self.frameAtual = nome      
         
     def MudarFrameConfigCortina(self,nome):
         self.cortinasFrame[self.frameAtual].pack_forget()

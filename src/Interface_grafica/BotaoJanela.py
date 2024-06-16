@@ -60,7 +60,12 @@ class BotaoJanela(customtkinter.CTkButton):
         self.icone2Label.image = icone2
         self.icone2Label.grid(row=2, column=0,ipady=5)
         
-        self.trancadoLabel = customtkinter.CTkLabel(self.container, text = trancado,
+        if trancado == "True":
+            self.texto = "Trancado"
+        if trancado == "False":
+            self.texto = "Aberto"
+        
+        self.trancadoLabel = customtkinter.CTkLabel(self.container, text = self.texto,
                                                   font=("Inika", 12), text_color="#000000")
         self.trancadoLabel.grid(row=2, column=1,padx= (10,0))
         
