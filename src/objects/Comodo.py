@@ -172,7 +172,7 @@ class Comodo(InterfaceComodo):
                 self.arescondicionados[nome].SetIntensidade(intensidade)
           for i,row in enumerate (ws_ares.iter_rows(),start=2):
                if row[0].value == self.Nome() and row[1].value == nome:
-                     if ligado==False: # Se o ar esta desligado não é possível a temperatura e a intensidade é 0 
+                     if ligado=="False": # Se o ar esta desligado não é possível a temperatura e a intensidade é 0 
                            row[2].value="False"
                            row[3].value=0
                            row[4].value=0

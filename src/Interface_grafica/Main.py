@@ -117,9 +117,9 @@ class App(customtkinter.CTk):
 
         for i,row in enumerate(ws_ares.iter_rows(min_row=2), start=1):
             if(row[2].value=="True"):
-                self.nomeArCondicionado.append((f"{str(row[0].value)}",f"{str(row[1].value)}","Ligado",f"{str(row[3].value)}",f"{str(row[4].value)}","","",""))
+                self.nomeArCondicionado.append((f"{str(row[0].value)}",f"{str(row[1].value)}","True",f"{str(row[3].value)}",f"{str(row[4].value)}","","",""))
             else:
-                self.nomeArCondicionado.append((f"{str(row[0].value)}",f"{str(row[1].value)}","Desligado",f"{str(row[3].value)}",f"{str(row[4].value)}","","",""))
+                self.nomeArCondicionado.append((f"{str(row[0].value)}",f"{str(row[1].value)}","False",f"{str(row[3].value)}",f"{str(row[4].value)}","","",""))
 
         for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=1):
             if(row[6].value=="True"):
@@ -202,9 +202,9 @@ class App(customtkinter.CTk):
                                             casas = self.casa,
                                             comodo = nomes,
                                             nome =nome,
-                                            ligado = "Desligado",
-                                            temperatura= 20,
-                                            intensidade=0,
+                                            ligado = ligado,
+                                            temperatura= temperatura,
+                                            intensidade=intensidade,
                                                     )
                     self.contadorArCondicionado[nomes]  += 1
                     self.arConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameAr(n))
@@ -212,9 +212,9 @@ class App(customtkinter.CTk):
                     
                     self.ArCondicionadoBotoes[nome] = BotaoArCondicionado(self.ArCondicionadoFrame[nomes],
                                                              nomeAr=nome,
-                                                             ligado="Desligado",
-                                                             temperatura= 20,
-                                                             intensidade=0)
+                                                             ligado=ligado,
+                                                             temperatura= temperatura,
+                                                             intensidade=intensidade)
                     self.ArCondicionadoBotoes[nome].configure(command = lambda n=nome:self.MudarFrameConfigAr(n))
                     self.ArCondicionadoBotoes[nome].pack(side="top", pady= (10,10))
               
@@ -465,7 +465,7 @@ class App(customtkinter.CTk):
                                             comodo = nomeComodo,
                                             nome =NomeAr,
                                             ligado = "Desligado",
-                                            temperatura= 20,
+                                            temperatura= 0,
                                             intensidade=0,
                                                     )
         self.contadorArCondicionado[nomeComodo]  += 1
@@ -474,7 +474,7 @@ class App(customtkinter.CTk):
                     
         self.ArCondicionadoBotoes[NomeAr] = BotaoArCondicionado(self.ArCondicionadoFrame[nomeComodo],
                                                              nomeAr=NomeAr,
-                                                             ligado="Desligado",
+                                                             ligado="False",
                                                              temperatura= 20,
                                                              intensidade=0)
         self.ArCondicionadoBotoes[NomeAr].configure(command = lambda n=NomeAr:self.MudarFrameConfigAr(n))
