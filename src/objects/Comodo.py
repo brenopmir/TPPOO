@@ -94,12 +94,12 @@ class Comodo(InterfaceComodo):
                ws_cortinas.append([self.__nome,f"{self.cortinas[nome].Nome()}", None,None,self.cortinas[nome].Intensidade(),None,None,None])
           
           elif(tipo==3):
-               self[nome]=criar_instancia_ar_condicionado(Ar_Condicionado,nome,False,0,0)
+               self.arescondicionados[nome]=criar_instancia_ar_condicionado(Ar_Condicionado,nome,False,0,0)
                self.__quantidade_dispositivo+=1
-               if(self[nome].Ligado()==True):
-                    ws_ares.append([self.__nome,f"{self[nome].Nome()}","True",self[nome].Temperatura(),self[nome].Intensidade(),None,None,None])
+               if(self.arescondicionados[nome].Ligado()==True):
+                    ws_ares.append([self.__nome,f"{self.arescondicionados[nome].Nome()}","True",self.arescondicionados[nome].Temperatura(),self.arescondicionados[nome].Intensidade(),None,None,None])
                else:
-                    ws_ares.append([self.__nome,f"{self[nome].Nome()}","False",self[nome].Temperatura(),self[nome].Intensidade(),None,None,None])
+                    ws_ares.append([self.__nome,f"{self.arescondicionados[nome].Nome()}","False",self.arescondicionados[nome].Temperatura(),self.arescondicionados[nome].Intensidade(),None,None,None])
           
           elif(tipo==4):
                self.janelas[nome]=criar_instancia_janela(Janela,nome,0,False)
@@ -165,11 +165,11 @@ class Comodo(InterfaceComodo):
          wb.save("Casa.xlsx")
 
     #Configura todos os ares condicionados que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar       
-    def ConfigurarArCondicionado(self,nome:str,ligado:bool,temperatura:int,intensidade:int)->None:
-          if nome in self:
-                self[nome].SetLigado(ligado)
-                self[nome].SetTemperatura(temperatura)
-                self[nome].SetIntensidade(intensidade)
+    def ConfigurarArCondicionado(self,nome:str,ligado:str,temperatura:int,intensidade:int)->None:
+          if nome in self.arescondicionados:
+                self.arescondicionados[nome].SetLigado(ligado)
+                self.arescondicionados[nome].SetTemperatura(temperatura)
+                self.arescondicionados[nome].SetIntensidade(intensidade)
           for i,row in enumerate (ws_ares.iter_rows(),start=2):
                if row[0].value == self.Nome() and row[1].value == nome:
                      if ligado==False: # Se o ar esta desligado não é possível a temperatura e a intensidade é 0 

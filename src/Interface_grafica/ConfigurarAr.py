@@ -12,6 +12,12 @@ sys.path.append(diretorioPai)
 class ConfigurarAr(customtkinter.CTkScrollableFrame):
     def __init__(self,casas,comodo, master,nome,ligado,temperatura,intensidade, **kwargs):
         super().__init__(master, **kwargs)
+        self.casa = casas
+        self.comodo = comodo
+        self.nome = nome
+        self.ligado = ligado
+        self.temperatura = temperatura
+        self.intensidade = intensidade
 
         self.configure(fg_color = "#616D7A",
                        width = 390,
@@ -69,13 +75,17 @@ class ConfigurarAr(customtkinter.CTkScrollableFrame):
         self.excluir.pack(side = "top", pady = 80)
         
     def SetTemperatura(self,valor):
-        #setar novo valor da abertura no back
+        self.temperatura = int(valor)
         self.labelTemperatura.configure(text = f"Temperatura: {valor}°C")
+        self.SetarAr()
         
     def SetIntensidade(self,valor):
-        #setar novo valor da intensidade no back
-        self.labelIntensidade.configure(text = f"Intensidade: {valor}") 
+        self.intensidade = int(valor)
+        self.labelIntensidade.configure(text = f"Intensidade: {valor}")  
+        self.SetarAr()
         
     def SetLigado(self):
-        #setar novo valor no back
-        pass    
+        self.ligado = self.check   
+    
+    def SetarAr(self):
+        self.casa.comodos[self.comodo].ConfigurarArCondicionado(self.nome,self.ligado,self.temperatura,self.intensidade)

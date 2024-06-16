@@ -66,10 +66,7 @@ class BotaoArCondicionado(customtkinter.CTkButton):
         
         self.ligadoLabel = customtkinter.CTkLabel(self.container,
                                                   font=("Inika", 12), text_color="#393939")
-        if ligado == "True":
-            self.ligadoLabel.configure(text = 'Ligado')
-        else:
-            self.ligadoLabel.configure(text = 'Desligado')
+        self.ligadoLabel.configure(text = ligado)
         self.ligadoLabel.grid(row=2, column=1,padx= (10,0))
         
         self.icone1Label = customtkinter.CTkLabel(self.container, 
