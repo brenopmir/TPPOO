@@ -10,8 +10,13 @@ sys.path.append(diretorioPai)
 
 
 class ConfigurarJanela(customtkinter.CTkScrollableFrame):
-    def __init__(self, master,nome,abertura,trancado, **kwargs):
+    def __init__(self, master,casas,comodo,nome,abertura,trancado, **kwargs):
         super().__init__(master, **kwargs)
+        self.nome = nome
+        self.abertura = abertura
+        self.trancado = trancado
+        self.casa = casas
+        self.comodo = comodo
 
         self.configure(fg_color = "#616D7A",
                        width = 390,
@@ -37,8 +42,8 @@ class ConfigurarJanela(customtkinter.CTkScrollableFrame):
 
         self.check = customtkinter.StringVar(value= trancado)
         self.checkBox = customtkinter.CTkCheckBox(self,variable= self.check,
-                                                  onvalue="Trancado", 
-                                                  offvalue="Aberto",
+                                                  onvalue="True", 
+                                                  offvalue="False",
                                                   textvariable= self.check,
                                                   command=self.SetTrancado,
                                                   height= 40,
@@ -54,9 +59,17 @@ class ConfigurarJanela(customtkinter.CTkScrollableFrame):
                                               width=150)
         self.excluir.pack(side = "top", pady = 80)
     def SetAbertura(self,valor):
-        #setar novo valor da abertura no back
-        self.labelAbertura.configure(text = f"Abertura: {valor}") 
+        self.abertura = int(valor)
+        self.labelAbertura.configure(text = f"Abertura: {self.abertura}") 
+        self.SetarJanela()
         
     def SetTrancado(self):
-        #setar novo valor no back
-        pass
+        self.trancado = self.check.get()
+        print(self.trancado)
+        self.SetarJanela()
+    
+    def SetarJanela(self):
+        if self.trancado == "True":
+            self.casa.comodos[self.comodo].ConfigurarJanela(self.nome,self.abertura,"True")
+        elif self.trancado == "False":
+            self.casa.comodos[self.comodo].ConfigurarJanela(self.nome,self.abertura,"False")

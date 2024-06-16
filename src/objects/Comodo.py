@@ -183,13 +183,13 @@ class Comodo(InterfaceComodo):
           wb.save("Casa.xlsx")
 
     #Configura todas as janelas que possuem o nome indicado no parametro alterando todos os atributos de maneira que o usuario desejar  
-    def ConfigurarJanela(self,nome:str,abertura:int,tranca:bool)->None:
+    def ConfigurarJanela(self,nome:str,abertura:int,tranca:str)->None:
           if nome in self.janelas:
                 self.janelas[nome].SetTranca(tranca)
                 self.janelas[nome].SetAbertura(abertura)
           for i,row in enumerate (ws_janelas.iter_rows(),start=2):
                if row[0].value == self.Nome() and row[1].value == nome:
-                     if tranca==False:# Se a janela está trancada não é possivel abrir a janela 
+                     if tranca=="False":# Se a janela está trancada não é possivel abrir a janela 
                            row[6].value="False"
                            row[5].value=0
                      else:

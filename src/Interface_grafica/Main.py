@@ -85,6 +85,8 @@ class App(customtkinter.CTk):
         self.nomeCortina=[]
         self.botaoAddLampada = {}
         self.botaoAddAr = {}
+        self.botaoAddJanela={}
+        self.botaoAddCortina = {}
         self.labelDuplicataDispositivos = customtkinter.CTkLabel(self)
         self.CarregarVetores()
         self.CriarJanelas()
@@ -123,9 +125,9 @@ class App(customtkinter.CTk):
 
         for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=1):
             if(row[6].value=="True"):
-                self.nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","Trancado",""))
+                self.nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","True",""))
             else:
-                self.nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","Aberto",""))
+                self.nomeJanelas.append((f"{str(row[0].value)}",f"{str(row[1].value)}","","","",f"{str(row[5].value)}","False",""))
 
 
     def CriarJanelas(self):
@@ -224,17 +226,21 @@ class App(customtkinter.CTk):
             janelaFrame.header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameDispositivosJanela(n))
             self.janelaFrame[nomes] = janelaFrame
             
-            BotaoAdicionarJanela = BotaoAdd(self.janelaFrame[nomes], label="Adicionar nova janela")
-            BotaoAdicionarJanela.pack(side = "bottom",pady= (10,10))
+            self.botaoAddJanela[nomes] = BotaoAdd(self.janelaFrame[nomes], label="Adicionar nova janela")
+            self.botaoAddJanela[nomes].configure(command = lambda n=nomes: self.AdicionarJanelaBotao(n))
+            self.botaoAddJanela[nomes].pack(side = "bottom",pady= (10,10))
              
             for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeJanelas:
                 if comodo == nomes:
                     self.janelaConfig[nome] = ConfigurarJanela(master = self,
+                                                    casas= self.casa,
+                                                    comodo = nomes,
                                                     nome =nome,
                                                     abertura=abertura,
                                                     trancado = tranca
                                                     )
                     self.janelaConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameJanela(n))
+                    self.janelaConfig[nome].excluir.configure(command = lambda n1=nome,n2=nomes:self.RemoverJanela(nomeJanela=n1,nomeComodo=n2))
                     self.contadorJanela[nomes]  += 1
                     self.janelaBotoes[nome] = BotaoJanela(self.janelaFrame[nomes],
                                                              nomeJanela=nome,
@@ -373,6 +379,20 @@ class App(customtkinter.CTk):
                                                              intensidade=intensidade)
                 self.ArCondicionadoBotoes[nome].configure(command = lambda n=nome:self.MudarFrameConfigAr(n))
                 self.ArCondicionadoBotoes[nome].pack(side="top", pady= (10,10))  
+                
+    def RecarregarBotoesJanela(self,nomeComodo):
+        self.CarregarVetores()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeJanelas:
+            if comodo == nomeComodo:
+                self.janelaBotoes[nome].destroy()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeJanelas:
+            if comodo == nomeComodo:
+                self.janelaBotoes[nome] = BotaoJanela(self.janelaFrame[nomeComodo],
+                                                             nomeJanela=nome,
+                                                             trancado=tranca,
+                                                             abertura=abertura)
+                self.janelaBotoes[nome].configure(command = lambda n=nome:self.MudarFrameConfigJanela(n))
+                self.janelaBotoes[nome].pack(side="top", pady= (10,10))  
                     
     def AdicionarLampadaBotao(self,nomeComodo):
         self.inputLampadaAdd = DispositivoAddFrame(self.lampadasFrame[nomeComodo])
@@ -483,6 +503,59 @@ class App(customtkinter.CTk):
         
         self.RecarregarBotoesDispositivos(nomeComodo)
         
+    def AdicionarJanelaBotao(self,nomeComodo):
+        self.inputJanelaAdd = DispositivoAddFrame(self.janelaFrame[nomeComodo])
+        self.inputJanelaAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddJanela(n))
+        self.inputJanelaAdd.pack(side="bottom")
+
+        
+        
+    def SubmeterAddJanela(self,nomeComodo):
+        NomeJanela = self.inputJanelaAdd.input.get()
+        self.labelDuplicataDispositivos.pack_forget()
+        for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeLampadas:
+            if nome == NomeJanela:
+                self.labelDuplicataDispositivos = customtkinter.CTkLabel(self.janelaFrame[nomeComodo],
+                                               text= "Já existe um dispositivo com esse nome, insira outro",
+                                               text_color= "red")
+                self.labelDuplicataDispositivos.pack(side="top")
+                return
+        self.casa.comodos[nomeComodo].AdicionarDispositivo(tipo=4,nome=NomeJanela)
+        self.casa.SalvarQuantidadeDeDispositivosComodo()
+        self.CarregarVetores()
+        
+        self.janelaConfig[NomeJanela] = ConfigurarJanela(master = self,
+                                                    casas = self.casa,
+                                                    comodo = nomeComodo,
+                                                    nome =NomeJanela,
+                                                    abertura=0,
+                                                    trancado=  "False"
+                                                    )
+        self.contadorJanela[nomeComodo]  += 1
+        self.janelaConfig[NomeJanela].header.iconeBotao.configure(command = lambda n=nomeComodo: self.VoltarFrameJanela(n))
+        self.janelaConfig[NomeJanela].excluir.configure(command = lambda n1=NomeJanela,n2=nomeComodo:self.RemoverJanela(nomeJanela=n1,nomeComodo=n2))
+                    
+        self.janelaBotoes[NomeJanela] = BotaoJanela(self.janelaFrame[nomeComodo],
+                                                             nomeJanela=NomeJanela,
+                                                             trancado="True",
+                                                             abertura=0)
+        self.janelaBotoes[NomeJanela].configure(command = lambda n=NomeJanela:self.MudarFrameConfigJanela(n))
+        self.janelaBotoes[NomeJanela].pack(side="top", pady= (10,10))
+        self.inputJanelaAdd.pack_forget()
+        
+        self.RecarregarBotoesDispositivos(nomeComodo)
+      
+    def RemoverJanela(self,nomeJanela,nomeComodo):
+        self.casa.comodos[nomeComodo].RemoverDispositivo(4,nomeJanela)
+        self.casa.SalvarQuantidadeDeDispositivosComodo()
+        self.contadorJanela[nomeComodo] -= 1
+        self.janelaBotoes[nomeJanela].destroy()
+        self.CarregarVetores()
+        self.RecarregarBotoesJanela(nomeComodo)
+        self.RecarregarBotoesDispositivos(nomeComodo)
+        self.RecarregarBotoesComodos() 
+        self.VoltarFrameJanela(nomeComodo)  
+        
     def AdicionarComodoBotao(self):
         self.inputComodoAdd = ComodoAddFrame(self.comodoFrame)
         self.inputComodoAdd.submit.configure(command = lambda:self.SubmeterAddComodo())
@@ -542,16 +615,20 @@ class App(customtkinter.CTk):
         self.botaoAddAr[NomeComodo].configure(command = lambda n=NomeComodo: self.AdicionarArBotao(n))
         self.botaoAddAr[NomeComodo].pack(side = "bottom",pady= (10,10))
         
+        
         self.botaoJanela[NomeComodo] = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Janela",
                                   numeroDispositivos= 0,
                                   caminho="src/icons/Janela.png")
         self.botaoJanela[NomeComodo].configure(command = lambda n=NomeComodo:self.MudarFrameJanela(n))
         self.botaoJanela[NomeComodo].pack(side="top", pady= (10,10))
+        
         janelaFrame = JanelaFrame(master=self)
         janelaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosJanela(n))
         self.janelaFrame[NomeComodo] = janelaFrame
-        BotaoAdicionarJanela = BotaoAdd(self.janelaFrame[NomeComodo], label="Adicionar nova janela")
-        BotaoAdicionarJanela.pack(side = "bottom",pady= (10,10))
+        
+        self.botaoAddJanela[NomeComodo] = BotaoAdd(self.janelaFrame[NomeComodo], label="Adicionar nova janela")
+        self.botaoAddJanela[NomeComodo].configure(command = lambda n=NomeComodo: self.AdicionarJanelaBotao(n))
+        self.botaoAddJanela[NomeComodo].pack(side = "bottom",pady= (10,10))
         
         
         self.botaoCortina[NomeComodo] = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Cortina",
@@ -708,6 +785,8 @@ class App(customtkinter.CTk):
         self.janelaFrame[nome].update()
         self.update()
         self.frameAtual = nome
+        self.RecarregarBotoesJanela(nome)
+        self.CarregarVetores()
     
     def MudarFrameCortina(self,nome):
         self.dispositivosFrame[self.frameAtual].pack_forget()

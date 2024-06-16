@@ -86,7 +86,6 @@ class ConfigurarAr(customtkinter.CTkScrollableFrame):
         
     def SetLigado(self):
         self.ligado = self.check.get()
-        print(self.ligado)
         self.SetarAr()
     
     def SetarAr(self):
