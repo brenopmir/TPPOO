@@ -83,6 +83,8 @@ class App(customtkinter.CTk):
         self.nomeArCondicionado=[]
         self.nomeJanelas=[]
         self.nomeCortina=[]
+        self.botaoAddLampada = {}
+        self.botaoAddAr = {}
         self.labelDuplicataDispositivos = customtkinter.CTkLabel(self)
         self.CarregarVetores()
         self.CriarJanelas()
@@ -162,9 +164,9 @@ class App(customtkinter.CTk):
             lampadaFrame.header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameDispositivosLampadas(n))
             self.lampadasFrame[nomes] = lampadaFrame
             
-            BotaoAdicionarLampada = BotaoAdd(self.lampadasFrame[nomes], label="Adicionar nova lâmpada")
-            BotaoAdicionarLampada.configure(command = lambda: self.AdicionarLampadaBotao(nomes))
-            BotaoAdicionarLampada.pack(side = "bottom",pady= (10,10))
+            self.botaoAddLampada[nomes] = BotaoAdd(self.lampadasFrame[nomes], label="Adicionar nova lâmpada")
+            self.botaoAddLampada[nomes].configure(command = lambda n=nomes: self.AdicionarLampadaBotao(n))
+            self.botaoAddLampada[nomes].pack(side = "bottom",pady= (10,10))
             
             for comodo,nomeLamp,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeLampadas:
                 if comodo == nomes:
@@ -177,7 +179,7 @@ class App(customtkinter.CTk):
                                                     )
                     self.contadorLampada[nomes]  += 1
                     self.lampadasConfig[nomeLamp].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameLampadas(n))
-                    self.lampadasConfig[nomeLamp].excluir.configure(command = lambda n=nomeLamp:self.RemoverLampada(nomeLampada=n,nomeComodo=nomes))
+                    self.lampadasConfig[nomeLamp].excluir.configure(command = lambda n1=nomeLamp,n2=nomes:self.RemoverLampada(nomeLampada=n1,nomeComodo=n2))
                     self.lampadasBotoes[nomeLamp] = BotaoLampada(self.lampadasFrame[nomes],
                                                              nomeLampada=nomeLamp,
                                                              cor=cor,
@@ -190,9 +192,9 @@ class App(customtkinter.CTk):
             arCondicionadoFrame.header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameDispositivosAr(n))
             self.ArCondicionadoFrame[nomes] = arCondicionadoFrame
             
-            BotaoAdicionarAr = BotaoAdd(self.ArCondicionadoFrame[nomes], label="Adicionar novo ar")
-            BotaoAdicionarAr.configure(command = lambda: self.AdicionarArBotao(nomes))
-            BotaoAdicionarAr.pack(side = "bottom",pady= (10,10))
+            self.botaoAddAr[nomes] = BotaoAdd(self.ArCondicionadoFrame[nomes], label="Adicionar novo ar")
+            self.botaoAddAr[nomes].configure(command = lambda n=nomes: self.AdicionarArBotao(n))
+            self.botaoAddAr[nomes].pack(side = "bottom",pady= (10,10))
              
             for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeArCondicionado:
                 if comodo == nomes:
@@ -206,7 +208,7 @@ class App(customtkinter.CTk):
                                                     )
                     self.contadorArCondicionado[nomes]  += 1
                     self.arConfig[nome].header.iconeBotao.configure(command = lambda n=nomes: self.VoltarFrameAr(n))
-                    self.arConfig[nome].excluir.configure(command = lambda:self.RemoverAr(nomeAr=nome,nomeComodo=nomes))
+                    self.arConfig[nome].excluir.configure(command = lambda n1=nome,n2=nomes:self.RemoverAr(nomeAr=n1,nomeComodo=n2))
                     
                     self.ArCondicionadoBotoes[nome] = BotaoArCondicionado(self.ArCondicionadoFrame[nomes],
                                                              nomeAr=nome,
@@ -374,8 +376,9 @@ class App(customtkinter.CTk):
                     
     def AdicionarLampadaBotao(self,nomeComodo):
         self.inputLampadaAdd = DispositivoAddFrame(self.lampadasFrame[nomeComodo])
-        self.inputLampadaAdd.submit.configure(command = lambda:self.SubmeterAddLampada(nomeComodo))
+        self.inputLampadaAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddLampada(n))
         self.inputLampadaAdd.pack(side="bottom")
+
         
         
     def SubmeterAddLampada(self,nomeComodo):
@@ -401,7 +404,7 @@ class App(customtkinter.CTk):
                                                     )
         self.contadorLampada[nomeComodo]  += 1
         self.lampadasConfig[NomeLampada].header.iconeBotao.configure(command = lambda n=nomeComodo: self.VoltarFrameLampadas(n))
-        self.lampadasConfig[NomeLampada].excluir.configure(command = lambda:self.RemoverLampada(nomeLampada=NomeLampada,nomeComodo=nomeComodo))
+        self.lampadasConfig[NomeLampada].excluir.configure(command = lambda n1=NomeLampada,n2=nomeComodo:self.RemoverLampada(nomeLampada=n1,nomeComodo=n2))
                     
         self.lampadasBotoes[NomeLampada] = BotaoLampada(self.lampadasFrame[nomeComodo],
                                                              nomeLampada=NomeLampada,
@@ -414,19 +417,20 @@ class App(customtkinter.CTk):
         self.RecarregarBotoesDispositivos(nomeComodo)
     
     def RemoverLampada(self,nomeLampada,nomeComodo):
-        print(nomeLampada)
         self.casa.comodos[nomeComodo].RemoverDispositivo(1,nomeLampada)
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.contadorLampada[nomeComodo] -= 1
         self.lampadasBotoes[nomeLampada].destroy()
+        self.lampadasConfig[nomeLampada].pack_forget()
+        self.lampadasConfig[nomeLampada].destroy()
+        self.lampadasFrame[nomeComodo].pack(side="top")
+        self.frameAtual=nomeComodo
         self.CarregarVetores()
         self.RecarregarBotoesLampada(nomeComodo)
         self.RecarregarBotoesDispositivos(nomeComodo)
         self.RecarregarBotoesComodos()
-        self.VoltarFrameLampadas(nomeComodo)
         
     def RemoverAr(self,nomeAr,nomeComodo):
-        print(nomeAr)
         self.casa.comodos[nomeComodo].RemoverDispositivo(3,nomeAr)
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.contadorArCondicionado[nomeComodo] -= 1
@@ -439,7 +443,7 @@ class App(customtkinter.CTk):
         
     def AdicionarArBotao(self,nomeComodo):
         self.inputArAdd = DispositivoAddFrame(self.ArCondicionadoFrame[nomeComodo])
-        self.inputArAdd.submit.configure(command = lambda:self.SubmeterAddAr(nomeComodo))
+        self.inputArAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddAr(n))
         self.inputArAdd.pack(side="bottom")    
         
     def SubmeterAddAr(self,nomeComodo):
@@ -466,7 +470,7 @@ class App(customtkinter.CTk):
                                                     )
         self.contadorArCondicionado[nomeComodo]  += 1
         self.arConfig[NomeAr].header.iconeBotao.configure(command = lambda n=nomeComodo: self.VoltarFrameAr(n))
-        self.arConfig[NomeAr].excluir.configure(command = lambda:self.RemoverAr(nomeAr=NomeAr,nomeComodo=nomeComodo))
+        self.arConfig[NomeAr].excluir.configure(command = lambda n1=NomeAr,n2=nomeComodo:self.RemoverAr(nomeAr=n1,nomeComodo=n2))
                     
         self.ArCondicionadoBotoes[NomeAr] = BotaoArCondicionado(self.ArCondicionadoFrame[nomeComodo],
                                                              nomeAr=NomeAr,
@@ -520,9 +524,9 @@ class App(customtkinter.CTk):
         lampadaFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosLampadas(n))
         self.lampadasFrame[NomeComodo] = lampadaFrame
         
-        BotaoAdicionarLampada = BotaoAdd(self.lampadasFrame[NomeComodo], label="Adicionar nova lâmpada")
-        BotaoAdicionarLampada.configure(command = lambda: self.AdicionarLampadaBotao(NomeComodo))
-        BotaoAdicionarLampada.pack(side = "bottom",pady= (10,10))
+        self.botaoAddLampada[NomeComodo] = BotaoAdd(self.lampadasFrame[NomeComodo], label="Adicionar nova lâmpada")
+        self.botaoAddLampada[NomeComodo].configure(command = lambda n=NomeComodo: self.AdicionarLampadaBotao(n))
+        self.botaoAddLampada[NomeComodo].pack(side = "bottom",pady= (10,10))
         
             
         self.botaoAr[NomeComodo] = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Ar Condicionado",
@@ -534,9 +538,9 @@ class App(customtkinter.CTk):
         arCondicionadoFrame.header.iconeBotao.configure(command = lambda n=NomeComodo: self.VoltarFrameDispositivosAr(n))
         self.ArCondicionadoFrame[NomeComodo] = arCondicionadoFrame
         
-        BotaoAdicionarAr = BotaoAdd(self.ArCondicionadoFrame[NomeComodo], label="Adicionar novo ar")
-        BotaoAdicionarAr.configure(command = lambda: self.AdicionarArBotao(nomes))
-        BotaoAdicionarAr.pack(side = "bottom",pady= (10,10))
+        self.botaoAddAr[NomeComodo] = BotaoAdd(self.ArCondicionadoFrame[NomeComodo], label="Adicionar novo ar")
+        self.botaoAddAr[NomeComodo].configure(command = lambda n=NomeComodo: self.AdicionarArBotao(n))
+        self.botaoAddAr[NomeComodo].pack(side = "bottom",pady= (10,10))
         
         self.botaoJanela[NomeComodo] = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Janela",
                                   numeroDispositivos= 0,
@@ -609,6 +613,7 @@ class App(customtkinter.CTk):
         self.update()
         self.lampadasFrame[nome].pack(side ='top')
         self.lampadasFrame[nome].update()
+        self.frameAtual = nome
         self.update()
         
     def VoltarFrameDispositivosLampadas(self,nome):
@@ -616,6 +621,7 @@ class App(customtkinter.CTk):
         self.update()
         self.dispositivosFrame[nome].pack(side='top')
         self.dispositivosFrame[nome].update()
+        self.frameAtual = nome
         self.update()
         
     def MudarFrameConfigLampadas(self,nome):
@@ -650,6 +656,7 @@ class App(customtkinter.CTk):
         self.update()
         self.dispositivosFrame[nome].pack(side='top')
         self.dispositivosFrame[nome].update()
+        self.frameAtual = nome
         self.update()
         
     def MudarFrameConfigAr(self,nome):
