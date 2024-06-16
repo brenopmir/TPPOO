@@ -18,7 +18,7 @@ class Lampadas(Dispositivo,InterfaceLampadas):
     #Retorna a cor da Lampada 
     def Cor(self) -> str:
         return self.__cor
-    
+     
     #Seta a cor da Lampada
     def SetCor(self, cornova: str) -> None:
         self.__cor=cornova
