@@ -19,7 +19,7 @@ class ComodoRemoveFrame(customtkinter.CTkScrollableFrame):
         self.input = customtkinter.CTkEntry(self,placeholder_text="Digite o nome do comodo",
                                             height= 40, 
                                             width= 230,
-                                            text_color="#FFFFFF")
+                                            text_color="#000000")
         self.input.pack(side = "top", pady = 20)
         self.submit = customtkinter.CTkButton(self, text="Remover",
                                               text_color="#000000",

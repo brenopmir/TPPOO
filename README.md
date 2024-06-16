@@ -28,6 +28,7 @@ O usuário precisará de:
 • Instalação da biblioteca openpyxl   
 • Instalação da biblioteca custom tkinter
 • Instalação da biblioteca PIL(Pillow)
+OBS:Clicar na lateral dos botões e não no texto ou icone
 
 Instruções de Uso:
 O usuário, através de um menu disponibilizado na interface, terá a oportunidade de interagir com o sistema,ou seja realizar diversas transações pelo botoes e outros objetos iterativos.
