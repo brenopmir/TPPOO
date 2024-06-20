@@ -41,18 +41,22 @@ class Comodo(InterfaceComodo):
         self.CarregarAresSalvos()
         self.CarregarJanelasSalvas()
      
+    #Faz o carregamento dos valores que estão salvos previamente na planilha Casa.xlsx no sheet Lampadas e salvam esses valores no dictionary das lampadas
     def CarregarLampadasSalvas(self)->None:
           for i,row in enumerate(ws_lampadas.iter_rows(min_row=2), start=1):
             self.lampadas[f"{str(row[1].value)}"]=criar_instancia_lampada(Lampadas,f"{str(row[1].value)}",None,0)
 
+     #Faz o carregamento dos valores que estão salvos previamente na planilha Casa.xlsx no sheet Cortinas e salvam esses valores no dictionary das cortinas
     def CarregarCortinaSalvas(self)->None:
           for i,row in enumerate(ws_cortinas.iter_rows(min_row=2), start=1):
             self.cortinas[f"{str(row[1].value)}"]=criar_instancia_cortina(Cortina,f"{str(row[1].value)}",0)
 
+     #Faz o carregamento dos valores que estão salvos previamente na planilha Casa.xlsx no sheet Ares Condicionados e salvam esses valores no dictionary dos arescondicionados 
     def CarregarAresSalvos(self)->None:
           for i,row in enumerate(ws_ares.iter_rows(min_row=2), start=1):
             self.arescondicionados[f"{str(row[1].value)}"]=criar_instancia_ar_condicionado(Ar_Condicionado,f"{str(row[1].value)}",False,0,0)
 
+     #Faz o carregamento dos valores que estão salvos previamente na planilha Casa.xlsx no sheet Janelas e salvam esses valores no dictionary das janelas
     def CarregarJanelasSalvas(self)->None:
           for i,row in enumerate(ws_janelas.iter_rows(min_row=2), start=1):
             self.janelas[f"{str(row[1].value)}"]=criar_instancia_janela(Janela,f"{str(row[1].value)}",0,False)

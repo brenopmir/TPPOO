@@ -19,11 +19,12 @@ class Casa(InterfaceCasa):
         self.comodos={}
         self.CarregarComodosSalvos()
         
-
+    #Faz o carregamento dos valores que estão salvos previamente nas planilha Comodos do arquivo Casa_comodos e salvam esses valores no dictionary dos comodos
     def CarregarComodosSalvos(self)->None:
         for i,row in enumerate(ws.iter_rows(min_row=2), start=1):
             self.comodos[f"{str(row[0].value)}"]=criar_comodo(Comodo,f"{str(row[0].value)}")
             
+    #Retorna a propriedade nome da casa       
     def Nome(self) -> str:
         return self.__nome
     
