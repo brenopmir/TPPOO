@@ -92,6 +92,7 @@ class App(customtkinter.CTk):
         self.CriarJanelas()
         
     def CarregarVetores(self):
+        #Carrega todos os vetores que são lidos das planilhas
         self.nomeComodos=[]
         self.nomeLampadas=[]
         self.nomeArCondicionado=[]
@@ -131,8 +132,12 @@ class App(customtkinter.CTk):
 
 
     def CriarJanelas(self):
+        #Cria todos os frames e botões que serão mostrados na interface gráfica
+        
+        #Criando os botões que irão na página principal Comodos
         self.comodoFrame = ComodoFrame(self)
         self.comodoFrame.pack(side= "top")
+        #Labels para mostrar uma mensagem em caso de erro
         self.labelDuplicata = customtkinter.CTkLabel(self.comodoFrame,
                                                text= "Já existe um comodo com esse nome, insira outro",
                                                text_color= "red")
@@ -308,6 +313,8 @@ class App(customtkinter.CTk):
             self.botoesComodo[nomes].pack(side="top", pady= (10,10))
 
     def RecarregarBotoesComodos(self):
+        #Recarrega todos os botões presentes na página inicial cômodos, de forma a atualizar 
+        #os dados dos botões de acordo com as planilhas
         for nomes,numero in self.nomeComodos:
             self.botoesComodo[nomes].destroy()
         for nomes,numero in self.nomeComodos:
@@ -316,6 +323,11 @@ class App(customtkinter.CTk):
             self.botoesComodo[nomes].pack(side="top", pady= (10,10))
 
     def RecarregarBotoesDispositivos(self,nomeComodo):
+        '''
+        Recarrega todos os botões presentes na página dos dispositivos de um comodo, de forma a atualizar 
+       o número de dispositivos de acordo com as planilhas
+        :param nomeComodo: representa o comodo cuja pagina de dispositivos será atualizada 
+        '''
         for nomes,numero in self.nomeComodos:
             self.botoesComodo[nomes].destroy()
         for nomes,numero in self.nomeComodos:
@@ -356,6 +368,11 @@ class App(customtkinter.CTk):
         self.botaoCortina[nomeComodo].pack(side="top", pady= (10,10))
         
     def RecarregarBotoesLampada(self,nomeComodo):
+        '''
+        Recarrega todos os botões presentes na página das lampadas de um comodo, de forma a atualizar 
+        os dados das lampadas de acordo com as planilhas
+        :param nomeComodo: representa o comodo cuja pagina Lâmpadas será atualizada 
+        '''
         self.CarregarVetores()
         for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeLampadas:
             if comodo == nomeComodo:
@@ -370,6 +387,11 @@ class App(customtkinter.CTk):
                 self.lampadasBotoes[nome].pack(side="top", pady= (10,10))  
                 
     def RecarregarBotoesAr(self,nomeComodo):
+        '''
+        Recarrega todos os botões presentes na página dos ares condicionados de um comodo, de forma a atualizar 
+        os dados dos ares de acordo com as planilhas
+        :param nomeComodo: representa o comodo cuja pagina ArCondicionado será atualizada 
+        '''
         self.CarregarVetores()
         for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeArCondicionado:
             if comodo == nomeComodo:
@@ -385,6 +407,11 @@ class App(customtkinter.CTk):
                 self.ArCondicionadoBotoes[nome].pack(side="top", pady= (10,10))  
                 
     def RecarregarBotoesJanela(self,nomeComodo):
+        '''
+        Recarrega todos os botões presentes na página das janelas de um comodo, de forma a atualizar 
+        os dados das janelas de acordo com as planilhas
+        :param nomeComodo: representa o comodo cuja pagina Janela será atualizada 
+        '''
         self.CarregarVetores()
         for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeJanelas:
             if comodo == nomeComodo:
@@ -399,6 +426,11 @@ class App(customtkinter.CTk):
                 self.janelaBotoes[nome].pack(side="top", pady= (10,10))  
                     
     def RecarregarBotoesCortina(self,nomeComodo):
+        '''
+        Recarrega todos os botões presentes na página das Cortinas de um comodo, de forma a atualizar 
+        os dados das Cortinas de acordo com as planilhas
+        :param nomeComodo: representa o comodo cuja pagina Ares será atualizada 
+        '''
         self.CarregarVetores()
         for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeCortina:
             if comodo == nomeComodo:
@@ -412,6 +444,10 @@ class App(customtkinter.CTk):
                 self.cortinasBotoes[nome].pack(side="top", pady= (10,10))  
     
     def AdicionarLampadaBotao(self,nomeComodo):
+        '''
+        Funcão para adicionar uma nova lâmpada
+        :param nomeComodo: representa o comodo que tera uma lampada adicionada
+        '''
         self.inputLampadaAdd = DispositivoAddFrame(self.lampadasFrame[nomeComodo])
         self.inputLampadaAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddLampada(n))
         self.inputLampadaAdd.pack(side="bottom")
@@ -419,9 +455,14 @@ class App(customtkinter.CTk):
         
         
     def SubmeterAddLampada(self,nomeComodo):
+        '''
+        Funcão que submete uma nova lâmpada para as planilhas e cria novos componentes para ela
+        :param nomeComodo: representa o comodo que tera uma lampada adicionada
+        '''
         NomeLampada = self.inputLampadaAdd.input.get()
         self.labelDuplicataDispositivos.pack_forget()
         for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeLampadas:
+            #verifica se existe um dispositivo com esse nome
             if nome == NomeLampada:
                 self.labelDuplicataDispositivos = customtkinter.CTkLabel(self.lampadasFrame[nomeComodo],
                                                text= "Já existe um dispositivo com esse nome, insira outro",
@@ -432,6 +473,7 @@ class App(customtkinter.CTk):
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.CarregarVetores()
         
+        #Cria a página de configuração para a nova lâmpada
         self.lampadasConfig[NomeLampada] = ConfigurarLampadas(master = self,
                                                     casas = self.casa,
                                                     comodo = nomeComodo,
@@ -454,6 +496,12 @@ class App(customtkinter.CTk):
         self.RecarregarBotoesDispositivos(nomeComodo)
     
     def RemoverLampada(self,nomeLampada,nomeComodo):
+        '''
+        Funcão para remover uma lâmpada
+        :param nomeComodo: representa o comodo que tera uma lampada removida
+        :param nomeLampada: representa o nome da lâmpada que será removida
+        '''
+        
         self.casa.comodos[nomeComodo].RemoverDispositivo(1,nomeLampada)
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.contadorLampada[nomeComodo] -= 1
@@ -468,6 +516,12 @@ class App(customtkinter.CTk):
         self.RecarregarBotoesComodos()
         
     def RemoverAr(self,nomeAr,nomeComodo):
+        '''
+        Funcão para remover um Ar Condicionado
+        :param nomeComodo: representa o comodo que terá um ar condicionado removido
+        :param nomeAr: representa o nome do ar que será removida
+        '''
+        
         self.casa.comodos[nomeComodo].RemoverDispositivo(3,nomeAr)
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.contadorArCondicionado[nomeComodo] -= 1
@@ -479,14 +533,23 @@ class App(customtkinter.CTk):
         self.VoltarFrameAr(nomeComodo)
         
     def AdicionarArBotao(self,nomeComodo):
+        '''
+        Funcão para adicionar um novo ar condicionado
+        :param nomeComodo: representa o comodo que tera um ar condiconado adicionado
+        '''
         self.inputArAdd = DispositivoAddFrame(self.ArCondicionadoFrame[nomeComodo])
         self.inputArAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddAr(n))
         self.inputArAdd.pack(side="bottom")    
         
     def SubmeterAddAr(self,nomeComodo):
+        '''
+        Funcão que submete um novo ar condicionado para as planilhas e cria novos componentes para ele
+        :param nomeComodo: representa o comodo que tera um ar condicionado adicionada
+        '''
         NomeAr = self.inputArAdd.input.get()
         self.labelDuplicataDispositivos.pack_forget()
         for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeArCondicionado:
+            #verifica se existe um dispositivo com esse nome
             if nome == NomeAr:
                 self.labelDuplicataDispositivos = customtkinter.CTkLabel(self.ArCondicionadoFrame[nomeComodo],
                                                text= "Já existe um dispositivo com esse nome, insira outro",
@@ -497,6 +560,7 @@ class App(customtkinter.CTk):
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.CarregarVetores()
         
+        #Cria a página de configuração para o novo ar condicionado
         self.arConfig[NomeAr] = ConfigurarAr(master = self,
                                             casas = self.casa,
                                             comodo = nomeComodo,
@@ -521,6 +585,10 @@ class App(customtkinter.CTk):
         self.RecarregarBotoesDispositivos(nomeComodo)
         
     def AdicionarJanelaBotao(self,nomeComodo):
+        '''
+        Funcão para adicionar uma nova janela
+        :param nomeComodo: representa o comodo que tera uma janela adicionada
+        '''
         self.inputJanelaAdd = DispositivoAddFrame(self.janelaFrame[nomeComodo])
         self.inputJanelaAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddJanela(n))
         self.inputJanelaAdd.pack(side="bottom")
@@ -528,9 +596,14 @@ class App(customtkinter.CTk):
         
         
     def SubmeterAddJanela(self,nomeComodo):
+        '''
+        Funcão que submete uma nova janela para as planilhas e cria novos componentes para ela
+        :param nomeComodo: representa o comodo que tera uma janela adicionada
+        '''
         NomeJanela = self.inputJanelaAdd.input.get()
         self.labelDuplicataDispositivos.pack_forget()
         for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeLampadas:
+            #verifica se já existe um dispositivo com esse novo
             if nome == NomeJanela:
                 self.labelDuplicataDispositivos = customtkinter.CTkLabel(self.janelaFrame[nomeComodo],
                                                text= "Já existe um dispositivo com esse nome, insira outro",
@@ -541,6 +614,7 @@ class App(customtkinter.CTk):
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.CarregarVetores()
         
+        #Cria a página de configuração para a nova janela
         self.janelaConfig[NomeJanela] = ConfigurarJanela(master = self,
                                                     casas = self.casa,
                                                     comodo = nomeComodo,
@@ -563,6 +637,11 @@ class App(customtkinter.CTk):
         self.RecarregarBotoesDispositivos(nomeComodo)
       
     def RemoverJanela(self,nomeJanela,nomeComodo):
+        '''
+        Funcão para remover uma janela
+        :param nomeComodo: representa o comodo que tera uma janela removida
+        :param nomeJanela: representa o nome da janela que será removida
+        '''
         self.casa.comodos[nomeComodo].RemoverDispositivo(4,nomeJanela)
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.contadorJanela[nomeComodo] -= 1
@@ -574,6 +653,10 @@ class App(customtkinter.CTk):
         self.VoltarFrameJanela(nomeComodo)  
         
     def AdicionarCortinaBotao(self,nomeComodo):
+        '''
+        Funcão para adicionar uma nova cortina
+        :param nomeComodo: representa o comodo que tera uma cortina adicionada
+        '''
         self.inputCortinaAdd = DispositivoAddFrame(self.cortinasFrame[nomeComodo])
         self.inputCortinaAdd.submit.configure(command = lambda n=nomeComodo:self.SubmeterAddCortina(n))
         self.inputCortinaAdd.pack(side="bottom")
@@ -581,9 +664,14 @@ class App(customtkinter.CTk):
         
         
     def SubmeterAddCortina(self,nomeComodo):
+        '''
+        Funcão que submete uma nova cortina para as planilhas e cria novos componentes para ela
+        :param nomeComodo: representa o comodo que tera uma cortina adicionada
+        '''
         NomeCortina = self.inputCortinaAdd.input.get()
         self.labelDuplicataDispositivos.pack_forget()
         for comodo,nome,ligado,temperatura,intensidade,abertura,tranca,cor in self.nomeCortina:
+            #verifica se já existe um dispositivo com esse nome
             if nome == NomeCortina:
                 self.labelDuplicataDispositivos = customtkinter.CTkLabel(self.cortinasFrame[nomeComodo],
                                                text= "Já existe um dispositivo com esse nome, insira outro",
@@ -594,6 +682,7 @@ class App(customtkinter.CTk):
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.CarregarVetores()
         
+        #Cria a página de configuração para a nova cortina
         self.cortinaConfig[NomeCortina] = ConfigurarCortina(master = self,
                                                     casas = self.casa,
                                                     comodo = nomeComodo,
@@ -614,6 +703,11 @@ class App(customtkinter.CTk):
         self.RecarregarBotoesDispositivos(nomeComodo)
         
     def RemoverCortina(self,nomeCortina,nomeComodo):
+        '''
+        Funcão para remover uma cortina
+        :param nomeComodo: representa o comodo que tera uma cortina removida
+        :param nomeCortina: representa o nome da cortina que será removida
+        '''
         self.casa.comodos[nomeComodo].RemoverDispositivo(2,nomeCortina)
         self.casa.SalvarQuantidadeDeDispositivosComodo()
         self.contadorCortina[nomeComodo] -= 1
@@ -625,11 +719,14 @@ class App(customtkinter.CTk):
         self.VoltarFrameCortina(nomeComodo)
         
     def AdicionarComodoBotao(self):
+        #Função para adicionar um novo comodo
         self.inputComodoAdd = ComodoAddFrame(self.comodoFrame)
         self.inputComodoAdd.submit.configure(command = lambda:self.SubmeterAddComodo())
         self.inputComodoAdd.pack(side="bottom")    
         
     def SubmeterAddComodo(self):
+        #funcao para enviar o novo comodo para as planilhas e coloca-lo na tela, criando
+        # uma nova página de dispositivos para ele
         NomeComodo = self.inputComodoAdd.input.get()
         self.labelDuplicata.pack_forget()
         for nomes,numero in self.nomeComodos:
@@ -650,12 +747,15 @@ class App(customtkinter.CTk):
         dispositivoFrame = DispositivosFrame(master = self, nome = NomeComodo)
         self.dispositivosFrame[NomeComodo] = dispositivoFrame
         dispositivoFrame.header.iconeBotao.configure(command = lambda: self.VoltarFrameComodos())
-        
-        #Criando os botões que irão na pagina dos dispositivos
+           
+        #Zerando os contadores do numero de dispositivos
         self.contadorLampada[NomeComodo] = 0
         self.contadorArCondicionado[NomeComodo]  = 0
         self.contadorJanela[NomeComodo]  = 0
-        self.contadorCortina[NomeComodo]  = 0    
+        self.contadorCortina[NomeComodo]  = 0 
+           
+        #Criando os botões que irão na pagina dos dispositivos
+        #Lampadas
         self.botaoLampada[NomeComodo] = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Lâmpadas",
                                   numeroDispositivos= 0,
                                   caminho="src/icons/lampada.png")
@@ -669,7 +769,7 @@ class App(customtkinter.CTk):
         self.botaoAddLampada[NomeComodo].configure(command = lambda n=NomeComodo: self.AdicionarLampadaBotao(n))
         self.botaoAddLampada[NomeComodo].pack(side = "bottom",pady= (10,10))
         
-            
+        #Ar Condicionado
         self.botaoAr[NomeComodo] = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Ar Condicionado",
                                   numeroDispositivos= 0,
                                   caminho="src/icons/arCondicionado.png")
@@ -683,7 +783,7 @@ class App(customtkinter.CTk):
         self.botaoAddAr[NomeComodo].configure(command = lambda n=NomeComodo: self.AdicionarArBotao(n))
         self.botaoAddAr[NomeComodo].pack(side = "bottom",pady= (10,10))
         
-        
+        #Janela
         self.botaoJanela[NomeComodo] = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Janela",
                                   numeroDispositivos= 0,
                                   caminho="src/icons/Janela.png")
@@ -698,7 +798,7 @@ class App(customtkinter.CTk):
         self.botaoAddJanela[NomeComodo].configure(command = lambda n=NomeComodo: self.AdicionarJanelaBotao(n))
         self.botaoAddJanela[NomeComodo].pack(side = "bottom",pady= (10,10))
         
-        
+        #Cortina
         self.botaoCortina[NomeComodo] = BotaoDispositivo(self.dispositivosFrame[NomeComodo], nomeComodo="Cortina",
                                   numeroDispositivos= 0,
                                   caminho="src/icons/cortina.png")
@@ -715,11 +815,14 @@ class App(customtkinter.CTk):
         self.inputComodoAdd.pack_forget()
         
     def RemoverComodoBotao(self):
+        #Função para remover um comodo
         self.inputComodoRemove = ComodoRemoveFrame(self.comodoFrame)
         self.inputComodoRemove.submit.configure(command = lambda:self.SubmeterRemoverComodo())
         self.inputComodoRemove.pack(side="top")
         
     def SubmeterRemoverComodo(self):
+        #Verifica se o comodo existe e o remove
+        #Se não existir uma mensagem de erro é mostrada
         NomeComodo = self.inputComodoRemove.input.get()
         self.CarregarVetores()
         self.labelInexistente.pack_forget()
@@ -743,6 +846,10 @@ class App(customtkinter.CTk):
         self.inputComodoRemove.pack(side = "top")
         
     def MudarFrameDispositivos(self,nome):
+        '''
+        Muda a tela atual para a pagina dos dispositivos de um comodo
+        :param nome: representa o nome do comodo que se quer acessar
+        '''
         self.comodoFrame.pack_forget()
         self.update()
         self.dispositivosFrame[nome].pack(side = "top")
@@ -750,12 +857,19 @@ class App(customtkinter.CTk):
         self.frameAtual = nome
         
     def VoltarFrameComodos(self):
+        '''
+        Muda a tela atual para a pagina inicial
+        '''
         self.dispositivosFrame[self.frameAtual].pack_forget()
         self.update()
         self.comodoFrame.pack(side ='top')
         self.comodoFrame.update()
      
     def MudarFrameLampadas(self,nome):
+        '''
+        Muda a tela atual para a pagina das lampadas de um comodo
+        :param nome: representa o nome do comodo que se quer acessar as lampadas
+        '''
         self.dispositivosFrame[self.frameAtual].pack_forget()
         self.update()
         self.lampadasFrame[nome].pack(side ='top')
@@ -764,6 +878,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def VoltarFrameDispositivosLampadas(self,nome):
+        '''
+        Muda a tela atual para a pagina dos dispositivos de um comodo
+        :param nome: representa o nome do comodo que se quer acessar os dispositivos
+        '''
         self.lampadasFrame[self.frameAtual].pack_forget()
         self.update()
         self.dispositivosFrame[nome].pack(side='top')
@@ -772,6 +890,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def MudarFrameConfigLampadas(self,nome):
+        '''
+        Muda a tela atual para a pagina de uma lampada especifica de um comodo
+        :param nome: representa o nome da lampada que se quer acessar
+        '''
         self.lampadasFrame[self.frameAtual].pack_forget()
         self.update()
         self.lampadasConfig[nome].pack(side ='top')
@@ -780,6 +902,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def VoltarFrameLampadas(self,nome):
+        '''
+        Muda a tela atual para a pagina das lampadas de um comodo
+        :param nome: representa o nome do comodo que se quer acessar as lampadas
+        '''
         self.lampadasConfig[self.frameAtual].pack_forget()
         self.update()
         self.lampadasFrame[nome].pack(side='top')
@@ -791,6 +917,10 @@ class App(customtkinter.CTk):
 
         
     def MudarFrameAr(self,nome):
+        '''
+        Muda a tela atual para a pagina dos Ares Condicionados de um comodo
+        :param nome: representa o nome do comodo que se quer acessar os ares condicionados
+        '''
         self.dispositivosFrame[self.frameAtual].pack_forget()
         self.update()
         self.ArCondicionadoFrame[nome].pack(side ='top')
@@ -799,6 +929,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def VoltarFrameDispositivosAr(self,nome):
+        '''
+        Muda a tela atual para a pagina dos dispositivos de um comodo
+        :param nome: representa o nome do comodo que se quer acessar
+        '''
         self.ArCondicionadoFrame[self.frameAtual].pack_forget()
         self.update()
         self.dispositivosFrame[nome].pack(side='top')
@@ -807,6 +941,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def MudarFrameConfigAr(self,nome):
+        '''
+        Muda a tela atual para a pagina de um ar condicionado específico
+        :param nome: representa o nome do ar condicionado que se quer acessar
+        '''
         self.ArCondicionadoFrame[self.frameAtual].pack_forget()
         self.update()
         self.arConfig[nome].pack(side ='top')
@@ -815,6 +953,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def VoltarFrameAr(self,nome):
+        '''
+        Muda a tela atual para a pagina dos ares condicionados de um comodo
+        :param nome: representa o nome do comodo que se quer acessar os ares condicionados
+        '''
         self.arConfig[self.frameAtual].pack_forget()
         self.update()
         self.ArCondicionadoFrame[nome].pack(side='top')
@@ -825,6 +967,10 @@ class App(customtkinter.CTk):
         self.CarregarVetores()
          
     def MudarFrameJanela(self,nome):
+        '''
+        Muda a tela atual para a pagina das Janelas de um comodo
+        :param nome: representa o nome do comodo que se quer acessar as janelas
+        '''
         self.dispositivosFrame[self.frameAtual].pack_forget()
         self.update()
         self.janelaFrame[nome].pack(side ='top')
@@ -833,6 +979,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def VoltarFrameDispositivosJanela(self,nome):
+        '''
+        Muda a tela atual para a pagina dos dispositivos de um comodo
+        :param nome: representa o nome do comodo que se quer acessar
+        '''
         self.janelaFrame[self.frameAtual].pack_forget()
         self.update()
         self.dispositivosFrame[nome].pack(side='top')
@@ -841,6 +991,10 @@ class App(customtkinter.CTk):
         self.frameAtual = nome   
     
     def MudarFrameConfigJanela(self,nome):
+        '''
+        Muda a tela atual para a pagina de uma janela especifica
+        :param nome: representa o nome da janela que se quer acessar
+        '''
         self.janelaFrame[self.frameAtual].pack_forget()
         self.update()
         self.janelaConfig[nome].pack(side ='top')
@@ -849,6 +1003,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def VoltarFrameJanela(self,nome):
+        '''
+        Muda a tela atual para a pagina das janelas de um comodo
+        :param nome: representa o nome do comodo que se quer acessar as janelas
+        '''
         self.janelaConfig[self.frameAtual].pack_forget()
         self.update()
         self.janelaFrame[nome].pack(side='top')
@@ -859,6 +1017,10 @@ class App(customtkinter.CTk):
         self.CarregarVetores()
     
     def MudarFrameCortina(self,nome):
+        '''
+        Muda a tela atual para a pagina das cortinas de um comodo
+        :param nome: representa o nome do comodo que se quer acessar a cortinas
+        '''
         self.dispositivosFrame[self.frameAtual].pack_forget()
         self.update()
         self.cortinasFrame[nome].pack(side ='top')
@@ -867,6 +1029,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def VoltarFrameDispositivosCortina(self,nome):
+        '''
+        Muda a tela atual para a pagina dos dispositivos de um comodo
+        :param nome: representa o nome do comodo que se quer acessar
+        '''
         self.cortinasFrame[self.frameAtual].pack_forget()
         self.update()
         self.dispositivosFrame[nome].pack(side='top')
@@ -875,6 +1041,10 @@ class App(customtkinter.CTk):
         self.frameAtual = nome      
         
     def MudarFrameConfigCortina(self,nome):
+        '''
+        Muda a tela atual para a pagina de uma cortina 
+        :param nome: representa o nome da cortina que se quer acessar
+        '''
         self.cortinasFrame[self.frameAtual].pack_forget()
         self.update()
         self.cortinaConfig[nome].pack(side ='top')
@@ -883,6 +1053,10 @@ class App(customtkinter.CTk):
         self.update()
         
     def VoltarFrameCortina(self,nome):
+        '''
+        Muda a tela atual para a pagina das cortinas de um comodo
+        :param nome: representa o nome do comodo que se quer acessar as cortinas
+        '''
         self.cortinaConfig[self.frameAtual].pack_forget()
         self.update()
         self.cortinasFrame[nome].pack(side='top')
